@@ -33,6 +33,7 @@
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
+      padding-bottom: 58px; /* مساحة عشان الشريط السفلي الثابت ميغطيش آخر سطر */
       background-color: var(--bg-page) !important;
       color: var(--text-primary) !important;
     }
@@ -72,7 +73,6 @@
       margin-bottom: 18px;
     }
 
-    /* حاوية الفيديو مع العلامة المائية والشريط السفلي */
     .video-frame-wrap {
       position: relative;
       width: 100%;
@@ -95,54 +95,74 @@
       z-index: 1;
     }
 
-    /* العلامة المائية المتحركة داخل الفيديو */
-    .floating-watermark {
-      position: absolute;
-      top: 18%;
-      right: 10%;
-      z-index: 3;
-      pointer-events: none;
-      background: rgba(15, 23, 42, 0.45);
-      color: rgba(255, 255, 255, 0.78) !important;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      font-size: 0.78rem;
-      font-weight: 700;
-      line-height: 1.45;
-      text-align: center;
-      backdrop-filter: blur(2px);
-      animation: watermarkDrift 14s ease-in-out infinite alternate;
-    }
-
-    @keyframes watermarkDrift {
-      0%   { top: 12%; right: 8%; }
-      25%  { top: 18%; right: 48%; }
-      50%  { top: 52%; right: 42%; }
-      75%  { top: 48%; right: 8%; }
-      100% { top: 22%; right: 25%; }
-    }
-
-    /* شريط ثابت من الأسفل على الفيديو يوضح اسم الحساب والإيميل */
-    .video-bottom-strip {
-      position: absolute;
-      bottom: 38px;
-      left: 10px;
-      right: 10px;
-      z-index: 3;
-      pointer-events: none;
+    /* شريط إخباري سفلي ثابت يجمع بيانات الحساب والتنويه */
+    .bottom-news-ticker {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      z-index: 9999;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      background: linear-gradient(90deg, #0284c7 0%, #0369a1 50%, #0284c7 100%);
+      color: #ffffff !important;
+      border-top: 2px solid rgba(56, 189, 248, 0.55);
+      box-shadow: 0 -6px 22px rgba(2, 6, 23, 0.35);
+      overflow: hidden;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .ticker-badge {
+      flex-shrink: 0;
+      height: 100%;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #0f172a;
+      color: #38bdf8 !important;
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      z-index: 2;
+    }
+
+    .ticker-track-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+      animation: newsScrollRTL 22s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .ticker-segment {
+      padding: 0 28px;
+      display: inline-flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: rgba(2, 6, 23, 0.68);
-      color: rgba(255, 255, 255, 0.88) !important;
-      font-size: 0.78rem;
-      font-weight: 700;
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #ffffff !important;
+    }
+
+    .ticker-sep {
+      opacity: 0.65;
+    }
+
+    @keyframes newsScrollRTL {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
     }
 
     .pdf-item {
@@ -220,6 +240,14 @@
     </section>
   </main>
 
+  <!-- الشريط الإخباري السفلي الثابت -->
+  <div id="bottomNewsTicker" class="bottom-news-ticker" dir="rtl">
+    <div class="ticker-badge">📡 تنويه مباشر</div>
+    <div class="ticker-track-wrap">
+      <div id="tickerTrack" class="ticker-track"></div>
+    </div>
+  </div>
+
   <script type="module">
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
@@ -234,10 +262,33 @@
     const courseId = params.get("id");
     if (!courseId) location.href = "dashboard.html";
 
-    let studentWatermarkInfo = {
+    let studentInfo = {
       name: "طالب",
       email: ""
     };
+    let customAnnouncement = "";
+
+    function renderBottomTicker() {
+      const track = document.getElementById("tickerTrack");
+      const tickerEl = document.getElementById("bottomNewsTicker");
+      if (!track || !tickerEl) return;
+
+      const accountPart = `👤 الحساب: ${studentInfo.name}${studentInfo.email ? ` • ✉️ ${studentInfo.email}` : ""}`;
+      const noticePart = customAnnouncement
+        ? `📢 تنويه: ${customAnnouncement}`
+        : `🛡️ المحتوى مخصص لحساب الطالب المسجل فقط ويُمنع نسخه أو مشاركته`;
+
+      const oneItem = `
+        <span class="ticker-segment">
+          <span>${accountPart}</span>
+          <span class="ticker-sep">|</span>
+          <span>${noticePart}</span>
+        </span>
+      `;
+      // تكرار الشريط لضمان حركة دائرية متصلة بدون فراغ
+      track.innerHTML = oneItem.repeat(4);
+      tickerEl.style.display = "flex";
+    }
 
     const logoEl = document.getElementById("siteLogo");
     try {
@@ -252,12 +303,17 @@
       const visSnap = await getDoc(doc(db, "settings", "visibility"));
       if (visSnap.exists()) {
         const cfg = visSnap.data();
+        if (cfg.announcementText && cfg.announcementText.trim()) {
+          customAnnouncement = cfg.announcementText.trim();
+        }
         document.querySelectorAll("[data-vis]").forEach((el) => {
           const key = el.getAttribute("data-vis");
           if (cfg[key] === false) el.style.display = "none";
         });
       }
     } catch (e) {}
+
+    renderBottomTicker();
 
     const tabBtns = document.querySelectorAll(".course-tab-btn");
     const panels = document.querySelectorAll(".course-panel");
@@ -300,10 +356,11 @@
         return;
       }
 
-      studentWatermarkInfo = {
+      studentInfo = {
         name: userData.fullName || user.email?.split("@")[0] || "طالب",
         email: user.email || ""
       };
+      renderBottomTicker();
 
       const courseSnap = await getDoc(doc(db, "courses", courseId));
       if (!courseSnap.exists()) {
@@ -319,26 +376,12 @@
       document.getElementById("coursePageBody").style.display = "block";
 
       await Promise.all([loadLessons(), loadExams()]);
-      enforceWatermarksProtection();
-    });
 
-    function enforceWatermarksProtection() {
-      const labelText = `${studentWatermarkInfo.name} • ${studentWatermarkInfo.email}`;
+      // حماية استمرارية الشريط السفلي
       setInterval(() => {
-        document.querySelectorAll(".floating-watermark").forEach((wm) => {
-          wm.textContent = labelText;
-          wm.style.display = "block";
-          wm.style.opacity = "1";
-          wm.style.visibility = "visible";
-        });
-        document.querySelectorAll(".video-bottom-strip").forEach((strip) => {
-          strip.innerHTML = `<span>👤 ${studentWatermarkInfo.name}</span><span>✉️ ${studentWatermarkInfo.email}</span>`;
-          strip.style.display = "flex";
-          strip.style.opacity = "1";
-          strip.style.visibility = "visible";
-        });
-      }, 1500);
-    }
+        renderBottomTicker();
+      }, 2500);
+    });
 
     async function loadLessons() {
       const lessonsContainer = document.getElementById("lessonsContainer");
@@ -368,11 +411,6 @@
                         ? `<video src="${embedUrl}" controls controlsList="nodownload"></video>`
                         : `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                     }
-                    <div class="floating-watermark">${studentWatermarkInfo.name} • ${studentWatermarkInfo.email}</div>
-                    <div class="video-bottom-strip">
-                      <span>👤 ${studentWatermarkInfo.name}</span>
-                      <span>✉️ ${studentWatermarkInfo.email}</span>
-                    </div>
                   </div>`
                 : `<p style="opacity:0.7;">لا يوجد فيديو لهذه المحاضرة.</p>`
             }
