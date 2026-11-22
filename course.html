@@ -316,6 +316,7 @@
       email: ""
     };
     let customAnnouncement = "";
+    let personalNotice = "";
 
     function syncVideoWatermarks() {
       const accountLine = `${studentInfo.name}${studentInfo.email ? ` • ${studentInfo.email}` : ""}`;
@@ -339,9 +340,11 @@
       if (!track || !tickerEl) return;
 
       const accountPart = `👤 الحساب: ${studentInfo.name}${studentInfo.email ? ` • ✉️ ${studentInfo.email}` : ""}`;
-      const noticePart = customAnnouncement
-        ? `📢 تنويه: ${customAnnouncement}`
-        : `🛡️ المحتوى مخصص لحساب الطالب المسجل فقط ويُمنع نسخه أو مشاركته`;
+      const noticePart = personalNotice
+        ? `📩 رسالة خاصة لك: ${personalNotice}`
+        : (customAnnouncement
+            ? `📢 تنويه: ${customAnnouncement}`
+            : `🛡️ المحتوى مخصص لحساب الطالب المسجل فقط ويُمنع نسخه أو مشاركته`);
 
       const oneItem = `
         <span class="ticker-segment">
@@ -424,6 +427,9 @@
         name: userData.fullName || user.email?.split("@")[0] || "طالب",
         email: user.email || ""
       };
+      personalNotice = (userData.personalNoticeActive && userData.personalNotice)
+        ? String(userData.personalNotice).trim()
+        : "";
       renderBottomTicker();
 
       const courseSnap = await getDoc(doc(db, "courses", courseId));
