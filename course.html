@@ -33,7 +33,7 @@
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
-      padding-bottom: 58px; /* مساحة عشان الشريط السفلي الثابت ميغطيش آخر سطر */
+      padding-bottom: 58px;
       background-color: var(--bg-page) !important;
       color: var(--text-primary) !important;
     }
@@ -95,7 +95,57 @@
       z-index: 1;
     }
 
-    /* شريط إخباري سفلي ثابت يجمع بيانات الحساب والتنويه */
+    /* علامة مائية متحركة على الفيديو ببيانات الحساب */
+    .video-account-watermark {
+      position: absolute;
+      top: 14%;
+      right: 8%;
+      z-index: 3;
+      pointer-events: none;
+      background: rgba(2, 6, 23, 0.52);
+      color: rgba(255, 255, 255, 0.82) !important;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.45;
+      text-align: center;
+      backdrop-filter: blur(2px);
+      animation: videoWatermarkMove 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes videoWatermarkMove {
+      0%   { top: 12%; right: 8%; }
+      25%  { top: 18%; right: 46%; }
+      50%  { top: 54%; right: 42%; }
+      75%  { top: 50%; right: 8%; }
+      100% { top: 22%; right: 24%; }
+    }
+
+    /* شريط ثابت أسفل الفيديو يوضح بيانات الحساب */
+    .video-account-bar {
+      position: absolute;
+      bottom: 38px;
+      left: 10px;
+      right: 10px;
+      z-index: 3;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: rgba(2, 6, 23, 0.72);
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    /* شريط إخباري سفلي ثابت للشاشة كاملة */
     .bottom-news-ticker {
       position: fixed;
       bottom: 0;
@@ -240,7 +290,6 @@
     </section>
   </main>
 
-  <!-- الشريط الإخباري السفلي الثابت -->
   <div id="bottomNewsTicker" class="bottom-news-ticker" dir="rtl">
     <div class="ticker-badge">📡 تنويه مباشر</div>
     <div class="ticker-track-wrap">
@@ -268,6 +317,22 @@
     };
     let customAnnouncement = "";
 
+    function syncVideoWatermarks() {
+      const accountLine = `${studentInfo.name}${studentInfo.email ? ` • ${studentInfo.email}` : ""}`;
+      document.querySelectorAll(".video-account-watermark").forEach((wm) => {
+        wm.textContent = accountLine;
+        wm.style.display = "block";
+        wm.style.opacity = "1";
+        wm.style.visibility = "visible";
+      });
+      document.querySelectorAll(".video-account-bar").forEach((bar) => {
+        bar.innerHTML = `<span>👤 ${studentInfo.name}</span><span>✉️ ${studentInfo.email}</span>`;
+        bar.style.display = "flex";
+        bar.style.opacity = "1";
+        bar.style.visibility = "visible";
+      });
+    }
+
     function renderBottomTicker() {
       const track = document.getElementById("tickerTrack");
       const tickerEl = document.getElementById("bottomNewsTicker");
@@ -285,7 +350,6 @@
           <span>${noticePart}</span>
         </span>
       `;
-      // تكرار الشريط لضمان حركة دائرية متصلة بدون فراغ
       track.innerHTML = oneItem.repeat(4);
       tickerEl.style.display = "flex";
     }
@@ -376,11 +440,12 @@
       document.getElementById("coursePageBody").style.display = "block";
 
       await Promise.all([loadLessons(), loadExams()]);
+      syncVideoWatermarks();
 
-      // حماية استمرارية الشريط السفلي
       setInterval(() => {
         renderBottomTicker();
-      }, 2500);
+        syncVideoWatermarks();
+      }, 2000);
     });
 
     async function loadLessons() {
@@ -411,6 +476,11 @@
                         ? `<video src="${embedUrl}" controls controlsList="nodownload"></video>`
                         : `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                     }
+                    <div class="video-account-watermark">${studentInfo.name}${studentInfo.email ? ` • ${studentInfo.email}` : ""}</div>
+                    <div class="video-account-bar">
+                      <span>👤 ${studentInfo.name}</span>
+                      <span>✉️ ${studentInfo.email}</span>
+                    </div>
                   </div>`
                 : `<p style="opacity:0.7;">لا يوجد فيديو لهذه المحاضرة.</p>`
             }
