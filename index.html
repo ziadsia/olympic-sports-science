@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="شعار الأكاديمية الأولمبية لعلوم الرياضة" class="brand-logo" onerror="this.style.display='none'" />
+        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn btn-icon" type="button" title="تغيير المظهر">🌙</button>
+        <a href="auth.html?mode=login" class="btn btn-outline">تسجيل الدخول</a>
+        <a href="auth.html?mode=register" class="btn btn-primary">حساب جديد</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">منصة تعليمية متخصصة</span>
+        <h1>الأكاديمية الأولمبية لعلوم الرياضة</h1>
+        <p>
+          منصتك الشاملة لتعلم علوم الرياضة والتدريب — محاضرات، اختبارات، ومتابعة مستمرة للطلاب في تجربة سماوية منظمة.
+        </p>
+        <div class="nav-actions">
+          <a href="auth.html?mode=register" class="btn btn-primary">ابدأ رحلتك الآن</a>
+          <a href="#courses" class="btn btn-outline">تصفح الكورسات</a>
+          <a href="admin.html" class="btn btn-outline">لوحة الإدارة</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <img src="assets/img/logo.png" alt="الأكاديمية الأولمبية لعلوم الرياضة" onerror="this.style.display='none'" />
+        <h3>الأكاديمية الأولمبية لعلوم الرياضة</h3>
+        <p style="color:#e0f2fe; margin:6px 0 0;">علم الحركة • التدريب الرياضي • الفسيولوجيا</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">المراحل والفرق الدراسية</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>الفرقة الأولى</h3>
+          <p>مقررات التأسيس والمفاهيم الأساسية في علوم الرياضة.</p>
+          <a href="#courses" class="btn btn-outline">عرض الكورسات</a>
+        </div>
+        <div class="card">
+          <h3>الفرقة الثانية</h3>
+          <p>تطبيقات متقدمة وتدريبات عملية واختبارات دورية.</p>
+          <a href="#courses" class="btn btn-outline">عرض الكورسات</a>
+        </div>
+        <div class="card">
+          <h3>الفرقة الثالثة والرابعة</h3>
+          <p>تخصصات متقدمة، مراجعات شاملة، وتأهيل عملي.</p>
+          <a href="#courses" class="btn btn-outline">عرض الكورسات</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="courses">
+    <div class="container">
+      <h2 class="section-title">أحدث الكورسات</h2>
+      <div class="grid-3" id="coursesGrid">
+        <div class="card">
+          <h3>كورس علم الحركة والتدريب الرياضي</h3>
+          <p>شرح تفصيلي للمحاضرات مع مذكرات PDF واختبار تقييمي.</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="price-tag">متاح بالمنصة</span>
+            <a href="dashboard.html" class="btn btn-primary">دخول للكورس</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      جميع الحقوق محفوظة © <span id="year"></span> الأكاديمية الأولمبية لعلوم الرياضة
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { db } from "./assets/js/firebase-config.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const coursesGrid = document.getElementById("coursesGrid");
+    try {
+      const snap = await getDocs(collection(db, "courses"));
+      if (!snap.empty) {
+        coursesGrid.innerHTML = "";
+        snap.forEach((docSnap) => {
+          const c = docSnap.data();
+          coursesGrid.innerHTML += `
+            <div class="card">
+              <h3>${c.title || "كورس بدون عنوان"}</h3>
+              <p>${c.description || "محتوى تعليمي متكامل في علوم الرياضة."}</p>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="price-tag">${c.level || "عام"} • ${c.price ? c.price + " ج.م" : "متاح"}</span>
+                <a href="dashboard.html?course=${docSnap.id}" class="btn btn-primary">دخول للكورس</a>
+              </div>
+            </div>
+          `;
+        });
+      }
+    } catch (err) {
+      // يبقي الكارت الافتراضي ظاهراً لحين ربط بيانات Firebase
+    }
+  </script>
+</body>
+</html>
