@@ -236,6 +236,7 @@
         <nav class="sidebar-nav">
           <button class="sidebar-link active" data-target="overviewPanel" type="button">📊 الإحصائيات</button>
           <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
+          <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
           <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والهوية</button>
           <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / حذف)</button>
           <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / حذف)</button>
@@ -288,14 +289,38 @@
           <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
         </div>
         <div class="form-group" style="margin-top:16px;">
-          <label>نص التنويه العام</label>
-          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه هنا..." />
+          <label>نص التنويه العام (يظهر لجميع الطلاب)</label>
+          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه العام هنا..." />
         </div>
         <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
         <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
       </section>
 
-      <!-- 3. اللوجو والهوية -->
+      <!-- 3. إشعار لطالب معين -->
+      <section id="personalNoticePanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إرسال أو تعديل إشعار خاص لطالب معين</h2>
+        <form id="personalNoticeForm">
+          <div class="form-group">
+            <label>اختر الطالب</label>
+            <select id="noticeStudentSelect" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>نص الإشعار الخاص بهذا الطالب (يظهر له هو فقط)</label>
+            <input type="text" id="personalNoticeInput" class="form-control" placeholder="مثال: يرجى استكمال اختبار المحاضرة الأولى..." required />
+          </div>
+          <label class="visibility-item" style="max-width:340px; margin-bottom:16px;">
+            <span>تفعيل ظهور الإشعار لهذا الطالب</span>
+            <input type="checkbox" id="personalNoticeActive" checked />
+          </label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">إرسال / حفظ الإشعار</button>
+            <button type="button" id="clearPersonalNoticeBtn" class="btn btn-danger">مسح الإشعار</button>
+          </div>
+        </form>
+        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+      </section>
+
+      <!-- 4. اللوجو والهوية -->
       <section id="brandingPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إعدادات اللوجو والهوية</h2>
         <form id="brandingForm">
@@ -313,7 +338,7 @@
         <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
       </section>
 
-      <!-- 4. الكورسات (إضافة وحذف) -->
+      <!-- 5. الكورسات (إضافة وحذف) -->
       <section id="coursesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كورس جديد</h2>
         <form id="addCourseForm">
@@ -347,7 +372,7 @@
         <div id="coursesManageList" class="manage-list"></div>
       </section>
 
-      <!-- 5. المحاضرات (إضافة وحذف داخل كل كورس) -->
+      <!-- 6. المحاضرات (إضافة وحذف داخل كل كورس) -->
       <section id="lessonsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة فيديوهات وملفات PDF داخل الكورسات</h2>
         <form id="addLessonForm">
@@ -383,7 +408,7 @@
         <div id="lessonsManageList" class="manage-list"></div>
       </section>
 
-      <!-- 6. الامتحانات -->
+      <!-- 7. الامتحانات -->
       <section id="examsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة امتحان اختيار من متعدد</h2>
         <form id="addExamForm">
@@ -421,7 +446,7 @@
         <p id="examMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
       </section>
 
-      <!-- 7. أكواد التفعيل (كتابة يدوية + توليد تلقائي + حذف) -->
+      <!-- 8. أكواد التفعيل (كتابة يدوية + توليد تلقائي + حذف) -->
       <section id="codesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة أكواد التفعيل</h2>
 
@@ -476,7 +501,7 @@
         </div>
       </section>
 
-      <!-- 8. الطلاب والأجهزة -->
+      <!-- 9. الطلاب والأجهزة -->
       <section id="studentsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
         <div class="table-wrap">
@@ -630,9 +655,22 @@
       let usedCodesCount = 0;
       courseTitleMap = {};
 
+      const noticeSelect = document.getElementById("noticeStudentSelect");
+      noticeSelect.innerHTML = "";
+
       usersSnap.forEach((uDoc) => {
-        if (uDoc.data().role !== "admin") studentsCount++;
+        const u = uDoc.data();
+        if (u.role !== "admin") {
+          studentsCount++;
+          const opt = document.createElement("option");
+          opt.value = uDoc.id;
+          opt.textContent = `${u.fullName || "طالب"} (${u.email || uDoc.id})`;
+          noticeSelect.appendChild(opt);
+        }
       });
+
+      await fillSelectedStudentNotice();
+
       codesSnap.forEach((cDoc) => {
         if (cDoc.data().used) usedCodesCount++;
       });
@@ -727,6 +765,44 @@
         tbody.appendChild(tr);
       });
     }
+
+    async function fillSelectedStudentNotice() {
+      const uid = document.getElementById("noticeStudentSelect").value;
+      if (!uid) return;
+      const snap = await getDoc(doc(db, "users", uid));
+      const data = snap.exists() ? snap.data() : {};
+      document.getElementById("personalNoticeInput").value = data.personalNotice || "";
+      document.getElementById("personalNoticeActive").checked = Boolean(data.personalNoticeActive);
+    }
+
+    document.getElementById("noticeStudentSelect").addEventListener("change", fillSelectedStudentNotice);
+
+    document.getElementById("personalNoticeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const uid = document.getElementById("noticeStudentSelect").value;
+      const text = document.getElementById("personalNoticeInput").value.trim();
+      const active = document.getElementById("personalNoticeActive").checked;
+      if (!uid) return;
+
+      await updateDoc(doc(db, "users", uid), {
+        personalNotice: text,
+        personalNoticeActive: active,
+        personalNoticeUpdatedAt: new Date().toISOString()
+      });
+      document.getElementById("personalNoticeMsg").textContent = "تم حفظ الإشعار الخاص بالطالب بنجاح!";
+    });
+
+    document.getElementById("clearPersonalNoticeBtn").addEventListener("click", async () => {
+      const uid = document.getElementById("noticeStudentSelect").value;
+      if (!uid) return;
+      await updateDoc(doc(db, "users", uid), {
+        personalNotice: "",
+        personalNoticeActive: false
+      });
+      document.getElementById("personalNoticeInput").value = "";
+      document.getElementById("personalNoticeActive").checked = false;
+      document.getElementById("personalNoticeMsg").textContent = "تم مسح الإشعار الخاص بالطالب.";
+    });
 
     async function renderLessonsForSelectedCourse() {
       const courseId = document.getElementById("lessonCourseSelect").value;
