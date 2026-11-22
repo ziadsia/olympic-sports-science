@@ -49,29 +49,12 @@
         <!-- نموذج إنشاء حساب جديد -->
         <form id="registerForm" style="display:none;">
           <div class="form-group">
-            <label>الاسم رباعي</label>
+            <label>الاسم بالكامل</label>
             <input type="text" id="regName" class="form-control" required />
           </div>
           <div class="form-group">
-            <label>رقم هاتف الطالب</label>
+            <label>رقم الهاتف</label>
             <input type="tel" id="regPhone" class="form-control" placeholder="010xxxxxxxx" required />
-          </div>
-          <div class="form-group">
-            <label>رقم هاتف ولي الأمر</label>
-            <input type="tel" id="regParentPhone" class="form-control" placeholder="010xxxxxxxx" required />
-          </div>
-          <div class="form-group">
-            <label>المحافظة</label>
-            <input type="text" id="regGov" class="form-control" placeholder="الفيوم / القاهرة..." required />
-          </div>
-          <div class="form-group">
-            <label>الفرقة الدراسية</label>
-            <select id="regLevel" class="form-control" required>
-              <option value="الفرقة الأولى">الفرقة الأولى</option>
-              <option value="الفرقة الثانية">الفرقة الثانية</option>
-              <option value="الفرقة الثالثة">الفرقة الثالثة</option>
-              <option value="الفرقة الرابعة">الفرقة الرابعة</option>
-            </select>
           </div>
           <div class="form-group">
             <label>البريد الإلكتروني</label>
@@ -142,10 +125,8 @@
         await setDoc(doc(db, "users", cred.user.uid), {
           fullName: document.getElementById("regName").value.trim(),
           phone: document.getElementById("regPhone").value.trim(),
-          parentPhone: document.getElementById("regParentPhone").value.trim(),
-          governorate: document.getElementById("regGov").value.trim(),
-          level: document.getElementById("regLevel").value,
           email,
+          role: "student",
           deviceId,
           activeCourses: [],
           blocked: false,
@@ -166,7 +147,6 @@
         let identifier = document.getElementById("loginIdentifier").value.trim();
         const password = document.getElementById("loginPassword").value;
 
-        // لو أدخل رقم هاتف نبحث عن الإيميل المرتبط به
         if (!identifier.includes("@")) {
           const q = query(collection(db, "users"), where("phone", "==", identifier));
           const snap = await getDocs(q);
