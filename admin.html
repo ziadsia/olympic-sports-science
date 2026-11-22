@@ -9,11 +9,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
+    :root {
+      --bg-page: #f0f7ff;
+      --bg-card: #ffffff;
+      --bg-sub: rgba(2, 132, 199, 0.04);
+      --bg-input: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-subtle: rgba(2, 132, 199, 0.18);
+      --brand-primary: #0284c7;
+      --shadow-card: 0 10px 26px -8px rgba(2, 132, 199, 0.12);
+    }
+
+    html[data-theme="dark"],
+    body.dark-mode,
+    body.dark,
+    html.dark {
+      --bg-page: #0b1120;
+      --bg-card: #131c31;
+      --bg-sub: rgba(30, 41, 59, 0.65);
+      --bg-input: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --border-subtle: rgba(56, 189, 248, 0.22);
+      --brand-primary: #38bdf8;
+      --shadow-card: 0 14px 32px -8px rgba(0, 0, 0, 0.55);
+    }
+
     * { box-sizing: border-box; }
+
     body.admin-layout-body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-page) !important;
+      color: var(--text-primary) !important;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
+
+    body.admin-layout-body h1,
+    body.admin-layout-body h2,
+    body.admin-layout-body h3,
+    body.admin-layout-body h4,
+    body.admin-layout-body p,
+    body.admin-layout-body span,
+    body.admin-layout-body label,
+    body.admin-layout-body small,
+    body.admin-layout-body strong,
+    body.admin-layout-body td,
+    body.admin-layout-body th {
+      color: inherit;
+    }
+
     .admin-shell {
       display: flex;
       min-height: 100vh;
@@ -23,8 +69,9 @@
     .admin-sidebar {
       width: 275px;
       flex-shrink: 0;
-      background: var(--card-bg, #ffffff);
-      border-left: 1px solid rgba(2, 132, 199, 0.16);
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border-left: 1px solid var(--border-subtle);
       padding: 20px 14px;
       display: flex;
       flex-direction: column;
@@ -34,17 +81,17 @@
       height: 100vh;
       overflow-y: auto;
       z-index: 100;
-      transition: transform 0.25s ease;
+      transition: transform 0.25s ease, background-color 0.3s ease;
     }
     .sidebar-brand {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 6px 10px 18px;
-      border-bottom: 1px solid rgba(2, 132, 199, 0.12);
+      border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 14px;
       font-weight: 800;
-      color: #0284c7;
+      color: var(--brand-primary) !important;
       font-size: 1rem;
     }
     .sidebar-nav {
@@ -59,7 +106,7 @@
       border-radius: 10px;
       border: none;
       background: transparent;
-      color: inherit;
+      color: var(--text-primary) !important;
       font-family: 'Cairo', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
@@ -67,17 +114,17 @@
       transition: 0.2s ease;
     }
     .sidebar-link:hover {
-      background: rgba(2, 132, 199, 0.08);
-      color: #0284c7;
+      background: var(--bg-sub);
+      color: var(--brand-primary) !important;
     }
     .sidebar-link.active {
       background: #0284c7;
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
     }
     .sidebar-footer {
       padding-top: 14px;
-      border-top: 1px solid rgba(2, 132, 199, 0.12);
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -98,16 +145,42 @@
       margin-bottom: 22px;
       padding: 14px 18px;
       border-radius: 14px;
-      background: var(--card-bg, #ffffff);
-      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
     }
+    .admin-topbar small {
+      color: var(--text-secondary) !important;
+    }
+
+    .admin-panel.card {
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+    }
+
+    .form-control {
+      background-color: var(--bg-input) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-subtle) !important;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .form-control::placeholder {
+      color: var(--text-secondary) !important;
+      opacity: 0.75;
+    }
+
     .mobile-menu-btn {
       display: none;
       padding: 8px 12px;
       border-radius: 10px;
-      border: 1px solid rgba(2, 132, 199, 0.25);
-      background: transparent;
-      color: #0284c7;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-sub);
+      color: var(--brand-primary) !important;
+      font-family: 'Cairo', sans-serif;
       font-weight: 800;
       cursor: pointer;
     }
@@ -115,7 +188,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(0, 0, 0, 0.55);
       z-index: 90;
     }
 
@@ -127,18 +200,18 @@
     .stat-box {
       padding: 18px;
       border-radius: 12px;
-      background: rgba(2, 132, 199, 0.05);
-      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: var(--bg-sub) !important;
+      border: 1px solid var(--border-subtle);
     }
     .stat-box span {
       display: block;
       font-size: 0.9rem;
-      opacity: 0.8;
+      color: var(--text-secondary) !important;
       margin-bottom: 6px;
     }
     .stat-box strong {
       font-size: 1.7rem;
-      color: #0284c7;
+      color: var(--brand-primary) !important;
     }
 
     .visibility-list {
@@ -153,8 +226,9 @@
       justify-content: space-between;
       padding: 14px 16px;
       border-radius: 12px;
-      border: 1px solid rgba(2, 132, 199, 0.18);
-      background: rgba(2, 132, 199, 0.03);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-sub) !important;
+      color: var(--text-primary) !important;
       font-weight: 700;
     }
     .visibility-item input[type="checkbox"] {
@@ -178,12 +252,38 @@
       flex-wrap: wrap;
       padding: 12px 16px;
       border-radius: 10px;
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      background: rgba(2, 132, 199, 0.03);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-sub) !important;
+      color: var(--text-primary) !important;
     }
+    .manage-item small {
+      color: var(--text-secondary) !important;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text-primary) !important;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: right;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary) !important;
+    }
+    th {
+      background: var(--bg-sub) !important;
+      font-weight: 800;
+    }
+
     .btn-danger {
       background: #dc2626;
-      color: #ffffff;
+      color: #ffffff !important;
       border: none;
       padding: 7px 14px;
       border-radius: 8px;
@@ -203,8 +303,9 @@
     .sub-card {
       padding: 16px;
       border-radius: 12px;
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      background: rgba(2, 132, 199, 0.02);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-sub) !important;
+      color: var(--text-primary) !important;
     }
 
     @media (max-width: 900px) {
@@ -237,7 +338,7 @@
           <button class="sidebar-link active" data-target="overviewPanel" type="button">📊 الإحصائيات</button>
           <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
           <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
-          <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والهوية</button>
+          <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
           <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / حذف)</button>
           <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / حذف)</button>
           <button class="sidebar-link" data-target="examsPanel" type="button">📝 الامتحانات</button>
@@ -256,8 +357,8 @@
         <div style="display:flex; align-items:center; gap:10px;">
           <button id="mobileMenuBtn" class="mobile-menu-btn" type="button">☰ القائمة</button>
           <div>
-            <h1 id="activePanelTitle" style="margin:0; font-size:1.25rem; color:#0284c7;">الإحصائيات</h1>
-            <small style="opacity:0.75;">لوحة تحكم الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</small>
+            <h1 id="activePanelTitle" style="margin:0; font-size:1.25rem; color:var(--brand-primary) !important;">الإحصائيات</h1>
+            <small>لوحة تحكم الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</small>
           </div>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
@@ -293,7 +394,7 @@
           <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه العام هنا..." />
         </div>
         <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
-        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
       <!-- 3. إشعار لطالب معين -->
@@ -317,25 +418,35 @@
             <button type="button" id="clearPersonalNoticeBtn" class="btn btn-danger">مسح الإشعار</button>
           </div>
         </form>
-        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
-      <!-- 4. اللوجو والهوية -->
+      <!-- 4. اللوجو والتواصل -->
       <section id="brandingPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إعدادات اللوجو والهوية</h2>
+        <h2 class="section-title">إعدادات اللوجو وروابط التواصل</h2>
         <form id="brandingForm">
           <div class="form-group">
             <label>رابط صورة اللوجو (أو اتركه فارغاً لاستخدام assets/img/logo.png)</label>
             <input type="url" id="logoUrlInput" class="form-control" placeholder="https://example.com/logo.png" />
           </div>
+          <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+            <div class="form-group">
+              <label>رقم الواتساب (بالكود الدولي، مثال: 2010xxxxxxxx)</label>
+              <input type="text" id="whatsappInput" class="form-control" placeholder="201000000000" />
+            </div>
+            <div class="form-group">
+              <label>رابط صفحة الفيسبوك</label>
+              <input type="url" id="facebookInput" class="form-control" placeholder="https://facebook.com/yourpage" />
+            </div>
+          </div>
           <div style="margin-bottom:16px; display:flex; align-items:center; gap:14px;">
             <span>معاينة اللوجو:</span>
             <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو"
-                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid rgba(2,132,199,0.2); padding:4px; background:#fff;" />
+                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid var(--border-subtle); padding:4px; background:#fff;" />
           </div>
-          <button type="submit" class="btn btn-primary">حفظ اللوجو</button>
+          <button type="submit" class="btn btn-primary">حفظ اللوجو وروابط التواصل</button>
         </form>
-        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
       <!-- 5. الكورسات (إضافة وحذف) -->
@@ -366,7 +477,7 @@
           </div>
           <button type="submit" class="btn btn-primary">حفظ الكورس</button>
         </form>
-        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
         <h3 style="margin-top:26px;">الكورسات الحالية (إمكانية الحذف)</h3>
         <div id="coursesManageList" class="manage-list"></div>
@@ -402,7 +513,7 @@
           </div>
           <button type="submit" class="btn btn-primary">إضافة المحاضرة</button>
         </form>
-        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
         <h3 style="margin-top:26px;">محاضرات الكورس المختار (إمكانية حذف أي فيديو/محاضرة)</h3>
         <div id="lessonsManageList" class="manage-list"></div>
@@ -443,7 +554,7 @@
           </div>
           <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
         </form>
-        <p id="examMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+        <p id="examMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
       <!-- 8. أكواد التفعيل (كتابة يدوية + توليد تلقائي + حذف) -->
@@ -465,7 +576,7 @@
               </div>
               <button type="submit" class="btn btn-primary">حفظ الكود</button>
             </form>
-            <p id="customCodeMsg" style="margin-top:8px; font-weight:700; color:#0284c7;"></p>
+            <p id="customCodeMsg" style="margin-top:8px; font-weight:700; color:var(--brand-primary) !important;"></p>
           </div>
 
           <div class="sub-card">
@@ -483,7 +594,7 @@
           </div>
         </div>
 
-        <div id="generatedCodesBox" style="margin-bottom:16px; font-weight:700; color:#0284c7; word-break:break-all;"></div>
+        <div id="generatedCodesBox" style="margin-bottom:16px; font-weight:700; color:var(--brand-primary) !important; word-break:break-all;"></div>
 
         <h3>قائمة الأكواد الحالية (إمكانية حذف أي كود)</h3>
         <div class="table-wrap">
@@ -531,6 +642,18 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
+
+    const themeBtn = document.getElementById("themeToggle");
+    function syncThemeAttribute() {
+      const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
+      if (saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark")) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    }
+    syncThemeAttribute();
+    themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
 
     const sidebar = document.getElementById("adminSidebar");
     const backdrop = document.getElementById("sidebarBackdrop");
@@ -613,6 +736,8 @@
     const sidebarLogo = document.getElementById("sidebarLogo");
     const logoUrlInput = document.getElementById("logoUrlInput");
     const logoPreview = document.getElementById("logoPreview");
+    const whatsappInput = document.getElementById("whatsappInput");
+    const facebookInput = document.getElementById("facebookInput");
 
     function applyLogo(url) {
       const finalUrl = url && url.trim() ? url.trim() : "assets/img/logo.png";
@@ -622,9 +747,16 @@
 
     async function loadBrandingSettings() {
       const snap = await getDoc(doc(db, "settings", "branding"));
-      if (snap.exists() && snap.data().logoUrl) {
-        logoUrlInput.value = snap.data().logoUrl;
-        applyLogo(snap.data().logoUrl);
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.logoUrl) {
+          logoUrlInput.value = data.logoUrl;
+          applyLogo(data.logoUrl);
+        } else {
+          applyLogo("assets/img/logo.png");
+        }
+        whatsappInput.value = data.whatsapp || "";
+        facebookInput.value = data.facebook || "";
       } else {
         applyLogo("assets/img/logo.png");
       }
@@ -635,12 +767,17 @@
     document.getElementById("brandingForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const urlVal = logoUrlInput.value.trim();
+      const whatsappVal = whatsappInput.value.trim();
+      const facebookVal = facebookInput.value.trim();
+
       await setDoc(doc(db, "settings", "branding"), {
         logoUrl: urlVal,
+        whatsapp: whatsappVal,
+        facebook: facebookVal,
         updatedAt: new Date().toISOString()
       }, { merge: true });
       applyLogo(urlVal);
-      document.getElementById("brandingMsg").textContent = "تم تحديث اللوجو بنجاح!";
+      document.getElementById("brandingMsg").textContent = "تم حفظ اللوجو وروابط التواصل بنجاح!";
     });
 
     let lastGenerated = [];
@@ -707,7 +844,7 @@
         item.innerHTML = `
           <div>
             <strong>${title}</strong>
-            <small style="display:block; opacity:0.75;">${courseData.category || ""} ${courseData.price ? "• " + courseData.price : ""}</small>
+            <small style="display:block;">${courseData.category || ""} ${courseData.price ? "• " + courseData.price : ""}</small>
           </div>
           <button class="btn-danger" type="button">حذف الكورس</button>
         `;
@@ -825,7 +962,7 @@
         row.innerHTML = `
           <div>
             <strong>${les.order || 1}. ${les.title}</strong>
-            <small style="display:block; opacity:0.75;">${les.videoUrl || ""} ${les.pdfUrl ? "• PDF متاح" : ""}</small>
+            <small style="display:block;">${les.videoUrl || ""} ${les.pdfUrl ? "• PDF متاح" : ""}</small>
           </div>
           <button class="btn-danger" type="button">حذف المحاضرة</button>
         `;
