@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محتوى الكورس - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+    }
+    .course-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 14px;
+      background: var(--card-bg, #ffffff);
+      border: 1px solid rgba(2, 132, 199, 0.16);
+    }
+    .course-tab-btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .course-tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+    }
+    .lesson-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--card-bg, #ffffff);
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      margin-bottom: 16px;
+    }
+    .video-frame-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+      margin: 12px 0;
+    }
+    .video-frame-wrap iframe,
+    .video-frame-wrap video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .pdf-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: rgba(2, 132, 199, 0.03);
+      margin-bottom: 12px;
+    }
+    .exam-box {
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: var(--card-bg, #ffffff);
+      margin-bottom: 16px;
+    }
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(2, 132, 199, 0.14);
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body id="coursePageBody" style="display:none;">
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="dashboard.html" class="brand">
+        <img id="siteLogo" src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
+        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
+      </a>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-outline">العودة للكورسات</a>
+        <button id="themeToggle" class="btn btn-icon" type="button" title="تبديل الوضع">🌙</button>
+        <button id="logoutBtn" class="btn btn-primary" type="button">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container section" style="padding-top: 28px;">
+    <div class="card" style="margin-bottom: 20px;">
+      <span id="courseCategory" class="badge" style="margin-bottom: 8px;">علوم الرياضة</span>
+      <h1 id="courseTitle" style="margin: 0 0 8px; color: #0284c7;">جاري تحميل الكورس...</h1>
+      <p id="courseDescription" style="margin: 0; opacity: 0.85; line-height: 1.7;"></p>
+    </div>
+
+    <div class="course-tabs">
+      <button class="course-tab-btn active" data-tab="videosTab" data-vis="videosSection" type="button">🎥 المحاضرات والفيديو</button>
+      <button class="course-tab-btn" data-tab="pdfsTab" data-vis="pdfsSection" type="button">📄 ملفات PDF</button>
+      <button class="course-tab-btn" data-tab="examsTab" data-vis="examsSection" type="button">📝 الامتحانات</button>
+    </div>
+
+    <!-- تبويب الفيديو والمحاضرات -->
+    <section id="videosTab" class="course-panel" data-vis="videosSection">
+      <div id="lessonsContainer">جاري تحميل المحاضرات...</div>
+    </section>
+
+    <!-- تبويب ملفات PDF -->
+    <section id="pdfsTab" class="course-panel" data-vis="pdfsSection" style="display:none;">
+      <div id="pdfsContainer">جاري تحميل ملفات PDF...</div>
+    </section>
+
+    <!-- تبويب الامتحانات -->
+    <section id="examsTab" class="course-panel" data-vis="examsSection" style="display:none;">
+      <div id="examsContainer">جاري تحميل الامتحانات...</div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { auth, db } from "./assets/js/firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      collection, getDocs, doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+
+    const params = new URLSearchParams(location.search);
+    const courseId = params.get("id");
+
+    if (!courseId) {
+      location.href = "dashboard.html";
+    }
+
+    // تحميل اللوجو وإعدادات الظهور
+    const logoEl = document.getElementById("siteLogo");
+    try {
+      const brandSnap = await getDoc(doc(db, "settings", "branding"));
+      if (brandSnap.exists() && brandSnap.data().logoUrl) {
+        logoEl.src = brandSnap.data().logoUrl;
+        logoEl.style.display = "inline-block";
+      }
+    } catch (e) {}
+
+    try {
+      const visSnap = await getDoc(doc(db, "settings", "visibility"));
+      if (visSnap.exists()) {
+        const cfg = visSnap.data();
+        document.querySelectorAll("[data-vis]").forEach((el) => {
+          const key = el.getAttribute("data-vis");
+          if (cfg[key] === false) el.style.display = "none";
+        });
+      }
+    } catch (e) {}
+
+    // تبديل التبويبات
+    const tabBtns = document.querySelectorAll(".course-tab-btn");
+    const panels = document.querySelectorAll(".course-panel");
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        panels.forEach((p) => {
+          p.style.display = p.id === btn.dataset.tab ? "block" : "none";
+        });
+      });
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      location.href = "auth.html";
+    });
+
+    function normalizeVideoEmbed(url) {
+      if (!url) return "";
+      const ytWatchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+      if (ytWatchMatch) {
+        return `https://www.youtube.com/embed/${ytWatchMatch[1]}`;
+      }
+      return url;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        location.href = "auth.html";
+        return;
+      }
+
+      // التحقق من أن الكورس مفعّل لهذا الطالب
+      const userSnap = await getDoc(doc(db, "users", user.uid));
+      const enrolled = userSnap.exists() && Array.isArray(userSnap.data().enrolledCourses)
+        ? userSnap.data().enrolledCourses
+        : [];
+
+      if (!enrolled.includes(courseId)) {
+        location.href = "dashboard.html";
+        return;
+      }
+
+      // تحميل بيانات الكورس
+      const courseSnap = await getDoc(doc(db, "courses", courseId));
+      if (!courseSnap.exists()) {
+        location.href = "dashboard.html";
+        return;
+      }
+
+      const course = courseSnap.data();
+      document.title = `${course.title || "الكورس"} - الأكاديمية الأولمبية لعلوم الرياضة`;
+      document.getElementById("courseCategory").textContent = course.category || "علوم الرياضة";
+      document.getElementById("courseTitle").textContent = course.title || "كورس";
+      document.getElementById("courseDescription").textContent = course.description || "";
+      document.getElementById("coursePageBody").style.display = "block";
+
+      await Promise.all([loadLessons(), loadExams()]);
+    });
+
+    async function loadLessons() {
+      const lessonsContainer = document.getElementById("lessonsContainer");
+      const pdfsContainer = document.getElementById("pdfsContainer");
+
+      const snap = await getDocs(collection(db, "courses", courseId, "lessons"));
+      const lessons = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+
+      if (!lessons.length) {
+        lessonsContainer.innerHTML = `<div class="card"><p style="margin:0; opacity:0.75;">لا توجد محاضرات مضافة لهذا الكورس بعد.</p></div>`;
+      } else {
+        lessonsContainer.innerHTML = "";
+        lessons.forEach((les) => {
+          const embedUrl = normalizeVideoEmbed(les.videoUrl);
+          const isDirectMp4 = /\.(mp4|webm|ogg)(\?|$)/i.test(embedUrl);
+
+          const card = document.createElement("div");
+          card.className = "lesson-card";
+          card.innerHTML = `
+            <h3 style="margin:0 0 8px;">${les.order || 1}. ${les.title || "محاضرة"}</h3>
+            ${
+              embedUrl
+                ? `<div class="video-frame-wrap">
+                    ${
+                      isDirectMp4
+                        ? `<video src="${embedUrl}" controls controlsList="nodownload"></video>`
+                        : `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    }
+                  </div>`
+                : `<p style="opacity:0.7;">لا يوجد فيديو لهذه المحاضرة.</p>`
+            }
+            ${
+              les.pdfUrl
+                ? `<a href="${les.pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">📄 فتح ملف PDF الخاص بالمحاضرة</a>`
+                : ""
+            }
+          `;
+          lessonsContainer.appendChild(card);
+        });
+      }
+
+      const pdfs = lessons.filter((l) => l.pdfUrl && l.pdfUrl.trim());
+      if (!pdfs.length) {
+        pdfsContainer.innerHTML = `<div class="card"><p style="margin:0; opacity:0.75;">لا توجد ملفات PDF مضافة لهذا الكورس بعد.</p></div>`;
+      } else {
+        pdfsContainer.innerHTML = "";
+        pdfs.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "pdf-item";
+          row.innerHTML = `
+            <div>
+              <strong>📄 ${item.title || "ملف PDF"}</strong>
+              <small style="display:block; opacity:0.75;">محاضرة رقم ${item.order || 1}</small>
+            </div>
+            <a href="${item.pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">عرض / تحميل PDF</a>
+          `;
+          pdfsContainer.appendChild(row);
+        });
+      }
+    }
+
+    async function loadExams() {
+      const container = document.getElementById("examsContainer");
+      const snap = await getDocs(collection(db, "courses", courseId, "exams"));
+
+      if (snap.empty) {
+        container.innerHTML = `<div class="card"><p style="margin:0; opacity:0.75;">لا توجد امتحانات مضافة لهذا الكورس بعد.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      snap.forEach((docSnap, examIdx) => {
+        const exam = docSnap.data();
+        const questions = Array.isArray(exam.questions) ? exam.questions : [];
+        const box = document.createElement("div");
+        box.className = "exam-box";
+
+        let qHtml = `<h3 style="margin:0 0 14px; color:#0284c7;">${exam.title || `امتحان ${examIdx + 1}`}</h3>`;
+
+        questions.forEach((q, qIdx) => {
+          const opts = Array.isArray(q.options) ? q.options : [];
+          qHtml += `<div style="margin-bottom:14px;">
+            <p style="font-weight:700; margin:0 0 8px;">${qIdx + 1}. ${q.question || ""}</p>
+            ${opts.map((opt, oIdx) => `
+              <label class="option-row">
+                <input type="radio" name="exam_${examIdx}_q_${qIdx}" value="${oIdx}" />
+                <span>${opt}</span>
+              </label>
+            `).join("")}
+          </div>`;
+        });
+
+        qHtml += `
+          <button type="button" class="btn btn-primary submit-exam-btn">تسليم الإجابات وعرض النتيجة</button>
+          <p class="exam-result" style="margin-top:12px; font-weight:800; color:#0284c7;"></p>
+        `;
+
+        box.innerHTML = qHtml;
+
+        box.querySelector(".submit-exam-btn").addEventListener("click", () => {
+          let score = 0;
+          questions.forEach((q, qIdx) => {
+            const checked = box.querySelector(`input[name="exam_${examIdx}_q_${qIdx}"]:checked`);
+            if (checked && Number(checked.value) === Number(q.correctIndex)) {
+              score++;
+            }
+          });
+          box.querySelector(".exam-result").textContent = `نتيجتك: ${score} من ${questions.length}`;
+        });
+
+        container.appendChild(box);
+      });
+    }
+  </script>
+</body>
+</html>
