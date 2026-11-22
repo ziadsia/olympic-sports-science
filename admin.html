@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة التحكم - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <title>لوحة تحكم الأدمن - الأكاديمية الأولمبية لعلوم الرياضة</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
+<body style="display:none;" id="adminBody">
   <header class="navbar">
     <div class="container nav-content">
-      <a href="index.html" class="brand">
+      <a href="admin.html" class="brand">
         <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
-        <span>لوحة تحكم الإدارة - الأكاديمية الأولمبية</span>
+        <span>لوحة الأدمن - الأكاديمية الأولمبية</span>
       </a>
       <div class="nav-actions">
         <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
-        <a href="index.html" class="btn btn-outline">العودة للموقع</a>
+        <button id="adminLogoutBtn" class="btn btn-outline" type="button">خروج</button>
       </div>
     </div>
   </header>
@@ -26,79 +26,135 @@
   <div class="container panel-layout">
     <aside class="sidebar">
       <button class="btn sidebar-btn active" data-tab="statsTab" type="button">الإحصائيات</button>
+      <button class="btn sidebar-btn" data-tab="courseTab" type="button">إضافة كورس</button>
+      <button class="btn sidebar-btn" data-tab="lessonTab" type="button">إضافة محاضرة (فيديو + PDF)</button>
+      <button class="btn sidebar-btn" data-tab="examTab" type="button">إضافة امتحان</button>
       <button class="btn sidebar-btn" data-tab="codesTab" type="button">توليد الأكواد</button>
-      <button class="btn sidebar-btn" data-tab="addCourseTab" type="button">إضافة كورس</button>
       <button class="btn sidebar-btn" data-tab="studentsTab" type="button">إدارة الطلاب</button>
     </aside>
 
     <main>
       <!-- الإحصائيات -->
       <section id="statsTab" class="card">
-        <h2 class="section-title">نظرة عامة</h2>
+        <h2 class="section-title">إحصائيات الأكاديمية</h2>
         <div class="grid-4">
-          <div class="card">
-            <p>إجمالي الطلاب</p>
-            <h3 id="statStudents">0</h3>
-          </div>
-          <div class="card">
-            <p>الكورسات المضافة</p>
-            <h3 id="statCourses">0</h3>
-          </div>
-          <div class="card">
-            <p>أكواد التفعيل</p>
-            <h3 id="statCodes">0</h3>
-          </div>
-          <div class="card">
-            <p>النظام</p>
-            <h3 style="color:var(--sky-primary);">نشط</h3>
-          </div>
+          <div class="card"><p>إجمالي الطلاب</p><h3 id="statStudents">0</h3></div>
+          <div class="card"><p>عدد الكورسات</p><h3 id="statCourses">0</h3></div>
+          <div class="card"><p>أكواد التفعيل</p><h3 id="statCodes">0</h3></div>
+          <div class="card"><p>حالة النظام</p><h3 style="color:var(--sky-primary);">مفصول ومؤمّن</h3></div>
         </div>
       </section>
 
+      <!-- إضافة كورس -->
+      <section id="courseTab" class="card" style="display:none;">
+        <h2 class="section-title">إضافة كورس جديد</h2>
+        <form id="addCourseForm">
+          <div class="form-group">
+            <label>اسم الكورس</label>
+            <input type="text" id="courseTitle" class="form-control" placeholder="مثال: فسيولوجيا الرياضة - الفرقة الثانية" required />
+          </div>
+          <div class="form-group">
+            <label>الفرقة الدراسية</label>
+            <select id="courseLevel" class="form-control">
+              <option value="الفرقة الأولى">الفرقة الأولى</option>
+              <option value="الفرقة الثانية">الفرقة الثانية</option>
+              <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+              <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>وصف الكورس</label>
+            <textarea id="courseDesc" class="form-control" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الكورس</button>
+        </form>
+        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:var(--sky-primary);"></p>
+      </section>
+
+      <!-- إضافة محاضرة (فيديو + ملف PDF) -->
+      <section id="lessonTab" class="card" style="display:none;">
+        <h2 class="section-title">إضافة محاضرة (فيديو + مذكرة PDF)</h2>
+        <form id="addLessonForm">
+          <div class="form-group">
+            <label>اختر الكورس</label>
+            <select id="lessonCourseSelect" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>عنوان المحاضرة</label>
+            <input type="text" id="lessonTitle" class="form-control" placeholder="المحاضرة الأولى: أنظمة الطاقة" required />
+          </div>
+          <div class="form-group">
+            <label>رابط الفيديو (YouTube Embed أو رابط فيديو مباشر .mp4)</label>
+            <input type="url" id="lessonVideoUrl" class="form-control" placeholder="https://www.youtube.com/embed/..." required />
+          </div>
+          <div class="form-group">
+            <label>رابط ملف المذكرة (PDF)</label>
+            <input type="url" id="lessonPdfUrl" class="form-control" placeholder="https://drive.google.com/... أو رابط مباشر لملف PDF" />
+          </div>
+          <button type="submit" class="btn btn-primary">إضافة المحاضرة للكورس</button>
+        </form>
+        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--sky-primary);"></p>
+      </section>
+
+      <!-- إضافة امتحان -->
+      <section id="examTab" class="card" style="display:none;">
+        <h2 class="section-title">إضافة امتحان اختيار من متعدد</h2>
+        <form id="addExamForm">
+          <div class="form-group">
+            <label>اختر الكورس</label>
+            <select id="examCourseSelect" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>عنوان الامتحان</label>
+            <input type="text" id="examTitle" class="form-control" placeholder="اختبار المحاضرة الأولى" required />
+          </div>
+          <div class="form-group">
+            <label>نص السؤال</label>
+            <input type="text" id="questionText" class="form-control" required />
+          </div>
+          <div class="grid-4">
+            <div class="form-group"><label>الاختيار 1</label><input type="text" id="opt0" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار 2</label><input type="text" id="opt1" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار 3</label><input type="text" id="opt2" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار 4</label><input type="text" id="opt3" class="form-control" required /></div>
+          </div>
+          <div class="form-group">
+            <label>رقم الإجابة الصحيحة</label>
+            <select id="correctIndex" class="form-control">
+              <option value="0">الاختيار 1</option>
+              <option value="1">الاختيار 2</option>
+              <option value="2">الاختيار 3</option>
+              <option value="3">الاختيار 4</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
+        </form>
+        <p id="examMsg" style="margin-top:10px; font-weight:700; color:var(--sky-primary);"></p>
+      </section>
+
       <!-- توليد الأكواد -->
-      <section id="codesTab" class="card" style="display:none; margin-top:16px;">
-        <h2 class="section-title">توليد أكواد تفعيل جديدة</h2>
+      <section id="codesTab" class="card" style="display:none;">
+        <h2 class="section-title">توليد أكواد التفعيل</h2>
         <form id="genCodesForm" class="grid-3">
           <div class="form-group">
             <label>العدد</label>
-            <input type="number" id="codesCount" class="form-control" value="20" min="1" max="500" required />
+            <input type="number" id="codesCount" class="form-control" value="25" min="1" max="500" required />
           </div>
           <div class="form-group">
-            <label>اسم/معرف الكورس</label>
-            <input type="text" id="codeCourseId" class="form-control" placeholder="biomechanics-101" required />
+            <label>اختر الكورس</label>
+            <select id="codeCourseSelect" class="form-control" required></select>
           </div>
           <div class="form-group" style="display:flex; align-items:flex-end; gap:8px;">
-            <button type="submit" class="btn btn-primary" style="flex:1;">توليد وحفظ</button>
-            <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير Excel</button>
+            <button type="submit" class="btn btn-primary" style="flex:1;">توليد</button>
+            <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير CSV</button>
           </div>
         </form>
         <div id="generatedCodesBox" style="margin-top:12px; font-weight:700; word-break:break-all;"></div>
       </section>
 
-      <!-- إضافة كورس -->
-      <section id="addCourseTab" class="card" style="display:none; margin-top:16px;">
-        <h2 class="section-title">إضافة كورس جديد</h2>
-        <form id="addCourseForm">
-          <div class="form-group">
-            <label>عنوان الكورس</label>
-            <input type="text" id="courseTitle" class="form-control" required />
-          </div>
-          <div class="form-group">
-            <label>الفرقة الدراسية</label>
-            <input type="text" id="courseLevel" class="form-control" placeholder="الفرقة الأولى" required />
-          </div>
-          <div class="form-group">
-            <label>الوصف</label>
-            <textarea id="courseDesc" class="form-control" rows="3" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">حفظ الكورس</button>
-        </form>
-        <p id="courseMsg" style="margin-top:10px; font-weight:700;"></p>
-      </section>
-
       <!-- إدارة الطلاب -->
-      <section id="studentsTab" class="card" style="display:none; margin-top:16px;">
-        <h2 class="section-title">إدارة الطلاب والأجهزة</h2>
+      <section id="studentsTab" class="card" style="display:none;">
+        <h2 class="section-title">إدارة الطلاب</h2>
         <div class="table-wrap">
           <table>
             <thead>
@@ -106,7 +162,7 @@
                 <th>الاسم</th>
                 <th>الهاتف</th>
                 <th>الفرقة</th>
-                <th>الجهاز المسجل</th>
+                <th>الجهاز</th>
                 <th>إجراء</th>
               </tr>
             </thead>
@@ -119,15 +175,37 @@
 
   <script type="module">
     import { initTheme } from "./assets/js/theme.js";
-    import { db } from "./assets/js/firebase-config.js";
+    import { auth, db } from "./assets/js/firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
-      collection, getDocs, addDoc, setDoc, doc, updateDoc
+      collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
 
+    // حماية الصفحة: السماح للأدمن فقط
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        location.href = "admin-login.html";
+        return;
+      }
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (!snap.exists() || snap.data().role !== "admin") {
+        await signOut(auth);
+        location.href = "admin-login.html";
+        return;
+      }
+      document.getElementById("adminBody").style.display = "block";
+      loadAdminData();
+    });
+
+    document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      location.href = "admin-login.html";
+    });
+
     const sidebarBtns = document.querySelectorAll(".sidebar-btn");
-    const tabs = ["statsTab", "codesTab", "addCourseTab", "studentsTab"];
+    const tabs = ["statsTab", "courseTab", "lessonTab", "examTab", "codesTab", "studentsTab"];
     sidebarBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         tabs.forEach((id) => {
@@ -140,47 +218,108 @@
 
     let lastGenerated = [];
 
-    async function refreshStatsAndStudents() {
-      try {
-        const usersSnap = await getDocs(collection(db, "users"));
-        const coursesSnap = await getDocs(collection(db, "courses"));
-        const codesSnap = await getDocs(collection(db, "activation_codes"));
+    async function loadAdminData() {
+      const usersSnap = await getDocs(collection(db, "users"));
+      const coursesSnap = await getDocs(collection(db, "courses"));
+      const codesSnap = await getDocs(collection(db, "activation_codes"));
 
-        document.getElementById("statStudents").textContent = usersSnap.size;
-        document.getElementById("statCourses").textContent = coursesSnap.size;
-        document.getElementById("statCodes").textContent = codesSnap.size;
+      document.getElementById("statStudents").textContent = usersSnap.size;
+      document.getElementById("statCourses").textContent = coursesSnap.size;
+      document.getElementById("statCodes").textContent = codesSnap.size;
 
-        const tbody = document.getElementById("studentsTableBody");
-        tbody.innerHTML = "";
-        usersSnap.forEach((uDoc) => {
-          const u = uDoc.data();
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${u.fullName || "-"}</td>
-            <td>${u.phone || "-"}</td>
-            <td>${u.level || "-"}</td>
-            <td>${u.deviceId || "غير مسجل"}</td>
-            <td><button class="btn btn-outline" data-uid="${uDoc.id}" type="button">Reset الجهاز</button></td>
-          `;
-          tr.querySelector("button").addEventListener("click", async () => {
-            await updateDoc(doc(db, "users", uDoc.id), { deviceId: "" });
-            alert("تم عمل Reset للجهاز بنجاح.");
-            refreshStatsAndStudents();
-          });
-          tbody.appendChild(tr);
+      // تعبئة قوائم الكورسات في الفورمز
+      const selects = [
+        document.getElementById("lessonCourseSelect"),
+        document.getElementById("examCourseSelect"),
+        document.getElementById("codeCourseSelect")
+      ];
+      selects.forEach((sel) => (sel.innerHTML = ""));
+      coursesSnap.forEach((cDoc) => {
+        const title = cDoc.data().title || cDoc.id;
+        selects.forEach((sel) => {
+          const opt = document.createElement("option");
+          opt.value = cDoc.id;
+          opt.textContent = title;
+          sel.appendChild(opt);
         });
-      } catch (e) {
-        // لحين ربط بيانات Firebase
-      }
+      });
+
+      // جدول الطلاب
+      const tbody = document.getElementById("studentsTableBody");
+      tbody.innerHTML = "";
+      usersSnap.forEach((uDoc) => {
+        const u = uDoc.data();
+        if (u.role === "admin") return;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${u.fullName || "-"}</td>
+          <td>${u.phone || "-"}</td>
+          <td>${u.level || "-"}</td>
+          <td>${u.deviceId || "غير مسجل"}</td>
+          <td><button class="btn btn-outline" type="button">Reset الجهاز</button></td>
+        `;
+        tr.querySelector("button").addEventListener("click", async () => {
+          await updateDoc(doc(db, "users", uDoc.id), { deviceId: "" });
+          alert("تم عمل Reset للجهاز.");
+          loadAdminData();
+        });
+        tbody.appendChild(tr);
+      });
     }
-    refreshStatsAndStudents();
+
+    document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "courses"), {
+        title: document.getElementById("courseTitle").value.trim(),
+        level: document.getElementById("courseLevel").value,
+        description: document.getElementById("courseDesc").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("courseMsg").textContent = "تم حفظ الكورس بنجاح!";
+      e.target.reset();
+      loadAdminData();
+    });
+
+    document.getElementById("addLessonForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const courseId = document.getElementById("lessonCourseSelect").value;
+      await addDoc(collection(db, "courses", courseId, "lessons"), {
+        title: document.getElementById("lessonTitle").value.trim(),
+        videoUrl: document.getElementById("lessonVideoUrl").value.trim(),
+        pdfUrl: document.getElementById("lessonPdfUrl").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("lessonMsg").textContent = "تمت إضافة المحاضرة (الفيديو وملف PDF) بنجاح!";
+      e.target.reset();
+    });
+
+    document.getElementById("addExamForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const courseId = document.getElementById("examCourseSelect").value;
+      const options = [
+        document.getElementById("opt0").value.trim(),
+        document.getElementById("opt1").value.trim(),
+        document.getElementById("opt2").value.trim(),
+        document.getElementById("opt3").value.trim()
+      ];
+      await addDoc(collection(db, "courses", courseId, "exams"), {
+        title: document.getElementById("examTitle").value.trim(),
+        questions: [{
+          question: document.getElementById("questionText").value.trim(),
+          options,
+          correctIndex: Number(document.getElementById("correctIndex").value)
+        }],
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("examMsg").textContent = "تم حفظ الامتحان بنجاح!";
+      e.target.reset();
+    });
 
     document.getElementById("genCodesForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const count = Number(document.getElementById("codesCount").value);
-      const courseId = document.getElementById("codeCourseId").value.trim();
+      const courseId = document.getElementById("codeCourseSelect").value;
       lastGenerated = [];
-
       for (let i = 0; i < count; i++) {
         const code = "OLY-" + Math.random().toString(36).substring(2, 8).toUpperCase();
         lastGenerated.push(code);
@@ -192,7 +331,7 @@
         });
       }
       document.getElementById("generatedCodesBox").textContent = lastGenerated.join(" , ");
-      refreshStatsAndStudents();
+      loadAdminData();
     });
 
     document.getElementById("exportCsvBtn").addEventListener("click", () => {
@@ -204,19 +343,6 @@
       a.href = url;
       a.download = "olympic-codes.csv";
       a.click();
-    });
-
-    document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await addDoc(collection(db, "courses"), {
-        title: document.getElementById("courseTitle").value.trim(),
-        level: document.getElementById("courseLevel").value.trim(),
-        description: document.getElementById("courseDesc").value.trim(),
-        createdAt: new Date().toISOString()
-      });
-      document.getElementById("courseMsg").textContent = "تمت إضافة الكورس بنجاح!";
-      e.target.reset();
-      refreshStatsAndStudents();
     });
   </script>
 </body>
