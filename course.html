@@ -9,10 +9,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
+    :root {
+      --bg-page: #f0f7ff;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-subtle: rgba(2, 132, 199, 0.16);
+      --brand-primary: #0284c7;
+    }
+
+    html[data-theme="dark"],
+    body.dark-mode,
+    body.dark,
+    html.dark {
+      --bg-page: #0b1120;
+      --bg-card: #131c31;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --border-subtle: rgba(56, 189, 248, 0.22);
+      --brand-primary: #38bdf8;
+    }
+
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
+      background-color: var(--bg-page) !important;
+      color: var(--text-primary) !important;
     }
+
     .course-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -20,9 +44,10 @@
       margin-bottom: 20px;
       padding: 10px;
       border-radius: 14px;
-      background: var(--card-bg, #ffffff);
-      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
     }
+
     .course-tab-btn {
       padding: 10px 16px;
       border-radius: 10px;
@@ -33,17 +58,21 @@
       font-weight: 700;
       cursor: pointer;
     }
+
     .course-tab-btn.active {
       background: #0284c7;
-      color: #ffffff;
+      color: #ffffff !important;
     }
+
     .lesson-card {
       padding: 18px;
       border-radius: 14px;
-      background: var(--card-bg, #ffffff);
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      margin-bottom: 16px;
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 18px;
     }
+
+    /* حاوية الفيديو مع العلامة المائية والشريط السفلي */
     .video-frame-wrap {
       position: relative;
       width: 100%;
@@ -52,7 +81,10 @@
       overflow: hidden;
       background: #0f172a;
       margin: 12px 0;
+      user-select: none;
+      -webkit-user-select: none;
     }
+
     .video-frame-wrap iframe,
     .video-frame-wrap video {
       position: absolute;
@@ -60,7 +92,59 @@
       width: 100%;
       height: 100%;
       border: 0;
+      z-index: 1;
     }
+
+    /* العلامة المائية المتحركة داخل الفيديو */
+    .floating-watermark {
+      position: absolute;
+      top: 18%;
+      right: 10%;
+      z-index: 3;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.45);
+      color: rgba(255, 255, 255, 0.78) !important;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.45;
+      text-align: center;
+      backdrop-filter: blur(2px);
+      animation: watermarkDrift 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes watermarkDrift {
+      0%   { top: 12%; right: 8%; }
+      25%  { top: 18%; right: 48%; }
+      50%  { top: 52%; right: 42%; }
+      75%  { top: 48%; right: 8%; }
+      100% { top: 22%; right: 25%; }
+    }
+
+    /* شريط ثابت من الأسفل على الفيديو يوضح اسم الحساب والإيميل */
+    .video-bottom-strip {
+      position: absolute;
+      bottom: 38px;
+      left: 10px;
+      right: 10px;
+      z-index: 3;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(2, 6, 23, 0.68);
+      color: rgba(255, 255, 255, 0.88) !important;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
     .pdf-item {
       display: flex;
       align-items: center;
@@ -69,24 +153,26 @@
       gap: 12px;
       padding: 14px 16px;
       border-radius: 12px;
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      background: rgba(2, 132, 199, 0.03);
+      border: 1px solid var(--border-subtle);
+      background: rgba(2, 132, 199, 0.04);
       margin-bottom: 12px;
     }
+
     .exam-box {
       padding: 18px;
       border-radius: 14px;
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      background: var(--card-bg, #ffffff);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card) !important;
       margin-bottom: 16px;
     }
+
     .option-row {
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
       border-radius: 8px;
-      border: 1px solid rgba(2, 132, 199, 0.14);
+      border: 1px solid var(--border-subtle);
       margin-bottom: 8px;
       cursor: pointer;
       font-weight: 600;
@@ -109,9 +195,9 @@
   </header>
 
   <main class="container section" style="padding-top: 28px;">
-    <div class="card" style="margin-bottom: 20px;">
+    <div class="card" style="margin-bottom: 20px; background: var(--bg-card) !important;">
       <span id="courseCategory" class="badge" style="margin-bottom: 8px;">علوم الرياضة</span>
-      <h1 id="courseTitle" style="margin: 0 0 8px; color: #0284c7;">جاري تحميل الكورس...</h1>
+      <h1 id="courseTitle" style="margin: 0 0 8px; color: var(--brand-primary) !important;">جاري تحميل الكورس...</h1>
       <p id="courseDescription" style="margin: 0; opacity: 0.85; line-height: 1.7;"></p>
     </div>
 
@@ -121,17 +207,14 @@
       <button class="course-tab-btn" data-tab="examsTab" data-vis="examsSection" type="button">📝 الامتحانات</button>
     </div>
 
-    <!-- تبويب الفيديو والمحاضرات -->
     <section id="videosTab" class="course-panel" data-vis="videosSection">
       <div id="lessonsContainer">جاري تحميل المحاضرات...</div>
     </section>
 
-    <!-- تبويب ملفات PDF -->
     <section id="pdfsTab" class="course-panel" data-vis="pdfsSection" style="display:none;">
       <div id="pdfsContainer">جاري تحميل ملفات PDF...</div>
     </section>
 
-    <!-- تبويب الامتحانات -->
     <section id="examsTab" class="course-panel" data-vis="examsSection" style="display:none;">
       <div id="examsContainer">جاري تحميل الامتحانات...</div>
     </section>
@@ -149,12 +232,13 @@
 
     const params = new URLSearchParams(location.search);
     const courseId = params.get("id");
+    if (!courseId) location.href = "dashboard.html";
 
-    if (!courseId) {
-      location.href = "dashboard.html";
-    }
+    let studentWatermarkInfo = {
+      name: "طالب",
+      email: ""
+    };
 
-    // تحميل اللوجو وإعدادات الظهور
     const logoEl = document.getElementById("siteLogo");
     try {
       const brandSnap = await getDoc(doc(db, "settings", "branding"));
@@ -175,7 +259,6 @@
       }
     } catch (e) {}
 
-    // تبديل التبويبات
     const tabBtns = document.querySelectorAll(".course-tab-btn");
     const panels = document.querySelectorAll(".course-panel");
     tabBtns.forEach((btn) => {
@@ -208,18 +291,20 @@
         return;
       }
 
-      // التحقق من أن الكورس مفعّل لهذا الطالب
       const userSnap = await getDoc(doc(db, "users", user.uid));
-      const enrolled = userSnap.exists() && Array.isArray(userSnap.data().enrolledCourses)
-        ? userSnap.data().enrolledCourses
-        : [];
+      const userData = userSnap.exists() ? userSnap.data() : {};
+      const enrolled = Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : [];
 
       if (!enrolled.includes(courseId)) {
         location.href = "dashboard.html";
         return;
       }
 
-      // تحميل بيانات الكورس
+      studentWatermarkInfo = {
+        name: userData.fullName || user.email?.split("@")[0] || "طالب",
+        email: user.email || ""
+      };
+
       const courseSnap = await getDoc(doc(db, "courses", courseId));
       if (!courseSnap.exists()) {
         location.href = "dashboard.html";
@@ -234,7 +319,26 @@
       document.getElementById("coursePageBody").style.display = "block";
 
       await Promise.all([loadLessons(), loadExams()]);
+      enforceWatermarksProtection();
     });
+
+    function enforceWatermarksProtection() {
+      const labelText = `${studentWatermarkInfo.name} • ${studentWatermarkInfo.email}`;
+      setInterval(() => {
+        document.querySelectorAll(".floating-watermark").forEach((wm) => {
+          wm.textContent = labelText;
+          wm.style.display = "block";
+          wm.style.opacity = "1";
+          wm.style.visibility = "visible";
+        });
+        document.querySelectorAll(".video-bottom-strip").forEach((strip) => {
+          strip.innerHTML = `<span>👤 ${studentWatermarkInfo.name}</span><span>✉️ ${studentWatermarkInfo.email}</span>`;
+          strip.style.display = "flex";
+          strip.style.opacity = "1";
+          strip.style.visibility = "visible";
+        });
+      }, 1500);
+    }
 
     async function loadLessons() {
       const lessonsContainer = document.getElementById("lessonsContainer");
@@ -264,6 +368,11 @@
                         ? `<video src="${embedUrl}" controls controlsList="nodownload"></video>`
                         : `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                     }
+                    <div class="floating-watermark">${studentWatermarkInfo.name} • ${studentWatermarkInfo.email}</div>
+                    <div class="video-bottom-strip">
+                      <span>👤 ${studentWatermarkInfo.name}</span>
+                      <span>✉️ ${studentWatermarkInfo.email}</span>
+                    </div>
                   </div>`
                 : `<p style="opacity:0.7;">لا يوجد فيديو لهذه المحاضرة.</p>`
             }
@@ -313,7 +422,7 @@
         const box = document.createElement("div");
         box.className = "exam-box";
 
-        let qHtml = `<h3 style="margin:0 0 14px; color:#0284c7;">${exam.title || `امتحان ${examIdx + 1}`}</h3>`;
+        let qHtml = `<h3 style="margin:0 0 14px; color: var(--brand-primary) !important;">${exam.title || `امتحان ${examIdx + 1}`}</h3>`;
 
         questions.forEach((q, qIdx) => {
           const opts = Array.isArray(q.options) ? q.options : [];
@@ -330,7 +439,7 @@
 
         qHtml += `
           <button type="button" class="btn btn-primary submit-exam-btn">تسليم الإجابات وعرض النتيجة</button>
-          <p class="exam-result" style="margin-top:12px; font-weight:800; color:#0284c7;"></p>
+          <p class="exam-result" style="margin-top:12px; font-weight:800; color: var(--brand-primary) !important;"></p>
         `;
 
         box.innerHTML = qHtml;
