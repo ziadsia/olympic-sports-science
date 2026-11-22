@@ -6,86 +6,380 @@
   <title>لوحة الطالب - الأكاديمية الأولمبية لعلوم الرياضة</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
+    :root {
+      --bg-page: #f0f7ff;
+      --bg-card: #ffffff;
+      --bg-header: rgba(255, 255, 255, 0.88);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-subtle: rgba(2, 132, 199, 0.16);
+      --brand-primary: #0284c7;
+      --brand-accent: #38bdf8;
+      --shadow-card: 0 12px 30px -8px rgba(2, 132, 199, 0.14);
+      --input-bg: #f8fafc;
+    }
+
+    html[data-theme="dark"],
+    body.dark-mode,
+    body.dark,
+    html.dark {
+      --bg-page: #0b1120;
+      --bg-card: #131c31;
+      --bg-header: rgba(19, 28, 49, 0.9);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --border-subtle: rgba(56, 189, 248, 0.22);
+      --brand-primary: #38bdf8;
+      --brand-accent: #0284c7;
+      --shadow-card: 0 16px 36px -8px rgba(0, 0, 0, 0.55);
+      --input-bg: #1e293b;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
+      background-color: var(--bg-page) !important;
+      color: var(--text-primary) !important;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      overflow-x: hidden;
     }
+
+    h1, h2, h3, h4, p, span, label, small, a, strong {
+      color: inherit;
+    }
+
     .announcement-bar {
-      background: #0284c7;
-      color: #ffffff;
+      background: linear-gradient(90deg, #0284c7, #0ea5e9, #0284c7);
+      background-size: 200% auto;
+      animation: gradientSlide 6s linear infinite;
+      color: #ffffff !important;
       padding: 10px 16px;
       text-align: center;
       font-weight: 700;
       font-size: 0.95rem;
     }
-    .student-header-card {
+
+    @keyframes gradientSlide {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .navbar {
+      background: var(--bg-header) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand span {
+      color: var(--brand-primary) !important;
+      font-weight: 800;
+    }
+
+    .welcome-banner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      padding: 28px 26px;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 55%, #0c4a6e 100%);
+      color: #ffffff !important;
+      box-shadow: 0 16px 34px -10px rgba(2, 132, 199, 0.45);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 18px;
+      animation: fadeDown 0.6s ease-out;
+    }
+
+    .welcome-banner::before,
+    .welcome-banner::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+    .welcome-banner::before {
+      width: 220px;
+      height: 220px;
+      top: -70px;
+      left: -40px;
+      animation: floatBubble 7s ease-in-out infinite;
+    }
+    .welcome-banner::after {
+      width: 140px;
+      height: 140px;
+      bottom: -50px;
+      right: 18%;
+      animation: floatBubble 5s ease-in-out infinite reverse;
+    }
+
+    @keyframes floatBubble {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-14px) scale(1.05); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .welcome-banner h1,
+    .welcome-banner p,
+    .welcome-banner small,
+    .welcome-banner span {
+      color: #ffffff !important;
+    }
+
+    .student-stats-pill {
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      padding: 10px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
       margin-bottom: 22px;
     }
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-primary) !important;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .filter-chip:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-2px);
+    }
+    .filter-chip.active {
+      background: #0284c7;
+      color: #ffffff !important;
+      border-color: #0284c7;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
+    }
+
     .courses-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-      gap: 18px;
-      margin-top: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      perspective: 1000px;
     }
-    .course-card {
-      padding: 20px;
-      border-radius: 14px;
-      background: var(--card-bg, #ffffff);
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.06);
+
+    .pro-course-card {
+      position: relative;
+      border-radius: 20px;
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 14px;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .course-card.locked {
-      border-color: rgba(100, 116, 139, 0.28);
+
+    @keyframes cardReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .course-top-row {
+
+    .pro-course-card:hover {
+      transform: translateY(-8px);
+      border-color: #0284c7;
+      box-shadow: 0 22px 42px -12px rgba(2, 132, 199, 0.28);
+    }
+
+    .course-cover-wrap {
+      position: relative;
+      width: 100%;
+      height: 185px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0284c7, #0f172a);
+    }
+
+    .course-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      display: block;
+    }
+
+    .pro-course-card:hover .course-cover-img {
+      transform: scale(1.08);
+    }
+
+    .course-cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.12) 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .cover-badges {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      left: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 8px;
-    }
-    .course-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(2, 132, 199, 0.1);
-      color: #0284c7;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-    .lock-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 800;
-    }
-    .lock-pill.is-locked {
-      background: rgba(239, 68, 68, 0.12);
-      color: #dc2626;
-    }
-    .lock-pill.is-unlocked {
-      background: rgba(16, 185, 129, 0.14);
-      color: #059669;
+      z-index: 2;
     }
 
-    /* نافذة إدخال كود التفعيل */
+    .cat-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      color: #ffffff !important;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .status-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-pill.locked {
+      background: rgba(220, 38, 38, 0.88);
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+    }
+
+    .status-pill.unlocked {
+      background: rgba(5, 150, 105, 0.9);
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+    }
+
+    .course-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .course-title {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--text-primary) !important;
+      line-height: 1.45;
+    }
+
+    .course-desc {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary) !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .course-footer {
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .course-price-tag {
+      font-weight: 900;
+      font-size: 1.02rem;
+      color: var(--brand-primary) !important;
+    }
+
+    .action-btn {
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .action-btn.open-btn {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #ffffff !important;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.32);
+    }
+    .action-btn.open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(2, 132, 199, 0.45);
+    }
+
+    .action-btn.lock-btn {
+      background: rgba(2, 132, 199, 0.12);
+      color: var(--brand-primary) !important;
+      border: 1px solid rgba(2, 132, 199, 0.3);
+    }
+    .action-btn.lock-btn:hover {
+      background: #0284c7;
+      color: #ffffff !important;
+    }
+
     .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.55);
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
       padding: 16px;
@@ -93,21 +387,56 @@
     }
     .modal-backdrop.open {
       display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     .modal-box {
       width: 100%;
-      max-width: 420px;
-      background: var(--card-bg, #ffffff);
-      border-radius: 16px;
-      padding: 22px;
-      border: 1px solid rgba(2, 132, 199, 0.22);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+      max-width: 430px;
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+      transform: scale(0.95);
+      animation: popUp 0.25s ease forwards;
+    }
+    @keyframes popUp {
+      to { transform: scale(1); }
+    }
+    .modal-box input.form-control {
+      background: var(--input-bg) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-subtle) !important;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      width: 100%;
     }
     .modal-actions {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
-      margin-top: 14px;
+      margin-top: 16px;
+    }
+
+    .skeleton-card {
+      height: 330px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, var(--bg-card) 25%, rgba(2,132,199,0.08) 50%, var(--bg-card) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border: 1px solid var(--border-subtle);
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 </head>
@@ -127,42 +456,53 @@
     </div>
   </header>
 
-  <main class="container section" style="padding-top: 28px;">
-    <div class="card student-header-card">
+  <main class="container section" style="padding-top: 28px; padding-bottom: 50px;">
+    <div class="welcome-banner">
       <div>
-        <h1 style="margin:0 0 4px; font-size:1.35rem; color:#0284c7;">
-          مرحباً بك، <span id="studentName">طالب</span>
+        <h1 style="margin:0 0 6px; font-size:1.5rem; font-weight:900;">
+          أهلاً بك، <span id="studentName">طالب</span> 👋
         </h1>
-        <small id="studentEmail" style="opacity:0.75;"></small>
+        <p style="margin:0; opacity:0.9; font-size:0.95rem;">
+          اختر الكورس المناسب وفعّله بكود التفعيل لبدء مشاهدة المحاضرات وحل الاختبارات.
+        </p>
       </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <span class="badge" style="margin:0;">حساب طالب</span>
+      <div class="student-stats-pill">
+        الكورسات المفعّلة: <span id="unlockedCounter">0</span> / <span id="totalCounter">0</span>
       </div>
     </div>
 
     <section id="coursesSection" data-vis="coursesSection">
-      <h2 class="section-title">جميع الكورسات</h2>
+      <div class="filter-bar">
+        <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
+        <div class="filter-tabs">
+          <button class="filter-chip active" data-filter="all" type="button">الكل</button>
+          <button class="filter-chip" data-filter="unlocked" type="button">🔓 المفتوحة</button>
+          <button class="filter-chip" data-filter="locked" type="button">🔒 المقفولة</button>
+        </div>
+      </div>
+
       <div id="dashboardCoursesGrid" class="courses-grid">
-        <p style="opacity:0.75;">جاري تحميل الكورسات...</p>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
       </div>
     </section>
   </main>
 
-  <!-- مودال إدخال كود التفعيل -->
   <div id="unlockModal" class="modal-backdrop">
     <div class="modal-box">
-      <h3 style="margin:0 0 6px; color:#0284c7;">🔒 فتح الكورس بكود التفعيل</h3>
-      <p id="modalCourseTitle" style="margin:0 0 14px; font-weight:700; opacity:0.85;"></p>
+      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">🔒 تفعيل وفتح الكورس</h3>
+      <p id="modalCourseTitle" style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;"></p>
 
       <form id="unlockCourseForm">
         <div class="form-group">
-          <label>أدخل كود التفعيل</label>
+          <label style="display:block; margin-bottom:6px; font-weight:700;">أدخل كود التفعيل</label>
           <input type="text" id="activationCodeInput" class="form-control" placeholder="مثال: OLY-XXXXXX" required style="text-transform:uppercase;" />
         </div>
-        <p id="unlockErrorMsg" style="color:#dc2626; font-weight:700; min-height:22px; margin:6px 0 0;"></p>
+        <p id="unlockErrorMsg" style="color:#ef4444 !important; font-weight:700; min-height:22px; margin:8px 0 0;"></p>
         <div class="modal-actions">
           <button type="button" id="closeModalBtn" class="btn btn-outline">إلغاء</button>
-          <button type="submit" id="confirmUnlockBtn" class="btn btn-primary">تفعيل وفتح الكورس</button>
+          <button type="submit" id="confirmUnlockBtn" class="btn btn-primary">تفعيل الآن</button>
         </div>
       </form>
     </div>
@@ -178,7 +518,18 @@
 
     initTheme();
 
-    // تحميل اللوجو وإعدادات الظهور
+    const themeBtn = document.getElementById("themeToggle");
+    function syncThemeAttribute() {
+      const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
+      if (saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark")) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    }
+    syncThemeAttribute();
+    themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
+
     const logoEl = document.getElementById("siteLogo");
     try {
       const brandSnap = await getDoc(doc(db, "settings", "branding"));
@@ -208,8 +559,27 @@
       }
     } catch (e) {}
 
+    const DEFAULT_COVER = "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+        <defs>
+          <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0284c7"/>
+            <stop offset="50%" stop-color="#0369a1"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="450" fill="url(#g)"/>
+        <circle cx="680" cy="90" r="140" fill="rgba(56,189,248,0.16)"/>
+        <circle cx="140" cy="380" r="180" fill="rgba(255,255,255,0.07)"/>
+        <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="34" font-weight="bold">الأكاديمية الأولمبية</text>
+        <text x="50%" y="59%" dominant-baseline="middle" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="22">لعلوم الرياضة</text>
+      </svg>
+    `);
+
     let currentUser = null;
     let enrolledSet = new Set();
+    let allCoursesCache = [];
+    let activeFilter = "all";
     let selectedCourse = null;
 
     const modal = document.getElementById("unlockModal");
@@ -241,6 +611,15 @@
       location.href = "auth.html";
     });
 
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        activeFilter = chip.dataset.filter;
+        drawCourses();
+      });
+    });
+
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         location.href = "auth.html";
@@ -253,52 +632,92 @@
       const userData = userSnap.exists() ? userSnap.data() : {};
 
       document.getElementById("studentName").textContent = userData.fullName || user.email?.split("@")[0] || "طالب";
-      document.getElementById("studentEmail").textContent = user.email || "";
 
       const list = Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : [];
       enrolledSet = new Set(list);
 
       document.getElementById("studentBody").style.display = "block";
-      await renderAllCourses();
+      await fetchAndRenderCourses();
     });
 
-    async function renderAllCourses() {
-      const grid = document.getElementById("dashboardCoursesGrid");
+    async function fetchAndRenderCourses() {
       const snap = await getDocs(collection(db, "courses"));
+      allCoursesCache = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      drawCourses();
+    }
 
-      if (snap.empty) {
-        grid.innerHTML = `<p style="opacity:0.75;">لا توجد كورسات متاحة حالياً.</p>`;
+    function drawCourses() {
+      const grid = document.getElementById("dashboardCoursesGrid");
+      const total = allCoursesCache.length;
+      const unlockedCount = allCoursesCache.filter((c) => enrolledSet.has(c.id)).length;
+
+      document.getElementById("totalCounter").textContent = total;
+      document.getElementById("unlockedCounter").textContent = unlockedCount;
+
+      const filtered = allCoursesCache.filter((course) => {
+        const isUnlocked = enrolledSet.has(course.id);
+        if (activeFilter === "unlocked") return isUnlocked;
+        if (activeFilter === "locked") return !isUnlocked;
+        return true;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<p style="opacity:0.8; grid-column: 1 / -1; text-align:center; padding:30px;">لا توجد كورسات في هذا القسم حالياً.</p>`;
         return;
       }
 
       grid.innerHTML = "";
-      snap.forEach((docSnap) => {
-        const course = { id: docSnap.id, ...docSnap.data() };
+      filtered.forEach((course, idx) => {
         const isUnlocked = enrolledSet.has(course.id);
+        const coverSrc = course.imageUrl && course.imageUrl.trim() ? course.imageUrl.trim() : DEFAULT_COVER;
 
-        const card = document.createElement("div");
-        card.className = `course-card ${isUnlocked ? "unlocked" : "locked"}`;
+        const card = document.createElement("article");
+        card.className = "pro-course-card";
+        card.style.animationDelay = `${idx * 0.08}s`;
+
         card.innerHTML = `
-          <div>
-            <div class="course-top-row">
-              <span class="course-badge">${course.category || "علوم الرياضة"}</span>
-              <span class="lock-pill ${isUnlocked ? "is-unlocked" : "is-locked"}">
+          <div class="course-cover-wrap">
+            <img class="course-cover-img" src="${coverSrc}" alt="${course.title || "صورة الكورس"}" loading="lazy" />
+            <div class="course-cover-overlay"></div>
+            <div class="cover-badges">
+              <span class="cat-pill">${course.category || "علوم الرياضة"}</span>
+              <span class="status-pill ${isUnlocked ? "unlocked" : "locked"}">
                 ${isUnlocked ? "🔓 مفتوح" : "🔒 مقفول"}
               </span>
             </div>
-            <h3 style="margin:0 0 8px;">${course.title || "كورس"}</h3>
-            <p style="margin:0; opacity:0.82; line-height:1.6;">${course.description || ""}</p>
           </div>
 
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:12px; border-top:1px solid rgba(2,132,199,0.1);">
-            <span style="font-weight:800; color:#0284c7;">${course.price || ""}</span>
-            ${
-              isUnlocked
-                ? `<a href="course.html?id=${encodeURIComponent(course.id)}" class="btn btn-primary">دخول الكورس</a>`
-                : `<button type="button" class="btn btn-outline unlock-btn">🔒 فتح بكود التفعيل</button>`
-            }
+          <div class="course-body">
+            <div>
+              <h3 class="course-title">${course.title || "كورس"}</h3>
+              <p class="course-desc">${course.description || ""}</p>
+            </div>
+
+            <div class="course-footer">
+              <span class="course-price-tag">${course.price || "محتوى معتمد"}</span>
+              ${
+                isUnlocked
+                  ? `<a href="course.html?id=${encodeURIComponent(course.id)}" class="action-btn open-btn">دخول الكورس ⬅</a>`
+                  : `<button type="button" class="action-btn lock-btn unlock-btn">🔒 فتح بالكود</button>`
+              }
+            </div>
           </div>
         `;
+
+        const imgEl = card.querySelector(".course-cover-img");
+        imgEl.addEventListener("error", () => {
+          imgEl.src = DEFAULT_COVER;
+        });
+
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `translateY(-8px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 5).toFixed(2)}deg)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
 
         if (!isUnlocked) {
           card.querySelector(".unlock-btn").addEventListener("click", () => openUnlockModal(course));
@@ -343,14 +762,12 @@
           return;
         }
 
-        // تعليم الكود كمستخدم وربطه بالطالب
         await updateDoc(codeRef, {
           used: true,
           usedBy: currentUser.uid,
           usedAt: new Date().toISOString()
         });
 
-        // إضافة الكورس لقائمة كورسات الطالب المفعّلة
         await updateDoc(doc(db, "users", currentUser.uid), {
           enrolledCourses: arrayUnion(selectedCourse.id)
         });
@@ -358,9 +775,8 @@
         enrolledSet.add(selectedCourse.id);
         const targetCourseId = selectedCourse.id;
         closeUnlockModal();
-        await renderAllCourses();
+        drawCourses();
 
-        // توجيه مباشر للكورس بعد الفتح
         location.href = `course.html?id=${encodeURIComponent(targetCourseId)}`;
       } catch (err) {
         unlockErrorMsg.textContent = "حدث خطأ أثناء التحقق من الكود، حاول مرة أخرى.";
