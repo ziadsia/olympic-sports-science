@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
+        <span>لوحة تحكم الإدارة - الأكاديمية الأولمبية</span>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
+        <a href="index.html" class="btn btn-outline">العودة للموقع</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container panel-layout">
+    <aside class="sidebar">
+      <button class="btn sidebar-btn active" data-tab="statsTab" type="button">الإحصائيات</button>
+      <button class="btn sidebar-btn" data-tab="codesTab" type="button">توليد الأكواد</button>
+      <button class="btn sidebar-btn" data-tab="addCourseTab" type="button">إضافة كورس</button>
+      <button class="btn sidebar-btn" data-tab="studentsTab" type="button">إدارة الطلاب</button>
+    </aside>
+
+    <main>
+      <!-- الإحصائيات -->
+      <section id="statsTab" class="card">
+        <h2 class="section-title">نظرة عامة</h2>
+        <div class="grid-4">
+          <div class="card">
+            <p>إجمالي الطلاب</p>
+            <h3 id="statStudents">0</h3>
+          </div>
+          <div class="card">
+            <p>الكورسات المضافة</p>
+            <h3 id="statCourses">0</h3>
+          </div>
+          <div class="card">
+            <p>أكواد التفعيل</p>
+            <h3 id="statCodes">0</h3>
+          </div>
+          <div class="card">
+            <p>النظام</p>
+            <h3 style="color:var(--sky-primary);">نشط</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- توليد الأكواد -->
+      <section id="codesTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title">توليد أكواد تفعيل جديدة</h2>
+        <form id="genCodesForm" class="grid-3">
+          <div class="form-group">
+            <label>العدد</label>
+            <input type="number" id="codesCount" class="form-control" value="20" min="1" max="500" required />
+          </div>
+          <div class="form-group">
+            <label>اسم/معرف الكورس</label>
+            <input type="text" id="codeCourseId" class="form-control" placeholder="biomechanics-101" required />
+          </div>
+          <div class="form-group" style="display:flex; align-items:flex-end; gap:8px;">
+            <button type="submit" class="btn btn-primary" style="flex:1;">توليد وحفظ</button>
+            <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير Excel</button>
+          </div>
+        </form>
+        <div id="generatedCodesBox" style="margin-top:12px; font-weight:700; word-break:break-all;"></div>
+      </section>
+
+      <!-- إضافة كورس -->
+      <section id="addCourseTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title">إضافة كورس جديد</h2>
+        <form id="addCourseForm">
+          <div class="form-group">
+            <label>عنوان الكورس</label>
+            <input type="text" id="courseTitle" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>الفرقة الدراسية</label>
+            <input type="text" id="courseLevel" class="form-control" placeholder="الفرقة الأولى" required />
+          </div>
+          <div class="form-group">
+            <label>الوصف</label>
+            <textarea id="courseDesc" class="form-control" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الكورس</button>
+        </form>
+        <p id="courseMsg" style="margin-top:10px; font-weight:700;"></p>
+      </section>
+
+      <!-- إدارة الطلاب -->
+      <section id="studentsTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title">إدارة الطلاب والأجهزة</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>الهاتف</th>
+                <th>الفرقة</th>
+                <th>الجهاز المسجل</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { db } from "./assets/js/firebase-config.js";
+    import {
+      collection, getDocs, addDoc, setDoc, doc, updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+
+    const sidebarBtns = document.querySelectorAll(".sidebar-btn");
+    const tabs = ["statsTab", "codesTab", "addCourseTab", "studentsTab"];
+    sidebarBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabs.forEach((id) => {
+          document.getElementById(id).style.display = id === btn.dataset.tab ? "block" : "none";
+        });
+        sidebarBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    let lastGenerated = [];
+
+    async function refreshStatsAndStudents() {
+      try {
+        const usersSnap = await getDocs(collection(db, "users"));
+        const coursesSnap = await getDocs(collection(db, "courses"));
+        const codesSnap = await getDocs(collection(db, "activation_codes"));
+
+        document.getElementById("statStudents").textContent = usersSnap.size;
+        document.getElementById("statCourses").textContent = coursesSnap.size;
+        document.getElementById("statCodes").textContent = codesSnap.size;
+
+        const tbody = document.getElementById("studentsTableBody");
+        tbody.innerHTML = "";
+        usersSnap.forEach((uDoc) => {
+          const u = uDoc.data();
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${u.fullName || "-"}</td>
+            <td>${u.phone || "-"}</td>
+            <td>${u.level || "-"}</td>
+            <td>${u.deviceId || "غير مسجل"}</td>
+            <td><button class="btn btn-outline" data-uid="${uDoc.id}" type="button">Reset الجهاز</button></td>
+          `;
+          tr.querySelector("button").addEventListener("click", async () => {
+            await updateDoc(doc(db, "users", uDoc.id), { deviceId: "" });
+            alert("تم عمل Reset للجهاز بنجاح.");
+            refreshStatsAndStudents();
+          });
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        // لحين ربط بيانات Firebase
+      }
+    }
+    refreshStatsAndStudents();
+
+    document.getElementById("genCodesForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const count = Number(document.getElementById("codesCount").value);
+      const courseId = document.getElementById("codeCourseId").value.trim();
+      lastGenerated = [];
+
+      for (let i = 0; i < count; i++) {
+        const code = "OLY-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+        lastGenerated.push(code);
+        await setDoc(doc(db, "activation_codes", code), {
+          code,
+          courseId,
+          used: false,
+          createdAt: new Date().toISOString()
+        });
+      }
+      document.getElementById("generatedCodesBox").textContent = lastGenerated.join(" , ");
+      refreshStatsAndStudents();
+    });
+
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      if (!lastGenerated.length) return alert("ولّد أكواد أولاً.");
+      const csv = "Code\n" + lastGenerated.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "olympic-codes.csv";
+      a.click();
+    });
+
+    document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "courses"), {
+        title: document.getElementById("courseTitle").value.trim(),
+        level: document.getElementById("courseLevel").value.trim(),
+        description: document.getElementById("courseDesc").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("courseMsg").textContent = "تمت إضافة الكورس بنجاح!";
+      e.target.reset();
+      refreshStatsAndStudents();
+    });
+  </script>
+</body>
+</html>
