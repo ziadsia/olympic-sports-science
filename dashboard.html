@@ -28,58 +28,45 @@
     <aside class="sidebar">
       <button class="btn sidebar-btn active" data-tab="coursesTab" type="button">كورساتي</button>
       <button class="btn sidebar-btn" data-tab="redeemTab" type="button">تفعيل كود</button>
-      <button class="btn sidebar-btn" data-tab="playerTab" type="button">مشغل المحاضرات</button>
-      <button class="btn sidebar-btn" data-tab="quizTab" type="button">اختبار سريع</button>
+      <button class="btn sidebar-btn" data-tab="contentTab" type="button">المحاضرات والـ PDF</button>
+      <button class="btn sidebar-btn" data-tab="examTab" type="button">الامتحانات</button>
     </aside>
 
     <main>
       <!-- كورساتي -->
       <section id="coursesTab" class="card">
         <h2 class="section-title">كورساتي المفعّلة</h2>
-        <div class="grid-3" id="myCoursesList">
-          <div class="card">
-            <h3>كورس تجريبي - علوم الرياضة</h3>
-            <p>محاضرة تعريفية + مذكرة PDF</p>
-            <button class="btn btn-primary open-demo-lesson" type="button">تشغيل المحاضرة</button>
-          </div>
-        </div>
+        <div class="grid-3" id="myCoursesList"></div>
       </section>
 
       <!-- تفعيل كود -->
-      <section id="redeemTab" class="card" style="display:none; margin-top:16px;">
+      <section id="redeemTab" class="card" style="display:none;">
         <h2 class="section-title">تفعيل كود اشتراك</h2>
         <form id="redeemForm" style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input type="text" id="codeInput" class="form-control" placeholder="أدخل كود التفعيل هنا" style="flex:1; min-width:220px;" required />
-          <button type="submit" class="btn btn-primary">تفعيل الآن</button>
+          <input type="text" id="codeInput" class="form-control" placeholder="أدخل كود التفعيل (مثال: OLY-XXXXXX)" style="flex:1; min-width:220px;" required />
+          <button type="submit" class="btn btn-primary">تفعيل الكورس</button>
         </form>
-        <p id="redeemMsg" style="margin-top:12px; font-weight:700;"></p>
+        <p id="redeemMsg" style="margin-top:12px; font-weight:700; color:var(--sky-primary);"></p>
       </section>
 
-      <!-- مشغل المحاضرات المحمي بعلامة مائية متحركة -->
-      <section id="playerTab" class="card" style="display:none; margin-top:16px;">
-        <h2 class="section-title" id="lessonTitle">مشغل المحاضرات المحمي</h2>
-        <div class="video-box" id="videoBox">
+      <!-- المحاضرات وملفات PDF -->
+      <section id="contentTab" class="card" style="display:none;">
+        <h2 class="section-title" id="activeCourseTitle">محتوى الكورس</h2>
+        <div class="video-box" id="videoBox" style="margin-bottom:16px;">
           <div class="watermark-layer">
-            <div class="watermark-badge" id="watermarkBadge">01033709743 • الأكاديمية الأولمبية</div>
+            <div class="watermark-badge" id="watermarkBadge">الأكاديمية الأولمبية</div>
           </div>
-          <iframe id="lessonFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+          <iframe id="lessonFrame" src="" allowfullscreen></iframe>
         </div>
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <a id="pdfLink" href="#" target="_blank" class="btn btn-outline">تحميل مذكرة PDF</a>
-        </div>
+        <div id="pdfContainer" style="margin-bottom:18px;"></div>
+        <h3 style="margin-bottom:10px;">قائمة المحاضرات:</h3>
+        <div id="lessonsList" class="grid-3"></div>
       </section>
 
-      <!-- اختبار سريع -->
-      <section id="quizTab" class="card" style="display:none; margin-top:16px;">
-        <h2 class="section-title">اختبار إلكتروني</h2>
-        <p style="margin-bottom:12px; font-weight:700;">1. أي علم يدرس الميكانيكا الحيوية لحركة الإنسان أثناء الأداء الرياضي؟</p>
-        <div style="display:grid; gap:8px; margin-bottom:14px;">
-          <label><input type="radio" name="q1" value="wrong" /> علم النفس الرياضي</label>
-          <label><input type="radio" name="q1" value="correct" /> علم الحركة (Biomechanics)</label>
-          <label><input type="radio" name="q1" value="wrong" /> الإدارة الرياضية</label>
-        </div>
-        <button id="submitQuizBtn" class="btn btn-primary" type="button">تسليم الاختبار</button>
-        <p id="quizResult" style="margin-top:12px; font-weight:800;"></p>
+      <!-- الامتحانات -->
+      <section id="examTab" class="card" style="display:none;">
+        <h2 class="section-title">امتحانات الكورس</h2>
+        <div id="examsContainer"></div>
       </section>
     </main>
   </div>
@@ -88,13 +75,12 @@
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
 
-    // التنقل بين تبويبات لوحة الطالب
     const sidebarBtns = document.querySelectorAll(".sidebar-btn");
-    const tabs = ["coursesTab", "redeemTab", "playerTab", "quizTab"];
+    const tabs = ["coursesTab", "redeemTab", "contentTab", "examTab"];
     function showTab(targetId) {
       tabs.forEach((id) => {
         document.getElementById(id).style.display = id === targetId ? "block" : "none";
@@ -103,29 +89,27 @@
     }
     sidebarBtns.forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
 
-    document.querySelectorAll(".open-demo-lesson").forEach((btn) => {
-      btn.addEventListener("click", () => showTab("playerTab"));
-    });
-
-    // تحريك العلامة المائية برقم الهاتف
     const wm = document.getElementById("watermarkBadge");
     setInterval(() => {
-      const top = Math.floor(Math.random() * 72) + 8;
-      const left = Math.floor(Math.random() * 65) + 5;
-      wm.style.top = top + "%";
-      wm.style.left = left + "%";
+      wm.style.top = (Math.floor(Math.random() * 72) + 8) + "%";
+      wm.style.left = (Math.floor(Math.random() * 65) + 5) + "%";
     }, 2400);
 
     let currentUser = null;
+    let studentData = null;
+
     onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        location.href = "auth.html?mode=login";
+        return;
+      }
       currentUser = user;
-      if (user) {
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById("studentBadge").textContent = d.fullName || "طالب";
-          wm.textContent = `${d.phone || ""} • الأكاديمية الأولمبية`;
-        }
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) {
+        studentData = snap.data();
+        document.getElementById("studentBadge").textContent = studentData.fullName || "طالب";
+        wm.textContent = `${studentData.phone || ""} • الأكاديمية الأولمبية`;
+        renderMyCourses(studentData.activeCourses || []);
       }
     });
 
@@ -134,37 +118,107 @@
       location.href = "index.html";
     });
 
-    // تفعيل كود من Firestore
+    async function renderMyCourses(activeIds) {
+      const box = document.getElementById("myCoursesList");
+      box.innerHTML = "";
+      if (!activeIds.length) {
+        box.innerHTML = `<p>لا توجد كورسات مفعّلة بعد. اذهب إلى <b>تفعيل كود</b> لإضافة كورس.</p>`;
+        return;
+      }
+      for (const courseId of activeIds) {
+        const cSnap = await getDoc(doc(db, "courses", courseId));
+        if (!cSnap.exists()) continue;
+        const c = cSnap.data();
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${c.title}</h3>
+          <p>${c.description || ""}</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary open-course-btn" type="button">المحاضرات والـ PDF</button>
+            <button class="btn btn-outline open-exam-btn" type="button">الامتحانات</button>
+          </div>
+        `;
+        card.querySelector(".open-course-btn").addEventListener("click", () => openCourseContent(courseId, c.title));
+        card.querySelector(".open-exam-btn").addEventListener("click", () => openCourseExams(courseId));
+        box.appendChild(card);
+      }
+    }
+
+    async function openCourseContent(courseId, title) {
+      showTab("contentTab");
+      document.getElementById("activeCourseTitle").textContent = "محتوى: " + title;
+      const lessonsSnap = await getDocs(collection(db, "courses", courseId, "lessons"));
+      const list = document.getElementById("lessonsList");
+      list.innerHTML = "";
+      lessonsSnap.forEach((lDoc) => {
+        const l = lDoc.data();
+        const item = document.createElement("div");
+        item.className = "card";
+        item.innerHTML = `
+          <h4>${l.title}</h4>
+          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <button class="btn btn-primary play-btn" type="button">تشغيل الفيديو</button>
+            ${l.pdfUrl ? `<a href="${l.pdfUrl}" target="_blank" class="btn btn-outline">مذكرة PDF</a>` : ""}
+          </div>
+        `;
+        item.querySelector(".play-btn").addEventListener("click", () => {
+          document.getElementById("lessonFrame").src = l.videoUrl;
+          document.getElementById("pdfContainer").innerHTML = l.pdfUrl
+            ? `<a href="${l.pdfUrl}" target="_blank" class="btn btn-outline">فتح / تحميل ملف PDF للمحاضرة</a>`
+            : "";
+        });
+        list.appendChild(item);
+      });
+    }
+
+    async function openCourseExams(courseId) {
+      showTab("examTab");
+      const examsSnap = await getDocs(collection(db, "courses", courseId, "exams"));
+      const container = document.getElementById("examsContainer");
+      container.innerHTML = "";
+      examsSnap.forEach((eDoc) => {
+        const ex = eDoc.data();
+        const q = (ex.questions && ex.questions[0]) || null;
+        if (!q) return;
+        const wrap = document.createElement("div");
+        wrap.className = "card";
+        wrap.innerHTML = `
+          <h3>${ex.title}</h3>
+          <p style="font-weight:700; margin:10px 0;">${q.question}</p>
+          <div style="display:grid; gap:6px; margin-bottom:12px;">
+            ${q.options.map((opt, idx) => `<label><input type="radio" name="${eDoc.id}" value="${idx}" /> ${opt}</label>`).join("")}
+          </div>
+          <button class="btn btn-primary check-btn" type="button">تسليم الإجابة</button>
+          <p class="res-msg" style="margin-top:10px; font-weight:800;"></p>
+        `;
+        wrap.querySelector(".check-btn").addEventListener("click", () => {
+          const picked = wrap.querySelector(`input[name="${eDoc.id}"]:checked`);
+          const res = wrap.querySelector(".res-msg");
+          if (!picked) return (res.textContent = "اختر إجابة أولاً.");
+          res.textContent = Number(picked.value) === q.correctIndex ? "إجابة صحيحة! 1/1" : "إجابة غير صحيحة، حاول مراجعة المحاضرة.";
+        });
+        container.appendChild(wrap);
+      });
+    }
+
     document.getElementById("redeemForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const msg = document.getElementById("redeemMsg");
       const codeVal = document.getElementById("codeInput").value.trim().toUpperCase();
-      if (!currentUser) {
-        msg.textContent = "سجل الدخول أولاً لتفعيل الكود.";
-        return;
-      }
       const codeRef = doc(db, "activation_codes", codeVal);
       const codeSnap = await getDoc(codeRef);
       if (!codeSnap.exists() || codeSnap.data().used) {
-        msg.textContent = "الكود غير صحيح أو مستخدم من قبل.";
+        msg.textContent = "الكود غير صحيح أو تم استخدامه مسبقاً.";
         return;
       }
+      const courseId = codeSnap.data().courseId;
       await updateDoc(codeRef, { used: true, usedBy: currentUser.uid });
-      await updateDoc(doc(db, "users", currentUser.uid), {
-        activeCourses: arrayUnion(codeSnap.data().courseId || "general")
-      });
+      await updateDoc(doc(db, "users", currentUser.uid), { activeCourses: arrayUnion(courseId) });
       msg.textContent = "تم تفعيل الكورس بنجاح!";
-    });
-
-    // تصحيح الاختبار
-    document.getElementById("submitQuizBtn").addEventListener("click", () => {
-      const chosen = document.querySelector('input[name="q1"]:checked');
-      const res = document.getElementById("quizResult");
-      if (!chosen) {
-        res.textContent = "اختر إجابة أولاً.";
-        return;
-      }
-      res.textContent = chosen.value === "correct" ? "إجابة صحيحة! الدرجة: 1/1" : "إجابة غير صحيحة، الإجابة الصحيحة هي: علم الحركة.";
+      const updated = [...new Set([...(studentData?.activeCourses || []), courseId])];
+      studentData = { ...studentData, activeCourses: updated };
+      renderMyCourses(updated);
     });
   </script>
 </body>
