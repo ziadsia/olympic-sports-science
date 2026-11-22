@@ -6,83 +6,212 @@
   <title>الأكاديمية الأولمبية لعلوم الرياضة</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
+    :root {
+      --bg-page: #f0f7ff;
+      --bg-card: #ffffff;
+      --bg-header: rgba(255, 255, 255, 0.88);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-subtle: rgba(2, 132, 199, 0.16);
+      --brand-primary: #0284c7;
+      --shadow-card: 0 12px 30px -8px rgba(2, 132, 199, 0.14);
+    }
+
+    html[data-theme="dark"],
+    body.dark-mode,
+    body.dark,
+    html.dark {
+      --bg-page: #0b1120;
+      --bg-card: #131c31;
+      --bg-header: rgba(19, 28, 49, 0.9);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --border-subtle: rgba(56, 189, 248, 0.22);
+      --brand-primary: #38bdf8;
+      --shadow-card: 0 16px 36px -8px rgba(0, 0, 0, 0.55);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
+      background-color: var(--bg-page) !important;
+      color: var(--text-primary) !important;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      overflow-x: hidden;
     }
+
+    h1, h2, h3, h4, p, span, a, strong {
+      color: inherit;
+    }
+
     .announcement-bar {
-      background: #0284c7;
-      color: #ffffff;
+      background: linear-gradient(90deg, #0284c7, #0ea5e9, #0284c7);
+      background-size: 200% auto;
+      animation: gradientSlide 6s linear infinite;
+      color: #ffffff !important;
       padding: 10px 16px;
       text-align: center;
       font-weight: 700;
       font-size: 0.95rem;
     }
-    .hero-section {
-      padding: 56px 0 40px;
-      text-align: center;
+
+    @keyframes gradientSlide {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
     }
-    .hero-title {
-      font-size: clamp(1.7rem, 4vw, 2.5rem);
+
+    .navbar {
+      background: var(--bg-header) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand span {
+      color: var(--brand-primary) !important;
       font-weight: 800;
-      margin: 0 0 12px;
-      color: #0284c7;
     }
+
+    .hero-section {
+      padding: 60px 0 42px;
+      text-align: center;
+      animation: fadeDown 0.65s ease-out;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-title {
+      font-size: clamp(1.75rem, 4.2vw, 2.6rem);
+      font-weight: 900;
+      margin: 0 0 14px;
+      color: var(--brand-primary) !important;
+    }
+
     .hero-subtitle {
       max-width: 680px;
-      margin: 0 auto 24px;
-      line-height: 1.8;
-      opacity: 0.88;
+      margin: 0 auto 26px;
+      line-height: 1.85;
+      color: var(--text-secondary) !important;
+      font-size: 1.02rem;
     }
+
     .courses-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 18px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 24px;
+      margin-top: 22px;
     }
+
     .course-card {
+      border-radius: 20px;
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+      border-color: #0284c7;
+      box-shadow: 0 22px 42px -12px rgba(2, 132, 199, 0.28);
+    }
+
+    .course-cover-wrap {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0284c7, #0f172a);
+    }
+
+    .course-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      display: block;
+    }
+
+    .course-card:hover .course-cover-img {
+      transform: scale(1.08);
+    }
+
+    .course-body {
       padding: 20px;
-      border-radius: 14px;
-      background: var(--card-bg, #ffffff);
-      border: 1px solid rgba(2, 132, 199, 0.16);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.06);
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
     }
+
     .course-badge {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
-      background: rgba(2, 132, 199, 0.1);
-      color: #0284c7;
+      background: rgba(2, 132, 199, 0.12);
+      color: var(--brand-primary) !important;
       font-size: 0.8rem;
       font-weight: 700;
       margin-bottom: 8px;
     }
-    .course-price {
+
+    .course-title {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
       font-weight: 800;
-      color: #0284c7;
+      color: var(--text-primary) !important;
     }
+
+    .course-desc {
+      margin: 0;
+      color: var(--text-secondary) !important;
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+
+    .course-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .course-price {
+      font-weight: 900;
+      color: var(--brand-primary) !important;
+    }
+
     .site-footer {
-      margin-top: 56px;
+      margin-top: 60px;
       padding: 24px 0;
-      border-top: 1px solid rgba(2, 132, 199, 0.14);
+      border-top: 1px solid var(--border-subtle);
       text-align: center;
       font-size: 0.9rem;
-      opacity: 0.85;
+      color: var(--text-secondary) !important;
     }
   </style>
 </head>
 <body>
-  <!-- شريط التنويه العام (يظهر حسب إعدادات الأدمن) -->
   <div id="announcementBar" class="announcement-bar" data-vis="announcementBanner" style="display:none;"></div>
 
-  <!-- شريط التنقل الخاص بالمنصة والطلاب فقط -->
   <header class="navbar">
     <div class="container nav-content">
       <a href="index.html" class="brand">
@@ -97,7 +226,6 @@
   </header>
 
   <main class="container">
-    <!-- قسم الترحيب -->
     <section class="hero-section">
       <h1 class="hero-title">الأكاديمية الأولمبية لعلوم الرياضة</h1>
       <p class="hero-subtitle">
@@ -109,9 +237,8 @@
       </div>
     </section>
 
-    <!-- قسم الكورسات المتاحة -->
     <section id="coursesSection" class="section" data-vis="coursesSection" style="padding-top:16px;">
-      <h2 class="section-title">الكورسات المتاحة</h2>
+      <h2 class="section-title" style="color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
       <div id="coursesList" class="courses-grid">
         <p style="opacity:0.75;">جاري تحميل الكورسات...</p>
       </div>
@@ -131,7 +258,18 @@
 
     initTheme();
 
-    // تحميل اللوجو من إعدادات الأدمن
+    const themeBtn = document.getElementById("themeToggle");
+    function syncThemeAttribute() {
+      const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
+      if (saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark")) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    }
+    syncThemeAttribute();
+    themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
+
     const logoEl = document.getElementById("siteLogo");
     try {
       const brandSnap = await getDoc(doc(db, "settings", "branding"));
@@ -141,7 +279,6 @@
       }
     } catch (e) {}
 
-    // تحميل إعدادات إظهار وإخفاء الأقسام
     try {
       const visSnap = await getDoc(doc(db, "settings", "visibility"));
       if (visSnap.exists()) {
@@ -162,7 +299,23 @@
       }
     } catch (e) {}
 
-    // تحميل الكورسات
+    const DEFAULT_COVER = "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+        <defs>
+          <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0284c7"/>
+            <stop offset="50%" stop-color="#0369a1"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="450" fill="url(#g)"/>
+        <circle cx="680" cy="90" r="140" fill="rgba(56,189,248,0.16)"/>
+        <circle cx="140" cy="380" r="180" fill="rgba(255,255,255,0.07)"/>
+        <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="34" font-weight="bold">الأكاديمية الأولمبية</text>
+        <text x="50%" y="59%" dominant-baseline="middle" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="22">لعلوم الرياضة</text>
+      </svg>
+    `);
+
     const coursesListEl = document.getElementById("coursesList");
     try {
       const snap = await getDocs(collection(db, "courses"));
@@ -172,19 +325,29 @@
         coursesListEl.innerHTML = "";
         snap.forEach((docSnap) => {
           const c = docSnap.data();
+          const coverSrc = c.imageUrl && c.imageUrl.trim() ? c.imageUrl.trim() : DEFAULT_COVER;
           const card = document.createElement("div");
           card.className = "course-card";
           card.innerHTML = `
-            <div>
-              <span class="course-badge">${c.category || "علوم الرياضة"}</span>
-              <h3 style="margin:0 0 8px;">${c.title || "كورس"}</h3>
-              <p style="margin:0; opacity:0.82; line-height:1.6;">${c.description || ""}</p>
+            <div class="course-cover-wrap">
+              <img class="course-cover-img" src="${coverSrc}" alt="${c.title || "صورة الكورس"}" loading="lazy" />
             </div>
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px; border-top:1px solid rgba(2,132,199,0.1);">
-              <span class="course-price">${c.price || ""}</span>
-              <a href="auth.html" class="btn btn-primary">دخول للكورس</a>
+            <div class="course-body">
+              <div>
+                <span class="course-badge">${c.category || "علوم الرياضة"}</span>
+                <h3 class="course-title">${c.title || "كورس"}</h3>
+                <p class="course-desc">${c.description || ""}</p>
+              </div>
+              <div class="course-footer">
+                <span class="course-price">${c.price || ""}</span>
+                <a href="auth.html" class="btn btn-primary">دخول للكورس</a>
+              </div>
             </div>
           `;
+          const imgEl = card.querySelector(".course-cover-img");
+          imgEl.addEventListener("error", () => {
+            imgEl.src = DEFAULT_COVER;
+          });
           coursesListEl.appendChild(card);
         });
       }
