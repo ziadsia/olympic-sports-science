@@ -9,54 +9,125 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
-    .admin-top-bar {
+    * { box-sizing: border-box; }
+    body.admin-layout-body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+    .admin-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* القائمة الجانبية */
+    .admin-sidebar {
+      width: 275px;
+      flex-shrink: 0;
+      background: var(--card-bg, #ffffff);
+      border-left: 1px solid rgba(2, 132, 199, 0.16);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform 0.25s ease;
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 18px;
+      border-bottom: 1px solid rgba(2, 132, 199, 0.12);
+      margin-bottom: 14px;
+      font-weight: 800;
+      color: #0284c7;
+      font-size: 1rem;
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sidebar-link {
+      width: 100%;
+      text-align: right;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .sidebar-link:hover {
+      background: rgba(2, 132, 199, 0.08);
+      color: #0284c7;
+    }
+    .sidebar-link.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+    .sidebar-footer {
+      padding-top: 14px;
+      border-top: 1px solid rgba(2, 132, 199, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* المحتوى الرئيسي */
+    .admin-main {
+      flex: 1;
+      min-width: 0;
+      padding: 24px;
+    }
+    .admin-topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
-    }
-    .admin-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
       margin-bottom: 22px;
-      padding: 10px;
+      padding: 14px 18px;
       border-radius: 14px;
       background: var(--card-bg, #ffffff);
       border: 1px solid rgba(2, 132, 199, 0.16);
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.06);
     }
-    .admin-tab-btn {
-      padding: 10px 16px;
+    .mobile-menu-btn {
+      display: none;
+      padding: 8px 12px;
       border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
+      border: 1px solid rgba(2, 132, 199, 0.25);
       background: transparent;
-      color: inherit;
-      transition: 0.2s ease;
-    }
-    .admin-tab-btn.active {
-      background: #0284c7;
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
-    }
-    .admin-tab-btn:not(.active):hover {
-      background: rgba(2, 132, 199, 0.08);
       color: #0284c7;
+      font-weight: 800;
+      cursor: pointer;
     }
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 90;
+    }
+
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
     }
     .stat-box {
-      padding: 20px;
-      border-radius: 14px;
-      background: var(--card-bg, #ffffff);
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(2, 132, 199, 0.05);
       border: 1px solid rgba(2, 132, 199, 0.16);
     }
     .stat-box span {
@@ -66,214 +137,402 @@
       margin-bottom: 6px;
     }
     .stat-box strong {
-      font-size: 1.75rem;
+      font-size: 1.7rem;
       color: #0284c7;
+    }
+
+    .visibility-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .visibility-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(2, 132, 199, 0.18);
+      background: rgba(2, 132, 199, 0.03);
+      font-weight: 700;
+    }
+    .visibility-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #0284c7;
+      cursor: pointer;
+    }
+
+    .manage-list {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .manage-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: rgba(2, 132, 199, 0.03);
+    }
+    .btn-danger {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+    .split-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .sub-card {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: rgba(2, 132, 199, 0.02);
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu-btn { display: inline-flex; align-items: center; gap: 6px; }
+      .admin-sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(100%);
+      }
+      .admin-sidebar.open { transform: translateX(0); }
+      .sidebar-backdrop.open { display: block; }
+      .admin-main { padding: 14px; }
     }
   </style>
 </head>
-<body id="adminBody" style="display:none;">
-  <header class="navbar">
-    <div class="container nav-content">
-      <a href="admin.html" class="brand">
-        <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
-        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
-      </a>
-      <div class="nav-actions">
-        <span class="badge" style="margin:0;">لوحة الإدارة</span>
-        <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
-        <button id="adminLogoutBtn" class="btn btn-outline" type="button">تسجيل الخروج</button>
-      </div>
-    </div>
-  </header>
+<body id="adminBody" class="admin-layout-body" style="display:none;">
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
 
-  <main class="container section" style="padding-top: 28px;">
-    <div class="admin-top-bar">
+  <div class="admin-shell">
+    <aside id="adminSidebar" class="admin-sidebar">
       <div>
-        <h1 class="section-title" style="margin-bottom:4px;">إدارة الأكاديمية والمحتوى التعليمي</h1>
-        <p style="opacity:0.8; margin:0;">إضافة الكورسات، رفع روابط المحاضرات (فيديو + PDF)، إنشاء الامتحانات، وتوليد الأكواد.</p>
+        <div class="sidebar-brand">
+          <img id="sidebarLogo" src="assets/img/logo.png" alt="شعار" style="width:32px; height:32px; object-fit:contain;" onerror="this.style.display='none'" />
+          <span>الأكاديمية الأولمبية</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="sidebar-link active" data-target="overviewPanel" type="button">📊 الإحصائيات</button>
+          <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
+          <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والهوية</button>
+          <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / حذف)</button>
+          <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / حذف)</button>
+          <button class="sidebar-link" data-target="examsPanel" type="button">📝 الامتحانات</button>
+          <button class="sidebar-link" data-target="codesPanel" type="button">🎟️ أكواد التفعيل (كتابة / توليد / حذف)</button>
+          <button class="sidebar-link" data-target="studentsPanel" type="button">👨‍🎓 الطلاب والأجهزة</button>
+        </nav>
       </div>
-    </div>
 
-    <!-- شريط التبويبات العلوي -->
-    <div class="admin-tabs" role="tablist">
-      <button class="admin-tab-btn active" data-tab="overviewSection" type="button">📊 الإحصائيات</button>
-      <button class="admin-tab-btn" data-tab="coursesSection" type="button">📚 الكورسات</button>
-      <button class="admin-tab-btn" data-tab="lessonsSection" type="button">🎥 المحاضرات (فيديو + PDF)</button>
-      <button class="admin-tab-btn" data-tab="examsSection" type="button">📝 الامتحانات</button>
-      <button class="admin-tab-btn" data-tab="codesSection" type="button">🎟️ أكواد التفعيل</button>
-      <button class="admin-tab-btn" data-tab="studentsSection" type="button">👨‍🎓 الطلاب والأجهزة</button>
-    </div>
-
-    <!-- 1. الإحصائيات -->
-    <section id="overviewSection" class="admin-panel card">
-      <h2 class="section-title">نظرة عامة على المنصة</h2>
-      <div class="stats-grid">
-        <div class="stat-box">
-          <span>إجمالي الطلاب</span>
-          <strong id="statStudents">0</strong>
-        </div>
-        <div class="stat-box">
-          <span>عدد الكورسات</span>
-          <strong id="statCourses">0</strong>
-        </div>
-        <div class="stat-box">
-          <span>إجمالي الأكواد</span>
-          <strong id="statCodes">0</strong>
-        </div>
-        <div class="stat-box">
-          <span>الأكواد المستخدمة</span>
-          <strong id="statUsedCodes">0</strong>
-        </div>
+      <div class="sidebar-footer">
+        <button id="adminLogoutBtn" class="btn btn-primary" type="button">تسجيل الخروج</button>
       </div>
-    </section>
+    </aside>
 
-    <!-- 2. إضافة كورس -->
-    <section id="coursesSection" class="admin-panel card" style="display:none;">
-      <h2 class="section-title">إضافة كورس جديد</h2>
-      <form id="addCourseForm">
-        <div class="grid-3">
-          <div class="form-group">
-            <label>اسم الكورس</label>
-            <input type="text" id="courseTitle" class="form-control" placeholder="مثال: فسيولوجيا الجهد البدني" required />
-          </div>
-          <div class="form-group">
-            <label>التصنيف / القسم</label>
-            <input type="text" id="courseCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
-          </div>
-          <div class="form-group">
-            <label>السعر (اختياري / للعرض)</label>
-            <input type="text" id="coursePrice" class="form-control" placeholder="مثال: 250 ج.م" />
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button id="mobileMenuBtn" class="mobile-menu-btn" type="button">☰ القائمة</button>
+          <div>
+            <h1 id="activePanelTitle" style="margin:0; font-size:1.25rem; color:#0284c7;">الإحصائيات</h1>
+            <small style="opacity:0.75;">لوحة تحكم الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</small>
           </div>
         </div>
-        <div class="form-group">
-          <label>وصف الكورس</label>
-          <textarea id="courseDesc" class="form-control" rows="3" placeholder="نبذة مختصرة عن محتوى الكورس..." required></textarea>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge" style="margin:0;">أدمن</span>
+          <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
         </div>
-        <button type="submit" class="btn btn-primary">حفظ الكورس</button>
-      </form>
-      <p id="courseMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
-    </section>
+      </header>
 
-    <!-- 3. المحاضرات (فيديو + PDF) -->
-    <section id="lessonsSection" class="admin-panel card" style="display:none;">
-      <h2 class="section-title">إضافة محاضرة (فيديو + ملف PDF)</h2>
-      <form id="addLessonForm">
-        <div class="grid-3">
-          <div class="form-group">
-            <label>اختر الكورس</label>
-            <select id="lessonCourseSelect" class="form-control" required></select>
-          </div>
-          <div class="form-group">
-            <label>عنوان المحاضرة</label>
-            <input type="text" id="lessonTitle" class="form-control" placeholder="المحاضرة الأولى: مقدمة شاملة" required />
-          </div>
-          <div class="form-group">
-            <label>ترتيب المحاضرة</label>
-            <input type="number" id="lessonOrder" class="form-control" value="1" min="1" />
-          </div>
+      <!-- 1. الإحصائيات -->
+      <section id="overviewPanel" class="admin-panel card">
+        <h2 class="section-title">نظرة عامة على المنصة</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><span>إجمالي الطلاب</span><strong id="statStudents">0</strong></div>
+          <div class="stat-box"><span>عدد الكورسات</span><strong id="statCourses">0</strong></div>
+          <div class="stat-box"><span>إجمالي الأكواد</span><strong id="statCodes">0</strong></div>
+          <div class="stat-box"><span>الأكواد المستخدمة</span><strong id="statUsedCodes">0</strong></div>
         </div>
-        <div class="grid-3">
-          <div class="form-group" style="grid-column: span 2;">
-            <label>رابط الفيديو (YouTube Embed / Drive Preview / رابط مباشر)</label>
-            <input type="url" id="lessonVideoUrl" class="form-control" placeholder="https://www.youtube.com/embed/..." required />
-          </div>
-          <div class="form-group">
-            <label>رابط ملف PDF (مذكرة / ملخص)</label>
-            <input type="url" id="lessonPdfUrl" class="form-control" placeholder="https://..." />
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary">إضافة المحاضرة</button>
-      </form>
-      <p id="lessonMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
-    </section>
+      </section>
 
-    <!-- 4. الامتحانات -->
-    <section id="examsSection" class="admin-panel card" style="display:none;">
-      <h2 class="section-title">إضافة امتحان اختيار من متعدد</h2>
-      <form id="addExamForm">
-        <div class="grid-3">
-          <div class="form-group">
-            <label>اختر الكورس</label>
-            <select id="examCourseSelect" class="form-control" required></select>
-          </div>
-          <div class="form-group">
-            <label>عنوان الامتحان</label>
-            <input type="text" id="examTitle" class="form-control" placeholder="اختبار شامل على الوحدة الأولى" required />
-          </div>
-          <div class="form-group">
-            <label>الإجابة الصحيحة</label>
-            <select id="correctIndex" class="form-control">
-              <option value="0">الاختيار الأول</option>
-              <option value="1">الاختيار الثاني</option>
-              <option value="2">الاختيار الثالث</option>
-              <option value="3">الاختيار الرابع</option>
-            </select>
-          </div>
+      <!-- 2. إظهار وإخفاء الأقسام -->
+      <section id="visibilityPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">التحكم في إظهار وإخفاء عناصر المنصة</h2>
+        <div class="visibility-list">
+          <label class="visibility-item"><span>قسم الكورسات المتاحة</span><input type="checkbox" id="vis_coursesSection" checked /></label>
+          <label class="visibility-item"><span>قسم المحاضرات والفيديو</span><input type="checkbox" id="vis_videosSection" checked /></label>
+          <label class="visibility-item"><span>ملفات PDF والمذكرات</span><input type="checkbox" id="vis_pdfsSection" checked /></label>
+          <label class="visibility-item"><span>قسم الامتحانات والاختبارات</span><input type="checkbox" id="vis_examsSection" checked /></label>
+          <label class="visibility-item"><span>تفعيل الكورسات بالكود</span><input type="checkbox" id="vis_activationBox" checked /></label>
+          <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
         </div>
-        <div class="form-group">
-          <label>نص السؤال</label>
-          <input type="text" id="questionText" class="form-control" placeholder="اكتب نص السؤال هنا..." required />
+        <div class="form-group" style="margin-top:16px;">
+          <label>نص التنويه العام</label>
+          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه هنا..." />
         </div>
-        <div class="grid-4">
-          <div class="form-group"><label>الاختيار الأول</label><input type="text" id="opt0" class="form-control" required /></div>
-          <div class="form-group"><label>الاختيار الثاني</label><input type="text" id="opt1" class="form-control" required /></div>
-          <div class="form-group"><label>الاختيار الثالث</label><input type="text" id="opt2" class="form-control" required /></div>
-          <div class="form-group"><label>الاختيار الرابع</label><input type="text" id="opt3" class="form-control" required /></div>
-        </div>
-        <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
-      </form>
-      <p id="examMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
-    </section>
+        <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
+        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+      </section>
 
-    <!-- 5. أكواد التفعيل -->
-    <section id="codesSection" class="admin-panel card" style="display:none;">
-      <h2 class="section-title">توليد أكواد التفعيل</h2>
-      <form id="genCodesForm" class="grid-3">
-        <div class="form-group">
-          <label>عدد الأكواد</label>
-          <input type="number" id="codesCount" class="form-control" value="20" min="1" max="500" required />
-        </div>
-        <div class="form-group">
-          <label>الكورس المرتبط بالكود</label>
+      <!-- 3. اللوجو والهوية -->
+      <section id="brandingPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إعدادات اللوجو والهوية</h2>
+        <form id="brandingForm">
+          <div class="form-group">
+            <label>رابط صورة اللوجو (أو اتركه فارغاً لاستخدام assets/img/logo.png)</label>
+            <input type="url" id="logoUrlInput" class="form-control" placeholder="https://example.com/logo.png" />
+          </div>
+          <div style="margin-bottom:16px; display:flex; align-items:center; gap:14px;">
+            <span>معاينة اللوجو:</span>
+            <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو"
+                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid rgba(2,132,199,0.2); padding:4px; background:#fff;" />
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ اللوجو</button>
+        </form>
+        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:#0284c7;"></p>
+      </section>
+
+      <!-- 4. الكورسات (إضافة وحذف) -->
+      <section id="coursesPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إضافة كورس جديد</h2>
+        <form id="addCourseForm">
+          <div class="grid-3">
+            <div class="form-group">
+              <label>اسم الكورس</label>
+              <input type="text" id="courseTitle" class="form-control" placeholder="مثال: فسيولوجيا الجهد البدني" required />
+            </div>
+            <div class="form-group">
+              <label>التصنيف / القسم</label>
+              <input type="text" id="courseCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
+            </div>
+            <div class="form-group">
+              <label>السعر (اختياري / للعرض)</label>
+              <input type="text" id="coursePrice" class="form-control" placeholder="مثال: 250 ج.م" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>وصف الكورس</label>
+            <textarea id="courseDesc" class="form-control" rows="2" placeholder="نبذة عن الكورس..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الكورس</button>
+        </form>
+        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+
+        <h3 style="margin-top:26px;">الكورسات الحالية (إمكانية الحذف)</h3>
+        <div id="coursesManageList" class="manage-list"></div>
+      </section>
+
+      <!-- 5. المحاضرات (إضافة وحذف داخل كل كورس) -->
+      <section id="lessonsPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إدارة فيديوهات وملفات PDF داخل الكورسات</h2>
+        <form id="addLessonForm">
+          <div class="grid-3">
+            <div class="form-group">
+              <label>اختر الكورس</label>
+              <select id="lessonCourseSelect" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>عنوان المحاضرة / الفيديو</label>
+              <input type="text" id="lessonTitle" class="form-control" placeholder="المحاضرة الأولى" required />
+            </div>
+            <div class="form-group">
+              <label>ترتيب المحاضرة</label>
+              <input type="number" id="lessonOrder" class="form-control" value="1" min="1" />
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="form-group" style="grid-column: span 2;">
+              <label>رابط الفيديو (YouTube Embed / رابط مباشر)</label>
+              <input type="url" id="lessonVideoUrl" class="form-control" placeholder="https://www.youtube.com/embed/..." required />
+            </div>
+            <div class="form-group">
+              <label>رابط ملف PDF (اختياري)</label>
+              <input type="url" id="lessonPdfUrl" class="form-control" placeholder="https://..." />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">إضافة المحاضرة</button>
+        </form>
+        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+
+        <h3 style="margin-top:26px;">محاضرات الكورس المختار (إمكانية حذف أي فيديو/محاضرة)</h3>
+        <div id="lessonsManageList" class="manage-list"></div>
+      </section>
+
+      <!-- 6. الامتحانات -->
+      <section id="examsPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إضافة امتحان اختيار من متعدد</h2>
+        <form id="addExamForm">
+          <div class="grid-3">
+            <div class="form-group">
+              <label>اختر الكورس</label>
+              <select id="examCourseSelect" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>عنوان الامتحان</label>
+              <input type="text" id="examTitle" class="form-control" placeholder="اختبار الوحدة الأولى" required />
+            </div>
+            <div class="form-group">
+              <label>الإجابة الصحيحة</label>
+              <select id="correctIndex" class="form-control">
+                <option value="0">الاختيار الأول</option>
+                <option value="1">الاختيار الثاني</option>
+                <option value="2">الاختيار الثالث</option>
+                <option value="3">الاختيار الرابع</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>نص السؤال</label>
+            <input type="text" id="questionText" class="form-control" placeholder="اكتب السؤال..." required />
+          </div>
+          <div class="grid-4">
+            <div class="form-group"><label>الاختيار الأول</label><input type="text" id="opt0" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار الثاني</label><input type="text" id="opt1" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار الثالث</label><input type="text" id="opt2" class="form-control" required /></div>
+            <div class="form-group"><label>الاختيار الرابع</label><input type="text" id="opt3" class="form-control" required /></div>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
+        </form>
+        <p id="examMsg" style="margin-top:10px; font-weight:700; color:#0284c7;"></p>
+      </section>
+
+      <!-- 7. أكواد التفعيل (كتابة يدوية + توليد تلقائي + حذف) -->
+      <section id="codesPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إدارة أكواد التفعيل</h2>
+
+        <div class="form-group" style="max-width:420px;">
+          <label>الكورس المرتبط بالأكواد</label>
           <select id="codeCourseSelect" class="form-control" required></select>
         </div>
-        <div class="form-group" style="display:flex; align-items:flex-end; gap:8px;">
-          <button type="submit" class="btn btn-primary" style="flex:1;">توليد الأكواد</button>
-          <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير CSV</button>
-        </div>
-      </form>
-      <div id="generatedCodesBox" style="margin-top:14px; font-weight:700; word-break:break-all;"></div>
-    </section>
 
-    <!-- 6. الطلاب والأجهزة -->
-    <section id="studentsSection" class="admin-panel card" style="display:none;">
-      <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>الاسم</th>
-              <th>رقم الهاتف</th>
-              <th>البريد الإلكتروني</th>
-              <th>معرّف الجهاز</th>
-              <th>إجراء</th>
-            </tr>
-          </thead>
-          <tbody id="studentsTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+        <div class="split-box">
+          <!-- كتابة كود يدوي -->
+          <div class="sub-card">
+            <h3 style="margin-top:0;">إضافة كود مخصص بإيدك</h3>
+            <form id="customCodeForm">
+              <div class="form-group">
+                <label>اكتب الكود</label>
+                <input type="text" id="customCodeInput" class="form-control" placeholder="مثال: OLY-VIP-2026" required />
+              </div>
+              <button type="submit" class="btn btn-primary">حفظ الكود</button>
+            </form>
+            <p id="customCodeMsg" style="margin-top:8px; font-weight:700; color:#0284c7;"></p>
+          </div>
+
+          <!-- توليد أكواد تلقائي -->
+          <div class="sub-card">
+            <h3 style="margin-top:0;">توليد مجموعة أكواد تلقائياً</h3>
+            <form id="genCodesForm">
+              <div class="form-group">
+                <label>عدد الأكواد</label>
+                <input type="number" id="codesCount" class="form-control" value="10" min="1" max="500" required />
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">توليد الأكواد</button>
+                <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير CSV</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div id="generatedCodesBox" style="margin-bottom:16px; font-weight:700; color:#0284c7; word-break:break-all;"></div>
+
+        <h3>قائمة الأكواد الحالية (إمكانية حذف أي كود)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الكود</th>
+                <th>الكورس</th>
+                <th>الحالة</th>
+                <th>حذف</th>
+              </tr>
+            </thead>
+            <tbody id="codesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 8. الطلاب والأجهزة -->
+      <section id="studentsPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>رقم الهاتف</th>
+                <th>البريد الإلكتروني</th>
+                <th>معرّف الجهاز</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
 
   <script type="module">
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
-      collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc
+      collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc, deleteDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
+
+    const sidebar = document.getElementById("adminSidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const activePanelTitle = document.getElementById("activePanelTitle");
+
+    function toggleSidebar(forceState) {
+      const shouldOpen = typeof forceState === "boolean" ? forceState : !sidebar.classList.contains("open");
+      sidebar.classList.toggle("open", shouldOpen);
+      backdrop.classList.toggle("open", shouldOpen);
+    }
+
+    mobileMenuBtn.addEventListener("click", () => toggleSidebar());
+    backdrop.addEventListener("click", () => toggleSidebar(false));
+
+    const navLinks = document.querySelectorAll(".sidebar-link");
+    const panels = document.querySelectorAll(".admin-panel");
+
+    navLinks.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        navLinks.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        panels.forEach((p) => {
+          p.style.display = p.id === btn.dataset.target ? "block" : "none";
+        });
+        activePanelTitle.textContent = btn.textContent.trim();
+        toggleSidebar(false);
+      });
+    });
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -287,7 +546,7 @@
         return;
       }
       document.getElementById("adminBody").style.display = "block";
-      loadAdminData();
+      await Promise.all([loadAdminData(), loadVisibilitySettings(), loadBrandingSettings()]);
     });
 
     document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
@@ -295,19 +554,72 @@
       location.href = "admin-login.html";
     });
 
-    const tabButtons = document.querySelectorAll(".admin-tab-btn");
-    const panels = document.querySelectorAll(".admin-panel");
-    tabButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        tabButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        panels.forEach((p) => {
-          p.style.display = p.id === btn.dataset.tab ? "block" : "none";
-        });
+    // إعدادات الظهور والإخفاء
+    const visibilityKeys = [
+      "coursesSection", "videosSection", "pdfsSection",
+      "examsSection", "activationBox", "announcementBanner"
+    ];
+
+    async function loadVisibilitySettings() {
+      const snap = await getDoc(doc(db, "settings", "visibility"));
+      const data = snap.exists() ? snap.data() : {};
+      visibilityKeys.forEach((key) => {
+        const el = document.getElementById("vis_" + key);
+        if (!el) return;
+        el.checked = typeof data[key] === "boolean" ? data[key] : (key !== "announcementBanner");
       });
+      document.getElementById("announcementText").value = data.announcementText || "";
+    }
+
+    document.getElementById("saveVisibilityBtn").addEventListener("click", async () => {
+      const payload = {
+        announcementText: document.getElementById("announcementText").value.trim(),
+        updatedAt: new Date().toISOString()
+      };
+      visibilityKeys.forEach((key) => {
+        const el = document.getElementById("vis_" + key);
+        payload[key] = el ? el.checked : true;
+      });
+      await setDoc(doc(db, "settings", "visibility"), payload, { merge: true });
+      document.getElementById("visibilityMsg").textContent = "تم حفظ إعدادات الظهور بنجاح!";
+    });
+
+    // إعدادات اللوجو
+    const sidebarLogo = document.getElementById("sidebarLogo");
+    const logoUrlInput = document.getElementById("logoUrlInput");
+    const logoPreview = document.getElementById("logoPreview");
+
+    function applyLogo(url) {
+      const finalUrl = url && url.trim() ? url.trim() : "assets/img/logo.png";
+      if (sidebarLogo) { sidebarLogo.src = finalUrl; sidebarLogo.style.display = "inline-block"; }
+      if (logoPreview) { logoPreview.src = finalUrl; logoPreview.style.display = "inline-block"; }
+    }
+
+    async function loadBrandingSettings() {
+      const snap = await getDoc(doc(db, "settings", "branding"));
+      if (snap.exists() && snap.data().logoUrl) {
+        logoUrlInput.value = snap.data().logoUrl;
+        applyLogo(snap.data().logoUrl);
+      } else {
+        applyLogo("assets/img/logo.png");
+      }
+    }
+
+    logoUrlInput.addEventListener("input", () => applyLogo(logoUrlInput.value));
+
+    document.getElementById("brandingForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const urlVal = logoUrlInput.value.trim();
+      await setDoc(doc(db, "settings", "branding"), {
+        logoUrl: urlVal,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      applyLogo(urlVal);
+      document.getElementById("brandingMsg").textContent = "تم تحديث اللوجو بنجاح!";
     });
 
     let lastGenerated = [];
+    let courseTitleMap = {};
 
     async function loadAdminData() {
       const usersSnap = await getDocs(collection(db, "users"));
@@ -316,11 +628,11 @@
 
       let studentsCount = 0;
       let usedCodesCount = 0;
+      courseTitleMap = {};
 
       usersSnap.forEach((uDoc) => {
         if (uDoc.data().role !== "admin") studentsCount++;
       });
-
       codesSnap.forEach((cDoc) => {
         if (cDoc.data().used) usedCodesCount++;
       });
@@ -336,16 +648,68 @@
         document.getElementById("codeCourseSelect")
       ];
       selects.forEach((sel) => (sel.innerHTML = ""));
+
+      const coursesListEl = document.getElementById("coursesManageList");
+      coursesListEl.innerHTML = "";
+
       coursesSnap.forEach((cDoc) => {
-        const title = cDoc.data().title || cDoc.id;
+        const courseData = cDoc.data();
+        const title = courseData.title || cDoc.id;
+        courseTitleMap[cDoc.id] = title;
+
         selects.forEach((sel) => {
           const opt = document.createElement("option");
           opt.value = cDoc.id;
           opt.textContent = title;
           sel.appendChild(opt);
         });
+
+        // عنصر الكورس في قائمة الحذف
+        const item = document.createElement("div");
+        item.className = "manage-item";
+        item.innerHTML = `
+          <div>
+            <strong>${title}</strong>
+            <small style="display:block; opacity:0.75;">${courseData.category || ""} ${courseData.price ? "• " + courseData.price : ""}</small>
+          </div>
+          <button class="btn-danger" type="button">حذف الكورس</button>
+        `;
+        item.querySelector("button").addEventListener("click", async () => {
+          if (!confirm(`هل أنت متأكد من حذف كورس "${title}" بالكامل؟`)) return;
+          const lessonsSub = await getDocs(collection(db, "courses", cDoc.id, "lessons"));
+          for (const l of lessonsSub.docs) await deleteDoc(l.ref);
+          const examsSub = await getDocs(collection(db, "courses", cDoc.id, "exams"));
+          for (const ex of examsSub.docs) await deleteDoc(ex.ref);
+          await deleteDoc(doc(db, "courses", cDoc.id));
+          loadAdminData();
+        });
+        coursesListEl.appendChild(item);
       });
 
+      // تحميل محاضرات الكورس المختار
+      await renderLessonsForSelectedCourse();
+
+      // جدول الأكواد مع زر الحذف
+      const codesTbody = document.getElementById("codesTableBody");
+      codesTbody.innerHTML = "";
+      codesSnap.forEach((cDoc) => {
+        const c = cDoc.data();
+        const codeVal = c.code || cDoc.id;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${codeVal}</strong></td>
+          <td>${courseTitleMap[c.courseId] || c.courseId || "-"}</td>
+          <td>${c.used ? "مستخدم" : "متاح"}</td>
+          <td><button class="btn-danger" type="button">حذف</button></td>
+        `;
+        tr.querySelector("button").addEventListener("click", async () => {
+          await deleteDoc(doc(db, "activation_codes", cDoc.id));
+          loadAdminData();
+        });
+        codesTbody.appendChild(tr);
+      });
+
+      // جدول الطلاب
       const tbody = document.getElementById("studentsTableBody");
       tbody.innerHTML = "";
       usersSnap.forEach((uDoc) => {
@@ -367,6 +731,42 @@
         tbody.appendChild(tr);
       });
     }
+
+    async function renderLessonsForSelectedCourse() {
+      const courseId = document.getElementById("lessonCourseSelect").value;
+      const listEl = document.getElementById("lessonsManageList");
+      listEl.innerHTML = "";
+      if (!courseId) return;
+
+      const snap = await getDocs(collection(db, "courses", courseId, "lessons"));
+      if (snap.empty) {
+        listEl.innerHTML = `<p style="opacity:0.75;">لا توجد محاضرات مضافة لهذا الكورس بعد.</p>`;
+        return;
+      }
+
+      const lessons = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+
+      lessons.forEach((les) => {
+        const row = document.createElement("div");
+        row.className = "manage-item";
+        row.innerHTML = `
+          <div>
+            <strong>${les.order || 1}. ${les.title}</strong>
+            <small style="display:block; opacity:0.75;">${les.videoUrl || ""} ${les.pdfUrl ? "• PDF متاح" : ""}</small>
+          </div>
+          <button class="btn-danger" type="button">حذف المحاضرة</button>
+        `;
+        row.querySelector("button").addEventListener("click", async () => {
+          if (!confirm(`حذف المحاضرة "${les.title}"؟`)) return;
+          await deleteDoc(doc(db, "courses", courseId, "lessons", les.id));
+          renderLessonsForSelectedCourse();
+        });
+        listEl.appendChild(row);
+      });
+    }
+
+    document.getElementById("lessonCourseSelect").addEventListener("change", renderLessonsForSelectedCourse);
 
     document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -392,8 +792,9 @@
         pdfUrl: document.getElementById("lessonPdfUrl").value.trim(),
         createdAt: new Date().toISOString()
       });
-      document.getElementById("lessonMsg").textContent = "تمت إضافة المحاضرة (الفيديو وملف PDF) بنجاح!";
+      document.getElementById("lessonMsg").textContent = "تمت إضافة المحاضرة بنجاح!";
       e.target.reset();
+      renderLessonsForSelectedCourse();
     });
 
     document.getElementById("addExamForm").addEventListener("submit", async (e) => {
@@ -418,6 +819,24 @@
       e.target.reset();
     });
 
+    // إضافة كود مكتوب بإيدك
+    document.getElementById("customCodeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = document.getElementById("customCodeInput").value.trim().toUpperCase();
+      const courseId = document.getElementById("codeCourseSelect").value;
+      if (!code) return;
+      await setDoc(doc(db, "activation_codes", code), {
+        code,
+        courseId,
+        used: false,
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("customCodeMsg").textContent = `تم حفظ الكود ${code} بنجاح!`;
+      document.getElementById("customCodeInput").value = "";
+      loadAdminData();
+    });
+
+    // توليد أكواد تلقائي
     document.getElementById("genCodesForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const count = Number(document.getElementById("codesCount").value);
