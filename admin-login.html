@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دخول الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
+        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
+        <a href="index.html" class="btn btn-outline">الرئيسية</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 460px;">
+      <div class="card">
+        <span class="badge">صلاحيات الإدارة فقط</span>
+        <h2 class="section-title" style="margin-bottom:14px;">تسجيل دخول الأدمن</h2>
+        <p id="adminAuthMsg" style="color:var(--sky-primary); font-weight:700; margin-bottom:12px;"></p>
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label>البريد الإلكتروني للأدمن</label>
+            <input type="email" id="adminEmail" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور</label>
+            <input type="password" id="adminPassword" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">دخول لوحة التحكم</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { auth, db } from "./assets/js/firebase-config.js";
+    import { signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+
+    const msg = document.getElementById("adminAuthMsg");
+    document.getElementById("adminLoginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "جاري التحقق من صلاحيات الأدمن...";
+      try {
+        const email = document.getElementById("adminEmail").value.trim();
+        const pass = document.getElementById("adminPassword").value;
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        const snap = await getDoc(doc(db, "users", cred.user.uid));
+
+        if (!snap.exists() || snap.data().role !== "admin") {
+          await signOut(auth);
+          msg.textContent = "هذا الحساب ليس له صلاحية أدمن.";
+          return;
+        }
+        location.href = "admin.html";
+      } catch (err) {
+        msg.textContent = "بيانات الدخول غير صحيحة.";
+      }
+    });
+  </script>
+</body>
+</html>
