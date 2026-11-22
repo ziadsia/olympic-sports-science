@@ -69,6 +69,35 @@
       100% { background-position: 200% center; }
     }
 
+    /* بانر الإشعار المنفرد الخاص بالطالب */
+    .personal-notice-card {
+      background: var(--bg-card) !important;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-right: 5px solid #f59e0b;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      animation: fadeDown 0.4s ease-out;
+    }
+
+    .personal-notice-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .personal-notice-icon {
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
     .navbar {
       background: var(--bg-header) !important;
       backdrop-filter: blur(14px);
@@ -89,7 +118,7 @@
       overflow: hidden;
       border-radius: 20px;
       padding: 28px 26px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 55%, #0c4a6e 100%);
       color: #ffffff !important;
       box-shadow: 0 16px 34px -10px rgba(2, 132, 199, 0.45);
@@ -539,6 +568,17 @@
       </div>
     </div>
 
+    <!-- إشعار منفرد خاص بالطالب -->
+    <div id="personalNoticeBanner" class="personal-notice-card" style="display:none;">
+      <div class="personal-notice-content">
+        <span class="personal-notice-icon">📩</span>
+        <div>
+          <small style="display:block; color:#f59e0b !important; font-weight:800; margin-bottom:2px;">رسالة وإشعار خاص لك</small>
+          <span id="personalNoticeText"></span>
+        </div>
+      </div>
+    </div>
+
     <section id="coursesSection" data-vis="coursesSection">
       <div class="filter-bar">
         <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
@@ -744,6 +784,16 @@
       document.getElementById("studentName").textContent = displayName;
       currentStudentLabel = `${displayName} (${user.email || ""})`;
       applyWhatsAppLink();
+
+      // إظهار الإشعار المنفرد للطالب إذا كان مفعلاً وله نص
+      const noticeBanner = document.getElementById("personalNoticeBanner");
+      const noticeTextEl = document.getElementById("personalNoticeText");
+      if (userData.personalNoticeActive && userData.personalNotice && userData.personalNotice.trim()) {
+        noticeTextEl.textContent = userData.personalNotice.trim();
+        noticeBanner.style.display = "flex";
+      } else {
+        noticeBanner.style.display = "none";
+      }
 
       const list = Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : [];
       enrolledSet = new Set(list);
