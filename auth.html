@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدخول والتسجيل - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
+        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
+        <a href="index.html" class="btn btn-outline">الرئيسية</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 520px;">
+      <div class="card">
+        <div style="display:flex; gap:10px; margin-bottom:20px;">
+          <button id="tabLogin" class="btn btn-primary" style="flex:1;" type="button">تسجيل الدخول</button>
+          <button id="tabRegister" class="btn btn-outline" style="flex:1;" type="button">حساب جديد</button>
+        </div>
+
+        <div id="statusMsg" style="margin-bottom:12px; font-weight:700; color:var(--sky-primary);"></div>
+
+        <!-- نموذج تسجيل الدخول -->
+        <form id="loginForm">
+          <div class="form-group">
+            <label>رقم الهاتف أو البريد الإلكتروني</label>
+            <input type="text" id="loginIdentifier" class="form-control" placeholder="010xxxxxxxx أو name@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور</label>
+            <input type="password" id="loginPassword" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">دخول إلى المنصة</button>
+        </form>
+
+        <!-- نموذج إنشاء حساب جديد -->
+        <form id="registerForm" style="display:none;">
+          <div class="form-group">
+            <label>الاسم رباعي</label>
+            <input type="text" id="regName" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>رقم هاتف الطالب</label>
+            <input type="tel" id="regPhone" class="form-control" placeholder="010xxxxxxxx" required />
+          </div>
+          <div class="form-group">
+            <label>رقم هاتف ولي الأمر</label>
+            <input type="tel" id="regParentPhone" class="form-control" placeholder="010xxxxxxxx" required />
+          </div>
+          <div class="form-group">
+            <label>المحافظة</label>
+            <input type="text" id="regGov" class="form-control" placeholder="الفيوم / القاهرة..." required />
+          </div>
+          <div class="form-group">
+            <label>الفرقة الدراسية</label>
+            <select id="regLevel" class="form-control" required>
+              <option value="الفرقة الأولى">الفرقة الأولى</option>
+              <option value="الفرقة الثانية">الفرقة الثانية</option>
+              <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+              <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="regEmail" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور</label>
+            <input type="password" id="regPassword" class="form-control" minlength="6" required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">إنشاء الحساب</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { auth, db } from "./assets/js/firebase-config.js";
+    import {
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+
+    const tabLogin = document.getElementById("tabLogin");
+    const tabRegister = document.getElementById("tabRegister");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const statusMsg = document.getElementById("statusMsg");
+
+    function getDeviceId() {
+      let id = localStorage.getItem("olympic_device_id");
+      if (!id) {
+        id = "dev_" + Math.random().toString(36).slice(2) + "_" + Date.now();
+        localStorage.setItem("olympic_device_id", id);
+      }
+      return id;
+    }
+
+    function switchTab(mode) {
+      const isRegister = mode === "register";
+      registerForm.style.display = isRegister ? "block" : "none";
+      loginForm.style.display = isRegister ? "none" : "block";
+      tabRegister.className = isRegister ? "btn btn-primary" : "btn btn-outline";
+      tabLogin.className = isRegister ? "btn btn-outline" : "btn btn-primary";
+      statusMsg.textContent = "";
+    }
+
+    tabLogin.addEventListener("click", () => switchTab("login"));
+    tabRegister.addEventListener("click", () => switchTab("register"));
+
+    const params = new URLSearchParams(location.search);
+    if (params.get("mode") === "register") switchTab("register");
+
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusMsg.textContent = "جاري إنشاء الحساب...";
+      try {
+        const email = document.getElementById("regEmail").value.trim();
+        const password = document.getElementById("regPassword").value;
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const deviceId = getDeviceId();
+
+        await setDoc(doc(db, "users", cred.user.uid), {
+          fullName: document.getElementById("regName").value.trim(),
+          phone: document.getElementById("regPhone").value.trim(),
+          parentPhone: document.getElementById("regParentPhone").value.trim(),
+          governorate: document.getElementById("regGov").value.trim(),
+          level: document.getElementById("regLevel").value,
+          email,
+          deviceId,
+          activeCourses: [],
+          blocked: false,
+          createdAt: new Date().toISOString()
+        });
+
+        localStorage.setItem("olympic_session_device", deviceId);
+        location.href = "dashboard.html";
+      } catch (err) {
+        statusMsg.textContent = "خطأ أثناء التسجيل: " + err.message;
+      }
+    });
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusMsg.textContent = "جاري التحقق من الحساب والجهاز...";
+      try {
+        let identifier = document.getElementById("loginIdentifier").value.trim();
+        const password = document.getElementById("loginPassword").value;
+
+        // لو أدخل رقم هاتف نبحث عن الإيميل المرتبط به
+        if (!identifier.includes("@")) {
+          const q = query(collection(db, "users"), where("phone", "==", identifier));
+          const snap = await getDocs(q);
+          if (snap.empty) {
+            statusMsg.textContent = "رقم الهاتف غير مسجل.";
+            return;
+          }
+          identifier = snap.docs[0].data().email;
+        }
+
+        const cred = await signInWithEmailAndPassword(auth, identifier, password);
+        const userRef = doc(db, "users", cred.user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data() || {};
+
+        if (userData.blocked) {
+          statusMsg.textContent = "هذا الحساب موقوف حالياً، تواصل مع الإدارة.";
+          return;
+        }
+
+        const currentDevice = getDeviceId();
+        if (userData.deviceId && userData.deviceId !== currentDevice) {
+          statusMsg.textContent = "الحساب مسجل على جهاز آخر! اطلب Reset للجهاز من الإدارة.";
+          return;
+        }
+
+        await updateDoc(userRef, { deviceId: currentDevice, lastLogin: new Date().toISOString() });
+        localStorage.setItem("olympic_session_device", currentDevice);
+        location.href = "dashboard.html";
+      } catch (err) {
+        statusMsg.textContent = "بيانات الدخول غير صحيحة.";
+      }
+    });
+  </script>
+</body>
+</html>
