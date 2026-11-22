@@ -239,7 +239,7 @@
     }
 
     .manage-list {
-      margin-top: 22px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -258,6 +258,41 @@
     }
     .manage-item small {
       color: var(--text-secondary) !important;
+      word-break: break-all;
+    }
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-edit {
+      background: #0284c7;
+      color: #ffffff !important;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-edit:hover {
+      background: #0369a1;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #ffffff !important;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
     }
 
     .table-wrap {
@@ -281,19 +316,6 @@
       font-weight: 800;
     }
 
-    .btn-danger {
-      background: #dc2626;
-      color: #ffffff !important;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-danger:hover {
-      background: #b91c1c;
-    }
     .split-box {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -306,6 +328,40 @@
       border: 1px solid var(--border-subtle);
       background: var(--bg-sub) !important;
       color: var(--text-primary) !important;
+    }
+
+    /* مودال التعديل */
+    .edit-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(5px);
+      z-index: 250;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .edit-modal-backdrop.open {
+      display: flex;
+    }
+    .edit-modal-box {
+      width: 100%;
+      max-width: 540px;
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .edit-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
     }
 
     @media (max-width: 900px) {
@@ -339,9 +395,8 @@
           <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
           <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
           <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
-          <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / حذف)</button>
-          <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / حذف)</button>
-          <button class="sidebar-link" data-target="examsPanel" type="button">📝 الامتحانات</button>
+          <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / تعديل / حذف)</button>
+          <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="codesPanel" type="button">🎟️ أكواد التفعيل (كتابة / توليد / حذف)</button>
           <button class="sidebar-link" data-target="studentsPanel" type="button">👨‍🎓 الطلاب والأجهزة</button>
         </nav>
@@ -449,7 +504,7 @@
         <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
-      <!-- 5. الكورسات (إضافة وحذف) -->
+      <!-- 5. الكورسات (إضافة وتعديل وحذف) -->
       <section id="coursesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كورس جديد</h2>
         <form id="addCourseForm">
@@ -479,11 +534,11 @@
         </form>
         <p id="courseMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
-        <h3 style="margin-top:26px;">الكورسات الحالية (إمكانية الحذف)</h3>
+        <h3 style="margin-top:26px;">الكورسات الحالية (إمكانية التعديل أو الحذف)</h3>
         <div id="coursesManageList" class="manage-list"></div>
       </section>
 
-      <!-- 6. المحاضرات (إضافة وحذف داخل كل كورس) -->
+      <!-- 6. المحاضرات (إضافة وتعديل وحذف داخل كل كورس) -->
       <section id="lessonsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة فيديوهات وملفات PDF داخل الكورسات</h2>
         <form id="addLessonForm">
@@ -515,49 +570,11 @@
         </form>
         <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
-        <h3 style="margin-top:26px;">محاضرات الكورس المختار (إمكانية حذف أي فيديو/محاضرة)</h3>
+        <h3 style="margin-top:26px;">محاضرات الكورس المختار (إمكانية تعديل الرابط أو إضافة PDF أو الحذف)</h3>
         <div id="lessonsManageList" class="manage-list"></div>
       </section>
 
-      <!-- 7. الامتحانات -->
-      <section id="examsPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إضافة امتحان اختيار من متعدد</h2>
-        <form id="addExamForm">
-          <div class="grid-3">
-            <div class="form-group">
-              <label>اختر الكورس</label>
-              <select id="examCourseSelect" class="form-control" required></select>
-            </div>
-            <div class="form-group">
-              <label>عنوان الامتحان</label>
-              <input type="text" id="examTitle" class="form-control" placeholder="اختبار الوحدة الأولى" required />
-            </div>
-            <div class="form-group">
-              <label>الإجابة الصحيحة</label>
-              <select id="correctIndex" class="form-control">
-                <option value="0">الاختيار الأول</option>
-                <option value="1">الاختيار الثاني</option>
-                <option value="2">الاختيار الثالث</option>
-                <option value="3">الاختيار الرابع</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>نص السؤال</label>
-            <input type="text" id="questionText" class="form-control" placeholder="اكتب السؤال..." required />
-          </div>
-          <div class="grid-4">
-            <div class="form-group"><label>الاختيار الأول</label><input type="text" id="opt0" class="form-control" required /></div>
-            <div class="form-group"><label>الاختيار الثاني</label><input type="text" id="opt1" class="form-control" required /></div>
-            <div class="form-group"><label>الاختيار الثالث</label><input type="text" id="opt2" class="form-control" required /></div>
-            <div class="form-group"><label>الاختيار الرابع</label><input type="text" id="opt3" class="form-control" required /></div>
-          </div>
-          <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
-        </form>
-        <p id="examMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
-      </section>
-
-      <!-- 8. أكواد التفعيل (كتابة يدوية + توليد تلقائي + حذف) -->
+      <!-- 7. أكواد التفعيل -->
       <section id="codesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة أكواد التفعيل</h2>
 
@@ -612,7 +629,7 @@
         </div>
       </section>
 
-      <!-- 9. الطلاب والأجهزة -->
+      <!-- 8. الطلاب والأجهزة -->
       <section id="studentsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
         <div class="table-wrap">
@@ -630,6 +647,68 @@
           </table>
         </div>
       </section>
+    </div>
+  </div>
+
+  <!-- مودال تعديل الكورس -->
+  <div id="editCourseModal" class="edit-modal-backdrop">
+    <div class="edit-modal-box">
+      <h3 style="margin:0 0 14px; color:var(--brand-primary) !important;">✏️ تعديل بيانات الكورس</h3>
+      <form id="editCourseForm">
+        <div class="form-group">
+          <label>اسم الكورس</label>
+          <input type="text" id="editCourseTitle" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>التصنيف / القسم</label>
+          <input type="text" id="editCourseCategory" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>السعر (اختياري)</label>
+          <input type="text" id="editCoursePrice" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>رابط صورة غلاف الكورس (اختياري)</label>
+          <input type="url" id="editCourseImage" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>وصف الكورس</label>
+          <textarea id="editCourseDesc" class="form-control" rows="2" required></textarea>
+        </div>
+        <div class="edit-modal-footer">
+          <button type="button" id="cancelEditCourseBtn" class="btn btn-outline">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال تعديل المحاضرة -->
+  <div id="editLessonModal" class="edit-modal-backdrop">
+    <div class="edit-modal-box">
+      <h3 style="margin:0 0 14px; color:var(--brand-primary) !important;">✏️ تعديل المحاضرة وملف PDF</h3>
+      <form id="editLessonForm">
+        <div class="form-group">
+          <label>عنوان المحاضرة</label>
+          <input type="text" id="editLessonTitle" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>ترتيب المحاضرة</label>
+          <input type="number" id="editLessonOrder" class="form-control" min="1" required />
+        </div>
+        <div class="form-group">
+          <label>رابط الفيديو (YouTube Embed / رابط مباشر)</label>
+          <input type="url" id="editLessonVideoUrl" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>رابط ملف PDF (إضافة أو تعديل)</label>
+          <input type="url" id="editLessonPdfUrl" class="form-control" placeholder="https://example.com/file.pdf" />
+        </div>
+        <div class="edit-modal-footer">
+          <button type="button" id="cancelEditLessonBtn" class="btn btn-outline">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -782,6 +861,74 @@
 
     let lastGenerated = [];
     let courseTitleMap = {};
+    let editingCourseId = null;
+    let editingLessonId = null;
+
+    const editCourseModal = document.getElementById("editCourseModal");
+    const editLessonModal = document.getElementById("editLessonModal");
+
+    function openEditCourseModal(courseId, courseData) {
+      editingCourseId = courseId;
+      document.getElementById("editCourseTitle").value = courseData.title || "";
+      document.getElementById("editCourseCategory").value = courseData.category || "";
+      document.getElementById("editCoursePrice").value = courseData.price || "";
+      document.getElementById("editCourseImage").value = courseData.imageUrl || "";
+      document.getElementById("editCourseDesc").value = courseData.description || "";
+      editCourseModal.classList.add("open");
+    }
+
+    document.getElementById("cancelEditCourseBtn").addEventListener("click", () => {
+      editCourseModal.classList.remove("open");
+      editingCourseId = null;
+    });
+
+    document.getElementById("editCourseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!editingCourseId) return;
+      await updateDoc(doc(db, "courses", editingCourseId), {
+        title: document.getElementById("editCourseTitle").value.trim(),
+        category: document.getElementById("editCourseCategory").value.trim(),
+        price: document.getElementById("editCoursePrice").value.trim(),
+        imageUrl: document.getElementById("editCourseImage").value.trim(),
+        description: document.getElementById("editCourseDesc").value.trim(),
+        updatedAt: new Date().toISOString()
+      });
+      editCourseModal.classList.remove("open");
+      editingCourseId = null;
+      document.getElementById("courseMsg").textContent = "تم تحديث بيانات الكورس بنجاح!";
+      await loadAdminData();
+    });
+
+    function openEditLessonModal(lessonId, lessonData) {
+      editingLessonId = lessonId;
+      document.getElementById("editLessonTitle").value = lessonData.title || "";
+      document.getElementById("editLessonOrder").value = lessonData.order || 1;
+      document.getElementById("editLessonVideoUrl").value = lessonData.videoUrl || "";
+      document.getElementById("editLessonPdfUrl").value = lessonData.pdfUrl || "";
+      editLessonModal.classList.add("open");
+    }
+
+    document.getElementById("cancelEditLessonBtn").addEventListener("click", () => {
+      editLessonModal.classList.remove("open");
+      editingLessonId = null;
+    });
+
+    document.getElementById("editLessonForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const courseId = document.getElementById("lessonCourseSelect").value;
+      if (!courseId || !editingLessonId) return;
+      await updateDoc(doc(db, "courses", courseId, "lessons", editingLessonId), {
+        title: document.getElementById("editLessonTitle").value.trim(),
+        order: Number(document.getElementById("editLessonOrder").value) || 1,
+        videoUrl: document.getElementById("editLessonVideoUrl").value.trim(),
+        pdfUrl: document.getElementById("editLessonPdfUrl").value.trim(),
+        updatedAt: new Date().toISOString()
+      });
+      editLessonModal.classList.remove("open");
+      editingLessonId = null;
+      document.getElementById("lessonMsg").textContent = "تم تحديث المحاضرة ورابط PDF بنجاح!";
+      await renderLessonsForSelectedCourse();
+    });
 
     async function loadAdminData() {
       const usersSnap = await getDocs(collection(db, "users"));
@@ -819,7 +966,6 @@
 
       const selects = [
         document.getElementById("lessonCourseSelect"),
-        document.getElementById("examCourseSelect"),
         document.getElementById("codeCourseSelect")
       ];
       selects.forEach((sel) => (sel.innerHTML = ""));
@@ -846,9 +992,15 @@
             <strong>${title}</strong>
             <small style="display:block;">${courseData.category || ""} ${courseData.price ? "• " + courseData.price : ""}</small>
           </div>
-          <button class="btn-danger" type="button">حذف الكورس</button>
+          <div class="item-actions">
+            <button class="btn-edit" type="button">تعديل</button>
+            <button class="btn-danger" type="button">حذف الكورس</button>
+          </div>
         `;
-        item.querySelector("button").addEventListener("click", async () => {
+        item.querySelector(".btn-edit").addEventListener("click", () => {
+          openEditCourseModal(cDoc.id, courseData);
+        });
+        item.querySelector(".btn-danger").addEventListener("click", async () => {
           if (!confirm(`هل أنت متأكد من حذف كورس "${title}" بالكامل؟`)) return;
           const lessonsSub = await getDocs(collection(db, "courses", cDoc.id, "lessons"));
           for (const l of lessonsSub.docs) await deleteDoc(l.ref);
@@ -962,11 +1114,18 @@
         row.innerHTML = `
           <div>
             <strong>${les.order || 1}. ${les.title}</strong>
-            <small style="display:block;">${les.videoUrl || ""} ${les.pdfUrl ? "• PDF متاح" : ""}</small>
+            <small style="display:block;">فيديو: ${les.videoUrl || "-"}</small>
+            <small style="display:block;">PDF: ${les.pdfUrl ? les.pdfUrl : "غير مضاف"}</small>
           </div>
-          <button class="btn-danger" type="button">حذف المحاضرة</button>
+          <div class="item-actions">
+            <button class="btn-edit" type="button">تعديل / إضافة PDF</button>
+            <button class="btn-danger" type="button">حذف المحاضرة</button>
+          </div>
         `;
-        row.querySelector("button").addEventListener("click", async () => {
+        row.querySelector(".btn-edit").addEventListener("click", () => {
+          openEditLessonModal(les.id, les);
+        });
+        row.querySelector(".btn-danger").addEventListener("click", async () => {
           if (!confirm(`حذف المحاضرة "${les.title}"؟`)) return;
           await deleteDoc(doc(db, "courses", courseId, "lessons", les.id));
           renderLessonsForSelectedCourse();
@@ -1005,28 +1164,6 @@
       document.getElementById("lessonMsg").textContent = "تمت إضافة المحاضرة بنجاح!";
       e.target.reset();
       renderLessonsForSelectedCourse();
-    });
-
-    document.getElementById("addExamForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const courseId = document.getElementById("examCourseSelect").value;
-      const options = [
-        document.getElementById("opt0").value.trim(),
-        document.getElementById("opt1").value.trim(),
-        document.getElementById("opt2").value.trim(),
-        document.getElementById("opt3").value.trim()
-      ];
-      await addDoc(collection(db, "courses", courseId, "exams"), {
-        title: document.getElementById("examTitle").value.trim(),
-        questions: [{
-          question: document.getElementById("questionText").value.trim(),
-          options,
-          correctIndex: Number(document.getElementById("correctIndex").value)
-        }],
-        createdAt: new Date().toISOString()
-      });
-      document.getElementById("examMsg").textContent = "تم حفظ الامتحان بنجاح!";
-      e.target.reset();
     });
 
     document.getElementById("customCodeForm").addEventListener("submit", async (e) => {
