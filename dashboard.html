@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة الطالب - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
+        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
+      </a>
+      <div class="nav-actions">
+        <span id="studentBadge" class="badge" style="margin:0;">طالب</span>
+        <button id="themeToggle" class="btn btn-icon" type="button">🌙</button>
+        <button id="logoutBtn" class="btn btn-outline" type="button">خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container panel-layout">
+    <aside class="sidebar">
+      <button class="btn sidebar-btn active" data-tab="coursesTab" type="button">كورساتي</button>
+      <button class="btn sidebar-btn" data-tab="redeemTab" type="button">تفعيل كود</button>
+      <button class="btn sidebar-btn" data-tab="playerTab" type="button">مشغل المحاضرات</button>
+      <button class="btn sidebar-btn" data-tab="quizTab" type="button">اختبار سريع</button>
+    </aside>
+
+    <main>
+      <!-- كورساتي -->
+      <section id="coursesTab" class="card">
+        <h2 class="section-title">كورساتي المفعّلة</h2>
+        <div class="grid-3" id="myCoursesList">
+          <div class="card">
+            <h3>كورس تجريبي - علوم الرياضة</h3>
+            <p>محاضرة تعريفية + مذكرة PDF</p>
+            <button class="btn btn-primary open-demo-lesson" type="button">تشغيل المحاضرة</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- تفعيل كود -->
+      <section id="redeemTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title">تفعيل كود اشتراك</h2>
+        <form id="redeemForm" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="text" id="codeInput" class="form-control" placeholder="أدخل كود التفعيل هنا" style="flex:1; min-width:220px;" required />
+          <button type="submit" class="btn btn-primary">تفعيل الآن</button>
+        </form>
+        <p id="redeemMsg" style="margin-top:12px; font-weight:700;"></p>
+      </section>
+
+      <!-- مشغل المحاضرات المحمي بعلامة مائية متحركة -->
+      <section id="playerTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title" id="lessonTitle">مشغل المحاضرات المحمي</h2>
+        <div class="video-box" id="videoBox">
+          <div class="watermark-layer">
+            <div class="watermark-badge" id="watermarkBadge">01033709743 • الأكاديمية الأولمبية</div>
+          </div>
+          <iframe id="lessonFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <a id="pdfLink" href="#" target="_blank" class="btn btn-outline">تحميل مذكرة PDF</a>
+        </div>
+      </section>
+
+      <!-- اختبار سريع -->
+      <section id="quizTab" class="card" style="display:none; margin-top:16px;">
+        <h2 class="section-title">اختبار إلكتروني</h2>
+        <p style="margin-bottom:12px; font-weight:700;">1. أي علم يدرس الميكانيكا الحيوية لحركة الإنسان أثناء الأداء الرياضي؟</p>
+        <div style="display:grid; gap:8px; margin-bottom:14px;">
+          <label><input type="radio" name="q1" value="wrong" /> علم النفس الرياضي</label>
+          <label><input type="radio" name="q1" value="correct" /> علم الحركة (Biomechanics)</label>
+          <label><input type="radio" name="q1" value="wrong" /> الإدارة الرياضية</label>
+        </div>
+        <button id="submitQuizBtn" class="btn btn-primary" type="button">تسليم الاختبار</button>
+        <p id="quizResult" style="margin-top:12px; font-weight:800;"></p>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initTheme } from "./assets/js/theme.js";
+    import { auth, db } from "./assets/js/firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    initTheme();
+
+    // التنقل بين تبويبات لوحة الطالب
+    const sidebarBtns = document.querySelectorAll(".sidebar-btn");
+    const tabs = ["coursesTab", "redeemTab", "playerTab", "quizTab"];
+    function showTab(targetId) {
+      tabs.forEach((id) => {
+        document.getElementById(id).style.display = id === targetId ? "block" : "none";
+      });
+      sidebarBtns.forEach((b) => b.classList.toggle("active", b.dataset.tab === targetId));
+    }
+    sidebarBtns.forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
+
+    document.querySelectorAll(".open-demo-lesson").forEach((btn) => {
+      btn.addEventListener("click", () => showTab("playerTab"));
+    });
+
+    // تحريك العلامة المائية برقم الهاتف
+    const wm = document.getElementById("watermarkBadge");
+    setInterval(() => {
+      const top = Math.floor(Math.random() * 72) + 8;
+      const left = Math.floor(Math.random() * 65) + 5;
+      wm.style.top = top + "%";
+      wm.style.left = left + "%";
+    }, 2400);
+
+    let currentUser = null;
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("studentBadge").textContent = d.fullName || "طالب";
+          wm.textContent = `${d.phone || ""} • الأكاديمية الأولمبية`;
+        }
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      location.href = "index.html";
+    });
+
+    // تفعيل كود من Firestore
+    document.getElementById("redeemForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("redeemMsg");
+      const codeVal = document.getElementById("codeInput").value.trim().toUpperCase();
+      if (!currentUser) {
+        msg.textContent = "سجل الدخول أولاً لتفعيل الكود.";
+        return;
+      }
+      const codeRef = doc(db, "activation_codes", codeVal);
+      const codeSnap = await getDoc(codeRef);
+      if (!codeSnap.exists() || codeSnap.data().used) {
+        msg.textContent = "الكود غير صحيح أو مستخدم من قبل.";
+        return;
+      }
+      await updateDoc(codeRef, { used: true, usedBy: currentUser.uid });
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        activeCourses: arrayUnion(codeSnap.data().courseId || "general")
+      });
+      msg.textContent = "تم تفعيل الكورس بنجاح!";
+    });
+
+    // تصحيح الاختبار
+    document.getElementById("submitQuizBtn").addEventListener("click", () => {
+      const chosen = document.querySelector('input[name="q1"]:checked');
+      const res = document.getElementById("quizResult");
+      if (!chosen) {
+        res.textContent = "اختر إجابة أولاً.";
+        return;
+      }
+      res.textContent = chosen.value === "correct" ? "إجابة صحيحة! الدرجة: 1/1" : "إجابة غير صحيحة، الإجابة الصحيحة هي: علم الحركة.";
+    });
+  </script>
+</body>
+</html>
