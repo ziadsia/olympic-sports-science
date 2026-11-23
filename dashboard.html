@@ -69,7 +69,6 @@
       100% { background-position: 200% center; }
     }
 
-    /* بانر الإشعار المنفرد الخاص بالطالب */
     .personal-notice-card {
       background: var(--bg-card) !important;
       border: 1px solid rgba(245, 158, 11, 0.45);
@@ -130,34 +129,6 @@
       animation: fadeDown 0.6s ease-out;
     }
 
-    .welcome-banner::before,
-    .welcome-banner::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      pointer-events: none;
-    }
-    .welcome-banner::before {
-      width: 220px;
-      height: 220px;
-      top: -70px;
-      left: -40px;
-      animation: floatBubble 7s ease-in-out infinite;
-    }
-    .welcome-banner::after {
-      width: 140px;
-      height: 140px;
-      bottom: -50px;
-      right: 18%;
-      animation: floatBubble 5s ease-in-out infinite reverse;
-    }
-
-    @keyframes floatBubble {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-14px) scale(1.05); }
-    }
-
     @keyframes fadeDown {
       from { opacity: 0; transform: translateY(-16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -178,6 +149,31 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
       font-weight: 800;
       font-size: 0.95rem;
+    }
+
+    .main-category-switch {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .cat-switch-btn {
+      padding: 10px 20px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-primary) !important;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .cat-switch-btn.active {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #ffffff !important;
+      border-color: transparent;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
     }
 
     .filter-bar {
@@ -205,10 +201,6 @@
       cursor: pointer;
       transition: all 0.25s ease;
     }
-    .filter-chip:hover {
-      border-color: var(--brand-primary);
-      transform: translateY(-2px);
-    }
     .filter-chip.active {
       background: #0284c7;
       color: #ffffff !important;
@@ -220,7 +212,6 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
-      perspective: 1000px;
     }
 
     .pro-course-card {
@@ -234,20 +225,10 @@
       flex-direction: column;
       justify-content: space-between;
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
-      opacity: 0;
-      transform: translateY(24px);
-      animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    @keyframes cardReveal {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .pro-course-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-6px);
       border-color: #0284c7;
       box-shadow: 0 22px 42px -12px rgba(2, 132, 199, 0.28);
     }
@@ -269,7 +250,7 @@
     }
 
     .pro-course-card:hover .course-cover-img {
-      transform: scale(1.08);
+      transform: scale(1.06);
     }
 
     .course-cover-overlay {
@@ -316,13 +297,11 @@
     .status-pill.locked {
       background: rgba(220, 38, 38, 0.88);
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
     }
 
     .status-pill.unlocked {
       background: rgba(5, 150, 105, 0.9);
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
     }
 
     .course-body {
@@ -388,22 +367,13 @@
       color: #ffffff !important;
       box-shadow: 0 6px 16px rgba(2, 132, 199, 0.32);
     }
-    .action-btn.open-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(2, 132, 199, 0.45);
-    }
 
     .action-btn.lock-btn {
       background: rgba(2, 132, 199, 0.12);
       color: var(--brand-primary) !important;
       border: 1px solid rgba(2, 132, 199, 0.3);
     }
-    .action-btn.lock-btn:hover {
-      background: #0284c7;
-      color: #ffffff !important;
-    }
 
-    /* أزرار التواصل العائمة */
     .floating-social-wrap {
       position: fixed;
       bottom: 24px;
@@ -424,51 +394,25 @@
       color: #ffffff !important;
       text-decoration: none;
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-      position: relative;
+      transition: transform 0.3s ease;
     }
 
     .social-float-btn:hover {
-      transform: scale(1.12) translateY(-3px);
+      transform: scale(1.1);
     }
 
     .social-float-btn.whatsapp {
       background: linear-gradient(135deg, #25d366, #128c7e);
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.38);
     }
 
     .social-float-btn.facebook {
       background: linear-gradient(135deg, #1877f2, #0d5ab9);
-      box-shadow: 0 8px 20px rgba(24, 119, 242, 0.38);
     }
 
     .social-float-btn svg {
       width: 26px;
       height: 26px;
       fill: currentColor;
-    }
-
-    .social-tooltip {
-      position: absolute;
-      left: 62px;
-      background: var(--bg-card);
-      color: var(--text-primary) !important;
-      padding: 5px 12px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      white-space: nowrap;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(-8px);
-      transition: all 0.25s ease;
-    }
-
-    .social-float-btn:hover .social-tooltip {
-      opacity: 1;
-      transform: translateX(0);
     }
 
     .modal-backdrop {
@@ -484,11 +428,6 @@
     }
     .modal-backdrop.open {
       display: flex;
-      animation: fadeIn 0.25s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
     .modal-box {
       width: 100%;
@@ -499,11 +438,6 @@
       padding: 24px;
       border: 1px solid var(--border-subtle);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
-      transform: scale(0.95);
-      animation: popUp 0.25s ease forwards;
-    }
-    @keyframes popUp {
-      to { transform: scale(1); }
     }
     .modal-box input.form-control {
       background: var(--input-bg) !important;
@@ -521,19 +455,6 @@
       gap: 10px;
       justify-content: flex-end;
       margin-top: 16px;
-    }
-
-    .skeleton-card {
-      height: 330px;
-      border-radius: 20px;
-      background: linear-gradient(90deg, var(--bg-card) 25%, rgba(2,132,199,0.08) 50%, var(--bg-card) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      border: 1px solid var(--border-subtle);
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
     }
   </style>
 </head>
@@ -560,7 +481,7 @@
           أهلاً بك، <span id="studentName">طالب</span> 👋
         </h1>
         <p style="margin:0; opacity:0.9; font-size:0.95rem;">
-          اختر الكورس المناسب وفعّله بكود التفعيل لبدء مشاهدة المحاضرات وحل الاختبارات.
+          اختر الكورس المناسب وفعّله بكود التفعيل، أو تصفّح الكتب المتاحة للطلب.
         </p>
       </div>
       <div class="student-stats-pill">
@@ -579,6 +500,13 @@
       </div>
     </div>
 
+    <!-- تبديل بين الكورسات والكتب -->
+    <div class="main-category-switch">
+      <button id="tabCoursesBtn" class="cat-switch-btn active" type="button">📚 الكورسات</button>
+      <button id="tabBooksBtn" class="cat-switch-btn" type="button" data-vis="booksSection">📖 الكتب</button>
+    </div>
+
+    <!-- قسم الكورسات -->
     <section id="coursesSection" data-vis="coursesSection">
       <div class="filter-bar">
         <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
@@ -589,22 +517,24 @@
         </div>
       </div>
 
-      <div id="dashboardCoursesGrid" class="courses-grid">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
+      <div id="dashboardCoursesGrid" class="courses-grid"></div>
+    </section>
+
+    <!-- قسم الكتب -->
+    <section id="booksSection" data-vis="booksSection" style="display:none;">
+      <div class="filter-bar">
+        <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكتب المتاحة</h2>
       </div>
+
+      <div id="dashboardBooksGrid" class="courses-grid"></div>
     </section>
   </main>
 
-  <!-- أيقونات التواصل العائمة -->
   <div id="floatingSocialWrap" class="floating-social-wrap">
     <a id="whatsappFloatBtn" href="#" target="_blank" rel="noopener noreferrer" class="social-float-btn whatsapp" style="display:none;" aria-label="تواصل واتساب">
-      <span class="social-tooltip">تواصل معنا واتساب</span>
       <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/></svg>
     </a>
     <a id="facebookFloatBtn" href="#" target="_blank" rel="noopener noreferrer" class="social-float-btn facebook" style="display:none;" aria-label="صفحتنا على فيسبوك">
-      <span class="social-tooltip">تابعنا على فيسبوك</span>
       <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
     </a>
   </div>
@@ -660,7 +590,7 @@
       const cleanPhone = whatsappNumber.replace(/\D/g, "");
       const text = courseTitle
         ? `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الحصول على كود تفعيل لكورس: ${courseTitle}`
-        : `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الاستفسار وطلب كود تفعيل في الأكاديمية الأولمبية لعلوم الرياضة.`;
+        : `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الاستفسار في الأكاديمية الأولمبية لعلوم الرياضة.`;
       waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
       waBtn.style.display = "flex";
     }
@@ -716,12 +646,29 @@
           </linearGradient>
         </defs>
         <rect width="800" height="450" fill="url(#g)"/>
-        <circle cx="680" cy="90" r="140" fill="rgba(56,189,248,0.16)"/>
-        <circle cx="140" cy="380" r="180" fill="rgba(255,255,255,0.07)"/>
         <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="34" font-weight="bold">الأكاديمية الأولمبية</text>
         <text x="50%" y="59%" dominant-baseline="middle" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="22">لعلوم الرياضة</text>
       </svg>
     `);
+
+    const tabCoursesBtn = document.getElementById("tabCoursesBtn");
+    const tabBooksBtn = document.getElementById("tabBooksBtn");
+    const coursesSection = document.getElementById("coursesSection");
+    const booksSection = document.getElementById("booksSection");
+
+    tabCoursesBtn.addEventListener("click", () => {
+      tabCoursesBtn.classList.add("active");
+      tabBooksBtn.classList.remove("active");
+      coursesSection.style.display = "block";
+      booksSection.style.display = "none";
+    });
+
+    tabBooksBtn.addEventListener("click", () => {
+      tabBooksBtn.classList.add("active");
+      tabCoursesBtn.classList.remove("active");
+      coursesSection.style.display = "none";
+      booksSection.style.display = "block";
+    });
 
     let currentUser = null;
     let enrolledSet = new Set();
@@ -788,8 +735,14 @@
       // إظهار الإشعار المنفرد للطالب إذا كان مفعلاً وله نص
       const noticeBanner = document.getElementById("personalNoticeBanner");
       const noticeTextEl = document.getElementById("personalNoticeText");
-      if (userData.personalNoticeActive && userData.personalNotice && userData.personalNotice.trim()) {
-        noticeTextEl.textContent = userData.personalNotice.trim();
+      const noticeText = (userData.personalNotice || userData.notice || "").trim();
+      const isNoticeActive =
+        userData.personalNoticeActive === true ||
+        userData.personalNoticeActive === "true" ||
+        (userData.personalNoticeActive === undefined && Boolean(noticeText));
+
+      if (isNoticeActive && noticeText) {
+        noticeTextEl.textContent = noticeText;
         noticeBanner.style.display = "flex";
       } else {
         noticeBanner.style.display = "none";
@@ -799,7 +752,7 @@
       enrolledSet = new Set(list);
 
       document.getElementById("studentBody").style.display = "block";
-      await fetchAndRenderCourses();
+      await Promise.all([fetchAndRenderCourses(), fetchAndRenderBooks()]);
     });
 
     async function fetchAndRenderCourses() {
@@ -829,14 +782,12 @@
       }
 
       grid.innerHTML = "";
-      filtered.forEach((course, idx) => {
+      filtered.forEach((course) => {
         const isUnlocked = enrolledSet.has(course.id);
         const coverSrc = course.imageUrl && course.imageUrl.trim() ? course.imageUrl.trim() : DEFAULT_COVER;
 
         const card = document.createElement("article");
         card.className = "pro-course-card";
-        card.style.animationDelay = `${idx * 0.08}s`;
-
         card.innerHTML = `
           <div class="course-cover-wrap">
             <img class="course-cover-img" src="${coverSrc}" alt="${course.title || "صورة الكورس"}" loading="lazy" />
@@ -871,19 +822,61 @@
           imgEl.src = DEFAULT_COVER;
         });
 
-        card.addEventListener("mousemove", (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width - 0.5;
-          const y = (e.clientY - rect.top) / rect.height - 0.5;
-          card.style.transform = `translateY(-8px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 5).toFixed(2)}deg)`;
-        });
-        card.addEventListener("mouseleave", () => {
-          card.style.transform = "";
-        });
-
         if (!isUnlocked) {
           card.querySelector(".unlock-btn").addEventListener("click", () => openUnlockModal(course));
         }
+
+        grid.appendChild(card);
+      });
+    }
+
+    async function fetchAndRenderBooks() {
+      const grid = document.getElementById("dashboardBooksGrid");
+      if (!grid) return;
+      const snap = await getDocs(collection(db, "books"));
+      const books = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      if (!books.length) {
+        grid.innerHTML = `<p style="opacity:0.8; grid-column: 1 / -1; text-align:center; padding:30px;">لا توجد كتب متاحة للبيع حالياً.</p>`;
+        return;
+      }
+
+      grid.innerHTML = "";
+      books.forEach((book) => {
+        const coverSrc = book.imageUrl && book.imageUrl.trim() ? book.imageUrl.trim() : DEFAULT_COVER;
+        const cleanPhone = (whatsappNumber || "").replace(/\D/g, "");
+        const waMsg = `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في طلب كتاب: ${book.title} (${book.price || ""})`;
+        const buyHref = book.orderUrl && book.orderUrl.trim()
+          ? book.orderUrl.trim()
+          : (cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waMsg)}` : "#");
+
+        const card = document.createElement("article");
+        card.className = "pro-course-card";
+        card.innerHTML = `
+          <div class="course-cover-wrap">
+            <img class="course-cover-img" src="${coverSrc}" alt="${book.title || "غلاف الكتاب"}" loading="lazy" />
+            <div class="course-cover-overlay"></div>
+            <div class="cover-badges">
+              <span class="cat-pill">${book.category || "كتب رياضية"}</span>
+              <span class="status-pill unlocked">📖 متاح</span>
+            </div>
+          </div>
+          <div class="course-body">
+            <div>
+              <h3 class="course-title">${book.title || "كتاب"}</h3>
+              <p class="course-desc">${book.description || ""}</p>
+            </div>
+            <div class="course-footer">
+              <span class="course-price-tag">${book.price || ""}</span>
+              <a href="${buyHref}" target="_blank" rel="noopener noreferrer" class="action-btn open-btn">طلب الكتاب 🛒</a>
+            </div>
+          </div>
+        `;
+
+        const imgEl = card.querySelector(".course-cover-img");
+        imgEl.addEventListener("error", () => {
+          imgEl.src = DEFAULT_COVER;
+        });
 
         grid.appendChild(card);
       });
