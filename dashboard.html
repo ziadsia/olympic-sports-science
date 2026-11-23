@@ -17,7 +17,6 @@
       --text-secondary: #475569;
       --border-subtle: rgba(2, 132, 199, 0.16);
       --brand-primary: #0284c7;
-      --brand-accent: #38bdf8;
       --shadow-card: 0 12px 30px -8px rgba(2, 132, 199, 0.14);
       --input-bg: #f8fafc;
     }
@@ -33,7 +32,6 @@
       --text-secondary: #cbd5e1;
       --border-subtle: rgba(56, 189, 248, 0.22);
       --brand-primary: #38bdf8;
-      --brand-accent: #0284c7;
       --shadow-card: 0 16px 36px -8px rgba(0, 0, 0, 0.55);
       --input-bg: #1e293b;
     }
@@ -81,7 +79,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      animation: fadeDown 0.4s ease-out;
     }
 
     .personal-notice-content {
@@ -90,11 +87,6 @@
       gap: 12px;
       line-height: 1.7;
       font-weight: 700;
-    }
-
-    .personal-notice-icon {
-      font-size: 1.35rem;
-      flex-shrink: 0;
     }
 
     .navbar {
@@ -113,8 +105,6 @@
     }
 
     .welcome-banner {
-      position: relative;
-      overflow: hidden;
       border-radius: 20px;
       padding: 28px 26px;
       margin-bottom: 24px;
@@ -126,12 +116,6 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 18px;
-      animation: fadeDown 0.6s ease-out;
-    }
-
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .welcome-banner h1,
@@ -141,14 +125,39 @@
       color: #ffffff !important;
     }
 
+    .banner-pills-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .student-stats-pill {
       background: rgba(255, 255, 255, 0.16);
       backdrop-filter: blur(8px);
-      padding: 10px 18px;
+      padding: 10px 16px;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+    }
+
+    .wallet-topup-btn {
+      background: #10b981;
+      color: #ffffff !important;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .wallet-topup-btn:hover {
+      transform: translateY(-2px);
     }
 
     .main-category-switch {
@@ -157,6 +166,7 @@
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
+
     .cat-switch-btn {
       padding: 10px 20px;
       border-radius: 14px;
@@ -169,6 +179,7 @@
       cursor: pointer;
       transition: all 0.25s ease;
     }
+
     .cat-switch-btn.active {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
       color: #ffffff !important;
@@ -184,11 +195,13 @@
       gap: 12px;
       margin-bottom: 22px;
     }
+
     .filter-tabs {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .filter-chip {
       padding: 8px 16px;
       border-radius: 999px;
@@ -201,11 +214,11 @@
       cursor: pointer;
       transition: all 0.25s ease;
     }
+
     .filter-chip.active {
       background: #0284c7;
       color: #ffffff !important;
       border-color: #0284c7;
-      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
     }
 
     .courses-grid {
@@ -215,7 +228,6 @@
     }
 
     .pro-course-card {
-      position: relative;
       border-radius: 20px;
       background: var(--bg-card) !important;
       border: 1px solid var(--border-subtle);
@@ -224,13 +236,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
     .pro-course-card:hover {
       transform: translateY(-6px);
       border-color: #0284c7;
-      box-shadow: 0 22px 42px -12px rgba(2, 132, 199, 0.28);
     }
 
     .course-cover-wrap {
@@ -245,12 +256,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
       display: block;
-    }
-
-    .pro-course-card:hover .course-cover-img {
-      transform: scale(1.06);
     }
 
     .course-cover-overlay {
@@ -276,11 +282,9 @@
       padding: 5px 12px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.72);
-      backdrop-filter: blur(8px);
       color: #ffffff !important;
       font-size: 0.78rem;
       font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .status-pill {
@@ -288,7 +292,6 @@
       border-radius: 999px;
       font-size: 0.78rem;
       font-weight: 800;
-      backdrop-filter: blur(8px);
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -318,7 +321,6 @@
       font-size: 1.18rem;
       font-weight: 800;
       color: var(--text-primary) !important;
-      line-height: 1.45;
     }
 
     .course-desc {
@@ -365,7 +367,6 @@
     .action-btn.open-btn {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
       color: #ffffff !important;
-      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.32);
     }
 
     .action-btn.lock-btn {
@@ -394,11 +395,6 @@
       color: #ffffff !important;
       text-decoration: none;
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-      transition: transform 0.3s ease;
-    }
-
-    .social-float-btn:hover {
-      transform: scale(1.1);
     }
 
     .social-float-btn.whatsapp {
@@ -426,12 +422,14 @@
       padding: 16px;
       z-index: 200;
     }
+
     .modal-backdrop.open {
       display: flex;
     }
+
     .modal-box {
       width: 100%;
-      max-width: 430px;
+      max-width: 440px;
       background: var(--bg-card) !important;
       color: var(--text-primary) !important;
       border-radius: 20px;
@@ -439,6 +437,7 @@
       border: 1px solid var(--border-subtle);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
     }
+
     .modal-box input.form-control {
       background: var(--input-bg) !important;
       color: var(--text-primary) !important;
@@ -450,11 +449,13 @@
       font-weight: 700;
       width: 100%;
     }
+
     .modal-actions {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
       margin-top: 16px;
+      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -481,18 +482,23 @@
           أهلاً بك، <span id="studentName">طالب</span> 👋
         </h1>
         <p style="margin:0; opacity:0.9; font-size:0.95rem;">
-          اختر الكورس المناسب وفعّله بكود التفعيل، أو تصفّح الكتب المتاحة للطلب.
+          اشحن محفظتك بكود شحن واشتري الكورسات التي تناسبك مباشرة من رصيدك.
         </p>
       </div>
-      <div class="student-stats-pill">
-        الكورسات المفعّلة: <span id="unlockedCounter">0</span> / <span id="totalCounter">0</span>
+      <div class="banner-pills-group">
+        <div class="student-stats-pill">
+          💰 رصيد المحفظة: <span id="walletBalanceText">0</span> ج.م
+        </div>
+        <button id="openWalletModalBtn" class="wallet-topup-btn" type="button">➕ شحن المحفظة</button>
+        <div class="student-stats-pill">
+          الكورسات المفعّلة: <span id="unlockedCounter">0</span> / <span id="totalCounter">0</span>
+        </div>
       </div>
     </div>
 
-    <!-- إشعار منفرد خاص بالطالب -->
     <div id="personalNoticeBanner" class="personal-notice-card" style="display:none;">
       <div class="personal-notice-content">
-        <span class="personal-notice-icon">📩</span>
+        <span>📩</span>
         <div>
           <small style="display:block; color:#f59e0b !important; font-weight:800; margin-bottom:2px;">رسالة وإشعار خاص لك</small>
           <span id="personalNoticeText"></span>
@@ -500,13 +506,11 @@
       </div>
     </div>
 
-    <!-- تبديل بين الكورسات والكتب -->
     <div class="main-category-switch">
       <button id="tabCoursesBtn" class="cat-switch-btn active" type="button">📚 الكورسات</button>
       <button id="tabBooksBtn" class="cat-switch-btn" type="button" data-vis="booksSection">📖 الكتب</button>
     </div>
 
-    <!-- قسم الكورسات -->
     <section id="coursesSection" data-vis="coursesSection">
       <div class="filter-bar">
         <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
@@ -520,7 +524,6 @@
       <div id="dashboardCoursesGrid" class="courses-grid"></div>
     </section>
 
-    <!-- قسم الكتب -->
     <section id="booksSection" data-vis="booksSection" style="display:none;">
       <div class="filter-bar">
         <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكتب المتاحة</h2>
@@ -539,23 +542,42 @@
     </a>
   </div>
 
-  <!-- مودال إدخال كود التفعيل -->
-  <div id="unlockModal" class="modal-backdrop">
+  <!-- مودال شحن المحفظة بكود شحن -->
+  <div id="walletModal" class="modal-backdrop">
     <div class="modal-box">
-      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">🔒 تفعيل وفتح الكورس</h3>
-      <p id="modalCourseTitle" style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;"></p>
-
-      <form id="unlockCourseForm">
+      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">💰 شحن رصيد المحفظة</h3>
+      <p style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;">
+        رصيدك الحالي: <strong id="modalWalletBalanceText">0</strong> ج.م
+      </p>
+      <form id="topupWalletForm">
         <div class="form-group">
-          <label style="display:block; margin-bottom:6px; font-weight:700;">أدخل كود التفعيل</label>
-          <input type="text" id="activationCodeInput" class="form-control" placeholder="مثال: OLY-XXXXXX" required style="text-transform:uppercase;" />
+          <label style="display:block; margin-bottom:6px; font-weight:700;">أدخل كود الشحن</label>
+          <input type="text" id="walletCodeInput" class="form-control" placeholder="مثال: WAL-XXXXXX" required style="text-transform:uppercase;" />
         </div>
-        <p id="unlockErrorMsg" style="color:#ef4444 !important; font-weight:700; min-height:22px; margin:8px 0 0;"></p>
+        <p id="walletMsg" style="font-weight:700; min-height:22px; margin:8px 0 0;"></p>
         <div class="modal-actions">
-          <button type="button" id="closeModalBtn" class="btn btn-outline">إلغاء</button>
-          <button type="submit" id="confirmUnlockBtn" class="btn btn-primary">تفعيل الآن</button>
+          <button type="button" id="closeWalletModalBtn" class="btn btn-outline">إغلاق</button>
+          <button type="submit" id="confirmTopupBtn" class="btn btn-primary">تأكيد الشحن</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- مودال شراء كورس من المحفظة -->
+  <div id="unlockModal" class="modal-backdrop">
+    <div class="modal-box">
+      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">🛒 شراء وفتح الكورس من المحفظة</h3>
+      <p id="modalCourseTitle" style="margin:0 0 8px; font-weight:800;"></p>
+      <p id="modalCoursePriceInfo" style="margin:0 0 8px; font-weight:700; color: var(--brand-primary) !important;"></p>
+      <p id="modalCurrentBalanceInfo" style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;"></p>
+
+      <p id="unlockErrorMsg" style="color:#ef4444 !important; font-weight:700; min-height:22px; margin:8px 0 0;"></p>
+
+      <div class="modal-actions">
+        <button type="button" id="closeModalBtn" class="btn btn-outline">إلغاء</button>
+        <button type="button" id="topupFromCourseModalBtn" class="btn btn-outline" style="display:none;">➕ شحن المحفظة</button>
+        <button type="button" id="confirmBuyCourseBtn" class="btn btn-primary">تأكيد الشراء وفتح الكورس</button>
+      </div>
     </div>
   </div>
 
@@ -582,6 +604,8 @@
     themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
 
     let whatsappNumber = "";
+    let currentStudentName = "طالب";
+    let currentStudentEmail = "";
     let currentStudentLabel = "";
 
     function applyWhatsAppLink(courseTitle = "") {
@@ -589,8 +613,8 @@
       if (!waBtn || !whatsappNumber) return;
       const cleanPhone = whatsappNumber.replace(/\D/g, "");
       const text = courseTitle
-        ? `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الحصول على كود تفعيل لكورس: ${courseTitle}`
-        : `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الاستفسار في الأكاديمية الأولمبية لعلوم الرياضة.`;
+        ? `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الحصول على كود شحن لكورس: ${courseTitle}`
+        : `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في الحصول على كود شحن للمحفظة.`;
       waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
       waBtn.style.display = "flex";
     }
@@ -671,35 +695,92 @@
     });
 
     let currentUser = null;
+    let walletBalance = 0;
     let enrolledSet = new Set();
     let allCoursesCache = [];
     let activeFilter = "all";
     let selectedCourse = null;
 
-    const modal = document.getElementById("unlockModal");
+    function updateWalletUI() {
+      document.getElementById("walletBalanceText").textContent = walletBalance;
+      document.getElementById("modalWalletBalanceText").textContent = walletBalance;
+    }
+
+    function parsePriceNumber(priceVal) {
+      if (typeof priceVal === "number") return Math.max(0, priceVal);
+      if (!priceVal) return 0;
+      const digits = String(priceVal).replace(/[^\d.]/g, "");
+      const num = parseFloat(digits);
+      return Number.isNaN(num) ? 0 : num;
+    }
+
+    const walletModal = document.getElementById("walletModal");
+    const walletCodeInput = document.getElementById("walletCodeInput");
+    const walletMsg = document.getElementById("walletMsg");
+
+    function openWalletModal() {
+      walletCodeInput.value = "";
+      walletMsg.textContent = "";
+      updateWalletUI();
+      walletModal.classList.add("open");
+      walletCodeInput.focus();
+    }
+
+    function closeWalletModal() {
+      walletModal.classList.remove("open");
+    }
+
+    document.getElementById("openWalletModalBtn").addEventListener("click", openWalletModal);
+    document.getElementById("closeWalletModalBtn").addEventListener("click", closeWalletModal);
+    walletModal.addEventListener("click", (e) => {
+      if (e.target === walletModal) closeWalletModal();
+    });
+
+    const unlockModal = document.getElementById("unlockModal");
     const modalCourseTitle = document.getElementById("modalCourseTitle");
-    const codeInput = document.getElementById("activationCodeInput");
+    const modalCoursePriceInfo = document.getElementById("modalCoursePriceInfo");
+    const modalCurrentBalanceInfo = document.getElementById("modalCurrentBalanceInfo");
     const unlockErrorMsg = document.getElementById("unlockErrorMsg");
+    const confirmBuyCourseBtn = document.getElementById("confirmBuyCourseBtn");
+    const topupFromCourseModalBtn = document.getElementById("topupFromCourseModalBtn");
 
     function openUnlockModal(course) {
       selectedCourse = course;
+      const priceNum = parsePriceNumber(course.price);
+
       modalCourseTitle.textContent = `الكورس: ${course.title}`;
-      codeInput.value = "";
-      unlockErrorMsg.textContent = "";
-      modal.classList.add("open");
-      codeInput.focus();
+      modalCoursePriceInfo.textContent = `سعر الكورس: ${priceNum} ج.م`;
+      modalCurrentBalanceInfo.textContent = `رصيد محفظتك الحالي: ${walletBalance} ج.م`;
+
+      if (walletBalance < priceNum) {
+        const needed = priceNum - walletBalance;
+        unlockErrorMsg.textContent = `رصيدك غير كافٍ، ينقصك ${needed} ج.م لشراء الكورس.`;
+        confirmBuyCourseBtn.disabled = true;
+        topupFromCourseModalBtn.style.display = "inline-flex";
+      } else {
+        unlockErrorMsg.textContent = "";
+        confirmBuyCourseBtn.disabled = false;
+        topupFromCourseModalBtn.style.display = "none";
+      }
+
+      unlockModal.classList.add("open");
       applyWhatsAppLink(course.title);
     }
 
     function closeUnlockModal() {
-      modal.classList.remove("open");
+      unlockModal.classList.remove("open");
       selectedCourse = null;
       applyWhatsAppLink();
     }
 
     document.getElementById("closeModalBtn").addEventListener("click", closeUnlockModal);
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeUnlockModal();
+    unlockModal.addEventListener("click", (e) => {
+      if (e.target === unlockModal) closeUnlockModal();
+    });
+
+    topupFromCourseModalBtn.addEventListener("click", () => {
+      closeUnlockModal();
+      openWalletModal();
     });
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
@@ -727,12 +808,15 @@
       const userSnap = await getDoc(userRef);
       const userData = userSnap.exists() ? userSnap.data() : {};
 
-      const displayName = userData.fullName || user.email?.split("@")[0] || "طالب";
-      document.getElementById("studentName").textContent = displayName;
-      currentStudentLabel = `${displayName} (${user.email || ""})`;
+      currentStudentName = userData.fullName || user.email?.split("@")[0] || "طالب";
+      currentStudentEmail = userData.email || user.email || "";
+      document.getElementById("studentName").textContent = currentStudentName;
+      currentStudentLabel = `${currentStudentName} (${currentStudentEmail})`;
       applyWhatsAppLink();
 
-      // إظهار الإشعار المنفرد للطالب إذا كان مفعلاً وله نص
+      walletBalance = Number(userData.walletBalance) || 0;
+      updateWalletUI();
+
       const noticeBanner = document.getElementById("personalNoticeBanner");
       const noticeTextEl = document.getElementById("personalNoticeText");
       const noticeText = (userData.personalNotice || userData.notice || "").trim();
@@ -785,6 +869,7 @@
       filtered.forEach((course) => {
         const isUnlocked = enrolledSet.has(course.id);
         const coverSrc = course.imageUrl && course.imageUrl.trim() ? course.imageUrl.trim() : DEFAULT_COVER;
+        const priceNum = parsePriceNumber(course.price);
 
         const card = document.createElement("article");
         card.className = "pro-course-card";
@@ -807,11 +892,11 @@
             </div>
 
             <div class="course-footer">
-              <span class="course-price-tag">${course.price || "محتوى معتمد"}</span>
+              <span class="course-price-tag">${priceNum > 0 ? `${priceNum} ج.م` : "مجاني"}</span>
               ${
                 isUnlocked
                   ? `<a href="course.html?id=${encodeURIComponent(course.id)}" class="action-btn open-btn">دخول الكورس ⬅</a>`
-                  : `<button type="button" class="action-btn lock-btn unlock-btn">🔒 فتح بالكود</button>`
+                  : `<button type="button" class="action-btn lock-btn unlock-btn">🛒 شراء من المحفظة</button>`
               }
             </div>
           </div>
@@ -882,61 +967,97 @@
       });
     }
 
-    document.getElementById("unlockCourseForm").addEventListener("submit", async (e) => {
+    document.getElementById("topupWalletForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!selectedCourse || !currentUser) return;
+      if (!currentUser) return;
 
-      const enteredCode = codeInput.value.trim().toUpperCase();
+      const enteredCode = walletCodeInput.value.trim().toUpperCase();
       if (!enteredCode) return;
 
-      unlockErrorMsg.textContent = "";
-      const confirmBtn = document.getElementById("confirmUnlockBtn");
+      walletMsg.style.color = "#0284c7";
+      walletMsg.textContent = "جاري التحقق من كود الشحن...";
+      const confirmBtn = document.getElementById("confirmTopupBtn");
       confirmBtn.disabled = true;
 
       try {
-        const codeRef = doc(db, "activation_codes", enteredCode);
+        const codeRef = doc(db, "wallet_codes", enteredCode);
         const codeSnap = await getDoc(codeRef);
 
         if (!codeSnap.exists()) {
-          unlockErrorMsg.textContent = "كود التفعيل غير صحيح.";
+          walletMsg.style.color = "#ef4444";
+          walletMsg.textContent = "كود الشحن غير صحيح.";
           confirmBtn.disabled = false;
           return;
         }
 
         const codeData = codeSnap.data();
-
         if (codeData.used) {
-          unlockErrorMsg.textContent = "هذا الكود تم استخدامه من قبل.";
+          walletMsg.style.color = "#ef4444";
+          walletMsg.textContent = "تم استخدام كود الشحن هذا من قبل.";
           confirmBtn.disabled = false;
           return;
         }
 
-        if (codeData.courseId && codeData.courseId !== selectedCourse.id) {
-          unlockErrorMsg.textContent = "هذا الكود مخصص لكورس آخر وليس هذا الكورس.";
-          confirmBtn.disabled = false;
-          return;
-        }
+        const topupAmount = Number(codeData.amount) || 0;
+        const newBalance = walletBalance + topupAmount;
 
         await updateDoc(codeRef, {
           used: true,
           usedBy: currentUser.uid,
+          usedByName: currentStudentName,
+          usedByEmail: currentStudentEmail,
           usedAt: new Date().toISOString()
         });
 
         await updateDoc(doc(db, "users", currentUser.uid), {
+          walletBalance: newBalance
+        });
+
+        walletBalance = newBalance;
+        updateWalletUI();
+        walletMsg.style.color = "#10b981";
+        walletMsg.textContent = `تم شحن ${topupAmount} ج.م بنجاح! رصيدك الآن ${walletBalance} ج.م.`;
+        walletCodeInput.value = "";
+      } catch (err) {
+        walletMsg.style.color = "#ef4444";
+        walletMsg.textContent = "حدث خطأ أثناء شحن المحفظة، حاول مرة أخرى.";
+      } finally {
+        confirmBtn.disabled = false;
+      }
+    });
+
+    confirmBuyCourseBtn.addEventListener("click", async () => {
+      if (!selectedCourse || !currentUser) return;
+
+      const priceNum = parsePriceNumber(selectedCourse.price);
+      if (walletBalance < priceNum) {
+        unlockErrorMsg.textContent = "رصيد محفظتك غير كافٍ لإتمام الشراء.";
+        return;
+      }
+
+      confirmBuyCourseBtn.disabled = true;
+      unlockErrorMsg.textContent = "";
+
+      try {
+        const remainingBalance = walletBalance - priceNum;
+
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          walletBalance: remainingBalance,
           enrolledCourses: arrayUnion(selectedCourse.id)
         });
 
+        walletBalance = remainingBalance;
         enrolledSet.add(selectedCourse.id);
+        updateWalletUI();
+
         const targetCourseId = selectedCourse.id;
         closeUnlockModal();
         drawCourses();
 
         location.href = `course.html?id=${encodeURIComponent(targetCourseId)}`;
       } catch (err) {
-        unlockErrorMsg.textContent = "حدث خطأ أثناء التحقق من الكود، حاول مرة أخرى.";
-      } finally {
-        confirmBtn.disabled = false;
+        unlockErrorMsg.textContent = "حدث خطأ أثناء خصم الرصيد وفتح الكورس.";
+        confirmBuyCourseBtn.disabled = false;
       }
     });
   </script>
