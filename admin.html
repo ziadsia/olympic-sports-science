@@ -65,7 +65,6 @@
       min-height: 100vh;
     }
 
-    /* القائمة الجانبية */
     .admin-sidebar {
       width: 275px;
       flex-shrink: 0;
@@ -130,7 +129,6 @@
       gap: 8px;
     }
 
-    /* المحتوى الرئيسي */
     .admin-main {
       flex: 1;
       min-width: 0;
@@ -330,7 +328,6 @@
       color: var(--text-primary) !important;
     }
 
-    /* مودال التعديل */
     .edit-modal-backdrop {
       display: none;
       position: fixed;
@@ -397,6 +394,7 @@
           <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
           <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / تعديل / حذف)</button>
+          <button class="sidebar-link" data-target="booksPanel" type="button">📖 الكتب (إضافة / حذف)</button>
           <button class="sidebar-link" data-target="codesPanel" type="button">🎟️ أكواد التفعيل (كتابة / توليد / حذف)</button>
           <button class="sidebar-link" data-target="studentsPanel" type="button">👨‍🎓 الطلاب والأجهزة</button>
         </nav>
@@ -438,9 +436,9 @@
         <h2 class="section-title">التحكم في إظهار وإخفاء عناصر المنصة</h2>
         <div class="visibility-list">
           <label class="visibility-item"><span>قسم الكورسات المتاحة</span><input type="checkbox" id="vis_coursesSection" checked /></label>
+          <label class="visibility-item"><span>قسم الكتب</span><input type="checkbox" id="vis_booksSection" checked /></label>
           <label class="visibility-item"><span>قسم المحاضرات والفيديو</span><input type="checkbox" id="vis_videosSection" checked /></label>
           <label class="visibility-item"><span>ملفات PDF والمذكرات</span><input type="checkbox" id="vis_pdfsSection" checked /></label>
-          <label class="visibility-item"><span>قسم الامتحانات والاختبارات</span><input type="checkbox" id="vis_examsSection" checked /></label>
           <label class="visibility-item"><span>تفعيل الكورسات بالكود</span><input type="checkbox" id="vis_activationBox" checked /></label>
           <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
         </div>
@@ -462,7 +460,7 @@
           </div>
           <div class="form-group">
             <label>نص الإشعار الخاص بهذا الطالب (يظهر له هو فقط)</label>
-            <input type="text" id="personalNoticeInput" class="form-control" placeholder="مثال: يرجى استكمال اختبار المحاضرة الأولى..." required />
+            <input type="text" id="personalNoticeInput" class="form-control" placeholder="مثال: يرجى استكمال مشاهدة المحاضرة الأولى..." required />
           </div>
           <label class="visibility-item" style="max-width:340px; margin-bottom:16px;">
             <span>تفعيل ظهور الإشعار لهذا الطالب</span>
@@ -558,8 +556,8 @@
           </div>
           <div class="grid-3">
             <div class="form-group" style="grid-column: span 2;">
-              <label>رابط الفيديو (YouTube Embed / رابط مباشر)</label>
-              <input type="url" id="lessonVideoUrl" class="form-control" placeholder="https://www.youtube.com/embed/..." required />
+              <label>رابط الفيديو (YouTube / رابط مباشر)</label>
+              <input type="url" id="lessonVideoUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required />
             </div>
             <div class="form-group">
               <label>رابط ملف PDF (اختياري)</label>
@@ -574,7 +572,47 @@
         <div id="lessonsManageList" class="manage-list"></div>
       </section>
 
-      <!-- 7. أكواد التفعيل -->
+      <!-- 7. الكتب (إضافة وحذف) -->
+      <section id="booksPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إضافة كتاب جديد للبيع</h2>
+        <form id="addBookForm">
+          <div class="grid-3">
+            <div class="form-group">
+              <label>اسم الكتاب</label>
+              <input type="text" id="bookTitle" class="form-control" placeholder="مثال: أساسيات التدريب الرياضي" required />
+            </div>
+            <div class="form-group">
+              <label>التصنيف / المؤلف</label>
+              <input type="text" id="bookCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
+            </div>
+            <div class="form-group">
+              <label>السعر</label>
+              <input type="text" id="bookPrice" class="form-control" placeholder="مثال: 180 ج.م" required />
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="form-group">
+              <label>رابط صورة غلاف الكتاب (اختياري)</label>
+              <input type="url" id="bookImage" class="form-control" placeholder="https://example.com/book.jpg" />
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>رابط شراء أو طلب مباشر (اختياري - لو فارغ يُستخدم واتساب الأكاديمية)</label>
+              <input type="url" id="bookOrderUrl" class="form-control" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>وصف الكتاب</label>
+            <textarea id="bookDesc" class="form-control" rows="2" placeholder="نبذة مختصرة عن الكتاب..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الكتاب</button>
+        </form>
+        <p id="bookMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
+
+        <h3 style="margin-top:26px;">الكتب الحالية (إمكانية الحذف)</h3>
+        <div id="booksManageList" class="manage-list"></div>
+      </section>
+
+      <!-- 8. أكواد التفعيل -->
       <section id="codesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة أكواد التفعيل</h2>
 
@@ -629,7 +667,7 @@
         </div>
       </section>
 
-      <!-- 8. الطلاب والأجهزة -->
+      <!-- 9. الطلاب والأجهزة -->
       <section id="studentsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
         <div class="table-wrap">
@@ -697,7 +735,7 @@
           <input type="number" id="editLessonOrder" class="form-control" min="1" required />
         </div>
         <div class="form-group">
-          <label>رابط الفيديو (YouTube Embed / رابط مباشر)</label>
+          <label>رابط الفيديو (YouTube / رابط مباشر)</label>
           <input type="url" id="editLessonVideoUrl" class="form-control" required />
         </div>
         <div class="form-group">
@@ -784,8 +822,8 @@
     });
 
     const visibilityKeys = [
-      "coursesSection", "videosSection", "pdfsSection",
-      "examsSection", "activationBox", "announcementBanner"
+      "coursesSection", "booksSection", "videosSection",
+      "pdfsSection", "activationBox", "announcementBanner"
     ];
 
     async function loadVisibilitySettings() {
@@ -930,6 +968,49 @@
       await renderLessonsForSelectedCourse();
     });
 
+    async function loadBooksAdmin() {
+      const booksSnap = await getDocs(collection(db, "books"));
+      const booksListEl = document.getElementById("booksManageList");
+      booksListEl.innerHTML = "";
+
+      booksSnap.forEach((bDoc) => {
+        const b = bDoc.data();
+        const item = document.createElement("div");
+        item.className = "manage-item";
+        item.innerHTML = `
+          <div>
+            <strong>${b.title || "كتاب"}</strong>
+            <small style="display:block;">${b.category || ""} ${b.price ? "• " + b.price : ""}</small>
+          </div>
+          <div class="item-actions">
+            <button class="btn-danger" type="button">حذف الكتاب</button>
+          </div>
+        `;
+        item.querySelector("button").addEventListener("click", async () => {
+          if (!confirm(`هل أنت متأكد من حذف كتاب "${b.title || ""}"؟`)) return;
+          await deleteDoc(doc(db, "books", bDoc.id));
+          loadBooksAdmin();
+        });
+        booksListEl.appendChild(item);
+      });
+    }
+
+    document.getElementById("addBookForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "books"), {
+        title: document.getElementById("bookTitle").value.trim(),
+        category: document.getElementById("bookCategory").value.trim(),
+        price: document.getElementById("bookPrice").value.trim(),
+        imageUrl: document.getElementById("bookImage").value.trim(),
+        orderUrl: document.getElementById("bookOrderUrl").value.trim(),
+        description: document.getElementById("bookDesc").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("bookMsg").textContent = "تم حفظ الكتاب بنجاح!";
+      e.target.reset();
+      loadBooksAdmin();
+    });
+
     async function loadAdminData() {
       const usersSnap = await getDocs(collection(db, "users"));
       const coursesSnap = await getDocs(collection(db, "courses"));
@@ -954,6 +1035,7 @@
       });
 
       await fillSelectedStudentNotice();
+      await loadBooksAdmin();
 
       codesSnap.forEach((cDoc) => {
         if (cDoc.data().used) usedCodesCount++;
