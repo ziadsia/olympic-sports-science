@@ -402,16 +402,19 @@
       padding: 24px;
       border: 1px solid var(--border-subtle);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+      max-height: 92vh;
+      overflow-y: auto;
     }
 
-    .modal-box input.form-control {
+    .modal-box input.form-control,
+    .modal-box select.form-control {
       background: var(--input-bg);
       color: var(--text-primary);
       border: 1px solid var(--border-subtle);
-      padding: 12px 14px;
+      padding: 11px 14px;
       border-radius: 12px;
       font-family: 'Cairo', sans-serif;
-      font-size: 1rem;
+      font-size: 0.96rem;
       font-weight: 700;
       width: 100%;
     }
@@ -424,7 +427,6 @@
       flex-wrap: wrap;
     }
 
-    /* التهنئة والأنيميشن عند شراء الكورس */
     .celebration-backdrop {
       display: none;
       position: fixed;
@@ -532,7 +534,7 @@
           أهلاً بك، <span id="studentName">طالب</span> 👋
         </h1>
         <p style="margin:0; opacity:0.92; font-size:0.95rem;">
-          اشحن محفظتك بكود شحن واشتري الكورسات التي تناسبك مباشرة من رصيدك.
+          اشحن محفظتك بكود شحن واشتري الكورسات والكتب مباشرة من رصيدك.
         </p>
       </div>
       <div class="banner-pills-group">
@@ -557,6 +559,7 @@
     <div class="main-category-switch">
       <button id="tabCoursesBtn" class="cat-switch-btn active" type="button">📚 الكورسات</button>
       <button id="tabBooksBtn" class="cat-switch-btn" type="button" data-vis="booksSection">📖 الكتب</button>
+      <button id="tabOrdersBtn" class="cat-switch-btn" type="button">📦 متابعة الطلبات</button>
     </div>
 
     <section id="coursesSection" data-vis="coursesSection">
@@ -576,6 +579,13 @@
         <h2 class="section-title" style="margin:0; color: var(--brand-primary);">الكتب المتاحة</h2>
       </div>
       <div id="dashboardBooksGrid" class="courses-grid"></div>
+    </section>
+
+    <section id="ordersSection" style="display:none;">
+      <div class="filter-bar">
+        <h2 class="section-title" style="margin:0; color: var(--brand-primary);">متابعة طلبات الكتب والشحن</h2>
+      </div>
+      <div id="studentOrdersList" style="display:flex; flex-direction:column; gap:14px;"></div>
     </section>
   </main>
 
@@ -625,25 +635,69 @@
     </div>
   </div>
 
-  <!-- مودال التهنئة والأنيميشن بعد شراء الكورس -->
+  <!-- مودال شراء كتاب وتحديد طريقة الاستلام -->
+  <div id="bookOrderModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:480px;">
+      <h3 style="margin:0 0 6px; color: var(--brand-primary);">📖 شراء كتاب من المحفظة</h3>
+      <p id="bookModalTitle" style="margin:0 0 12px; font-weight:800;"></p>
+
+      <form id="bookOrderForm">
+        <div class="form-group">
+          <label style="display:block; margin-bottom:6px; font-weight:700;">طريقة الاستلام</label>
+          <select id="deliveryMethodSelect" class="form-control">
+            <option value="hq">🏢 استلام من المقر (مصاريف الشحن 0 ج.م)</option>
+            <option value="shipping">🚚 شحن للمنزل (+50 ج.م شحن)</option>
+          </select>
+        </div>
+
+        <div id="shippingFieldsWrap" style="display:none; margin-top:10px;">
+          <div class="form-group" style="margin-bottom:10px;">
+            <label style="display:block; margin-bottom:6px; font-weight:700;">رقم الهاتف للتواصل</label>
+            <input type="tel" id="orderPhoneInput" class="form-control" placeholder="01xxxxxxxxx" />
+          </div>
+          <div class="form-group">
+            <label style="display:block; margin-bottom:6px; font-weight:700;">العنوان بالتفصيل (المحافظة / المنطقة / الشارع)</label>
+            <input type="text" id="orderAddressInput" class="form-control" placeholder="مثال: الفيوم - دمو - ..." />
+          </div>
+        </div>
+
+        <div style="background:var(--input-bg); border:1px solid var(--border-subtle); border-radius:14px; padding:12px 14px; margin-top:12px; font-weight:800; line-height:1.8;">
+          <div>سعر الكتاب: <span id="bookBasePriceText">0</span> ج.م</div>
+          <div>مصاريف الشحن: <span id="bookShippingFeeText">0</span> ج.م</div>
+          <div style="color:var(--brand-primary); font-size:1.05rem;">الإجمالي المطلوب: <span id="bookTotalPriceText">0</span> ج.م</div>
+          <div style="color:var(--text-secondary); font-size:0.9rem;">رصيد محفظتك الحالي: <span id="bookWalletNowText">0</span> ج.م</div>
+        </div>
+
+        <p id="bookOrderErrorMsg" style="color:#ef4444; font-weight:700; min-height:22px; margin:10px 0 0;"></p>
+
+        <div class="modal-actions">
+          <button type="button" id="closeBookOrderModalBtn" class="btn btn-outline">إلغاء</button>
+          <button type="button" id="topupFromBookModalBtn" class="btn btn-outline" style="display:none;">➕ شحن المحفظة</button>
+          <button type="submit" id="confirmBookOrderBtn" class="btn btn-primary">تأكيد الطلب وخصم الرصيد</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال التهنئة والأنيميشن -->
   <div id="celebrationModal" class="celebration-backdrop">
     <div class="celebration-card">
       <div class="trophy-badge">🎉</div>
       <h2 style="margin:0 0 8px; font-size:1.45rem; font-weight:900; color:#10b981;">
-        ألف مبروك! تم فتح الكورس بنجاح
+        ألف مبروك! تم التنفيذ بنجاح
       </h2>
       <p style="margin:0; color:var(--text-secondary); font-weight:700; line-height:1.7;">
         نتمنى لك رحلة تعلم موفقة ومليئة بالتميز داخل الأكاديمية الأولمبية.
       </p>
       <div class="celebration-course-box">
-        📚 <span id="celebCourseTitle">اسم الكورس</span>
+        ✨ <span id="celebCourseTitle">العنصر</span>
       </div>
       <p style="margin:0 0 18px; font-weight:800; font-size:0.95rem;">
         💰 رصيد محفظتك المتبقي: <span id="celebRemainingBalance" style="color:#10b981;">0</span> ج.م
       </p>
       <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
         <button type="button" id="stayInDashboardBtn" class="btn btn-outline">العودة للوحة</button>
-        <a id="goToPurchasedCourseBtn" href="#" class="btn btn-primary">دخول الكورس الآن ⬅</a>
+        <a id="goToPurchasedCourseBtn" href="#" class="btn btn-primary">متابعة ⬅</a>
       </div>
     </div>
   </div>
@@ -652,9 +706,13 @@
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, getDocs, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      collection, getDocs, addDoc, doc, getDoc, updateDoc, arrayUnion, query, where, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
+
+    const SHIPPING_FEE = 50;
 
     const themeBtn = document.getElementById("themeToggle");
     function syncThemeAttribute() {
@@ -668,6 +726,7 @@
     let whatsappNumber = "";
     let currentStudentName = "طالب";
     let currentStudentEmail = "";
+    let currentStudentPhone = "";
     let currentStudentLabel = "";
 
     function applyWhatsAppLink(courseTitle = "") {
@@ -685,13 +744,8 @@
       const brandSnap = await getDoc(doc(db, "settings", "branding"));
       if (brandSnap.exists()) {
         const bData = brandSnap.data();
-        if (bData.logoUrl) {
-          document.getElementById("siteLogo").src = bData.logoUrl;
-        }
-        if (bData.whatsapp) {
-          whatsappNumber = bData.whatsapp;
-          applyWhatsAppLink();
-        }
+        if (bData.logoUrl) document.getElementById("siteLogo").src = bData.logoUrl;
+        if (bData.whatsapp) { whatsappNumber = bData.whatsapp; applyWhatsAppLink(); }
         if (bData.facebook) {
           const fbBtn = document.getElementById("facebookFloatBtn");
           fbBtn.href = bData.facebook;
@@ -730,22 +784,32 @@
 
     const tabCoursesBtn = document.getElementById("tabCoursesBtn");
     const tabBooksBtn = document.getElementById("tabBooksBtn");
+    const tabOrdersBtn = document.getElementById("tabOrdersBtn");
     const coursesSection = document.getElementById("coursesSection");
     const booksSection = document.getElementById("booksSection");
+    const ordersSection = document.getElementById("ordersSection");
 
-    tabCoursesBtn.addEventListener("click", () => {
-      tabCoursesBtn.classList.add("active");
-      tabBooksBtn.classList.remove("active");
-      coursesSection.style.display = "block";
-      booksSection.style.display = "none";
-    });
-
-    tabBooksBtn.addEventListener("click", () => {
-      tabBooksBtn.classList.add("active");
-      tabCoursesBtn.classList.remove("active");
+    function switchMainTab(activeTab) {
+      [tabCoursesBtn, tabBooksBtn, tabOrdersBtn].forEach((b) => b.classList.remove("active"));
       coursesSection.style.display = "none";
-      booksSection.style.display = "block";
-    });
+      booksSection.style.display = "none";
+      ordersSection.style.display = "none";
+
+      if (activeTab === "courses") {
+        tabCoursesBtn.classList.add("active");
+        coursesSection.style.display = "block";
+      } else if (activeTab === "books") {
+        tabBooksBtn.classList.add("active");
+        booksSection.style.display = "block";
+      } else if (activeTab === "orders") {
+        tabOrdersBtn.classList.add("active");
+        ordersSection.style.display = "block";
+      }
+    }
+
+    tabCoursesBtn.addEventListener("click", () => switchMainTab("courses"));
+    tabBooksBtn.addEventListener("click", () => switchMainTab("books"));
+    tabOrdersBtn.addEventListener("click", () => switchMainTab("orders"));
 
     let currentUser = null;
     let walletBalance = 0;
@@ -753,10 +817,13 @@
     let allCoursesCache = [];
     let activeFilter = "all";
     let selectedCourse = null;
+    let selectedBook = null;
+    let unsubscribeOrders = null;
 
     function updateWalletUI() {
       document.getElementById("walletBalanceText").textContent = walletBalance;
       document.getElementById("modalWalletBalanceText").textContent = walletBalance;
+      if (selectedBook) recalculateBookOrderTotals();
     }
 
     function parsePriceNumber(priceVal) {
@@ -821,6 +888,62 @@
     unlockModal.addEventListener("click", (e) => { if (e.target === unlockModal) closeUnlockModal(); });
     topupFromCourseModalBtn.addEventListener("click", () => { closeUnlockModal(); openWalletModal(); });
 
+    const bookOrderModal = document.getElementById("bookOrderModal");
+    const deliveryMethodSelect = document.getElementById("deliveryMethodSelect");
+    const shippingFieldsWrap = document.getElementById("shippingFieldsWrap");
+    const orderPhoneInput = document.getElementById("orderPhoneInput");
+    const orderAddressInput = document.getElementById("orderAddressInput");
+    const bookOrderErrorMsg = document.getElementById("bookOrderErrorMsg");
+    const confirmBookOrderBtn = document.getElementById("confirmBookOrderBtn");
+    const topupFromBookModalBtn = document.getElementById("topupFromBookModalBtn");
+
+    function recalculateBookOrderTotals() {
+      if (!selectedBook) return;
+      const basePrice = parsePriceNumber(selectedBook.price);
+      const isShipping = deliveryMethodSelect.value === "shipping";
+      const shippingFee = isShipping ? SHIPPING_FEE : 0;
+      const total = basePrice + shippingFee;
+
+      shippingFieldsWrap.style.display = isShipping ? "block" : "none";
+      orderPhoneInput.required = isShipping;
+      orderAddressInput.required = isShipping;
+
+      document.getElementById("bookBasePriceText").textContent = basePrice;
+      document.getElementById("bookShippingFeeText").textContent = shippingFee;
+      document.getElementById("bookTotalPriceText").textContent = total;
+      document.getElementById("bookWalletNowText").textContent = walletBalance;
+
+      if (walletBalance < total) {
+        bookOrderErrorMsg.textContent = `رصيدك غير كافٍ، ينقصك ${total - walletBalance} ج.م لإتمام الطلب.`;
+        confirmBookOrderBtn.disabled = true;
+        topupFromBookModalBtn.style.display = "inline-flex";
+      } else {
+        bookOrderErrorMsg.textContent = "";
+        confirmBookOrderBtn.disabled = false;
+        topupFromBookModalBtn.style.display = "none";
+      }
+    }
+
+    function openBookOrderModal(book) {
+      selectedBook = book;
+      deliveryMethodSelect.value = "hq";
+      orderPhoneInput.value = currentStudentPhone || "";
+      orderAddressInput.value = "";
+      document.getElementById("bookModalTitle").textContent = `الكتاب: ${book.title || "كتاب"}`;
+      recalculateBookOrderTotals();
+      bookOrderModal.classList.add("open");
+    }
+
+    function closeBookOrderModal() {
+      bookOrderModal.classList.remove("open");
+      selectedBook = null;
+    }
+
+    deliveryMethodSelect.addEventListener("change", recalculateBookOrderTotals);
+    document.getElementById("closeBookOrderModalBtn").addEventListener("click", closeBookOrderModal);
+    bookOrderModal.addEventListener("click", (e) => { if (e.target === bookOrderModal) closeBookOrderModal(); });
+    topupFromBookModalBtn.addEventListener("click", () => { closeBookOrderModal(); openWalletModal(); });
+
     const celebrationModal = document.getElementById("celebrationModal");
     function spawnConfettiBurst() {
       const colors = ["#10b981", "#0ea5e9", "#f59e0b", "#ec4899", "#8b5cf6", "#ef4444"];
@@ -836,10 +959,22 @@
       }
     }
 
-    function openCelebrationModal(courseTitle, courseId, remainingBalance) {
-      document.getElementById("celebCourseTitle").textContent = courseTitle || "الكورس";
+    function openCelebrationModal(itemTitle, remainingBalance, actionHref, actionLabel) {
+      document.getElementById("celebCourseTitle").textContent = itemTitle;
       document.getElementById("celebRemainingBalance").textContent = remainingBalance;
-      document.getElementById("goToPurchasedCourseBtn").href = `course.html?id=${encodeURIComponent(courseId)}`;
+      const actionBtn = document.getElementById("goToPurchasedCourseBtn");
+      actionBtn.textContent = actionLabel;
+      if (actionHref) {
+        actionBtn.href = actionHref;
+        actionBtn.onclick = null;
+      } else {
+        actionBtn.href = "#ordersSection";
+        actionBtn.onclick = (e) => {
+          e.preventDefault();
+          celebrationModal.classList.remove("open");
+          switchMainTab("orders");
+        };
+      }
       celebrationModal.classList.add("open");
       spawnConfettiBurst();
     }
@@ -848,6 +983,7 @@
     celebrationModal.addEventListener("click", (e) => { if (e.target === celebrationModal) celebrationModal.classList.remove("open"); });
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
+      if (unsubscribeOrders) unsubscribeOrders();
       await signOut(auth);
       location.href = "auth.html";
     });
@@ -872,6 +1008,7 @@
 
       currentStudentName = userData.fullName || user.email?.split("@")[0] || "طالب";
       currentStudentEmail = userData.email || user.email || "";
+      currentStudentPhone = userData.phone || "";
       currentStudentLabel = `${currentStudentName} (${currentStudentEmail})`;
       document.getElementById("studentName").textContent = currentStudentName;
       applyWhatsAppLink();
@@ -889,7 +1026,56 @@
       enrolledSet = new Set(Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : []);
       document.getElementById("studentBody").style.display = "block";
       await Promise.all([fetchAndRenderCourses(), fetchAndRenderBooks()]);
+      listenToStudentOrders(user.uid);
     });
+
+    function getOrderStatusMeta(status, method) {
+      const map = {
+        pending: { label: "⏳ قيد المراجعة", color: "#f59e0b" },
+        preparing: { label: "📦 جاري التجهيز", color: "#0284c7" },
+        shipped: { label: method === "hq" ? "🏢 جاهز للاستلام من المقر" : "🚚 خرج مع الشحن", color: "#8b5cf6" },
+        delivered: { label: "✅ تم التسليم", color: "#10b981" }
+      };
+      return map[status] || map.pending;
+    }
+
+    function listenToStudentOrders(uid) {
+      if (unsubscribeOrders) unsubscribeOrders();
+      const qOrders = query(collection(db, "book_orders"), where("userId", "==", uid));
+      unsubscribeOrders = onSnapshot(qOrders, (snap) => {
+        const listEl = document.getElementById("studentOrdersList");
+        const orders = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+
+        if (!orders.length) {
+          listEl.innerHTML = `<div class="pro-course-card" style="padding:24px; text-align:center;"><p style="margin:0; opacity:0.8;">لا توجد طلبات كتب حتى الآن.</p></div>`;
+          return;
+        }
+
+        listEl.innerHTML = "";
+        orders.forEach((ord) => {
+          const st = getOrderStatusMeta(ord.status, ord.deliveryMethod);
+          const methodText = ord.deliveryMethod === "shipping" ? "🚚 شحن للمنزل" : "🏢 استلام من المقر";
+          const dateText = ord.createdAt ? new Date(ord.createdAt).toLocaleString("ar-EG", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+
+          const card = document.createElement("div");
+          card.className = "pro-course-card";
+          card.style.padding = "18px 20px";
+          card.innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
+              <div>
+                <h3 style="margin:0 0 4px; font-size:1.1rem; font-weight:800;">📖 ${ord.bookTitle || "كتاب"}</h3>
+                <small style="color:var(--text-secondary);">طريقة الاستلام: <strong>${methodText}</strong> • الإجمالي: <strong>${ord.totalPrice || 0} ج.م</strong></small>
+              </div>
+              <span class="status-pill" style="background:${st.color}; color:#fff;">${st.label}</span>
+            </div>
+            ${ord.deliveryMethod === "shipping" ? `<small style="color:var(--text-secondary); display:block; margin-bottom:6px;">📍 العنوان: ${ord.address || "-"} | 📞 هاتف: ${ord.phone || "-"}</small>` : ""}
+            <small style="color:var(--text-secondary);">🕒 تاريخ الطلب: ${dateText}</small>
+          `;
+          listEl.appendChild(card);
+        });
+      });
+    }
 
     async function fetchAndRenderCourses() {
       const snap = await getDocs(collection(db, "courses"));
@@ -967,11 +1153,7 @@
       grid.innerHTML = "";
       books.forEach((book) => {
         const coverSrc = book.imageUrl && book.imageUrl.trim() ? book.imageUrl.trim() : DEFAULT_COVER;
-        const cleanPhone = (whatsappNumber || "").replace(/\D/g, "");
-        const waMsg = `السلام عليكم، أنا ${currentStudentLabel || "طالب"} وأرغب في طلب كتاب: ${book.title} (${book.price || ""})`;
-        const buyHref = book.orderUrl && book.orderUrl.trim()
-          ? book.orderUrl.trim()
-          : (cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waMsg)}` : "#");
+        const priceNum = parsePriceNumber(book.price);
 
         const card = document.createElement("article");
         card.className = "pro-course-card";
@@ -990,15 +1172,72 @@
               <p class="course-desc">${book.description || ""}</p>
             </div>
             <div class="course-footer">
-              <span class="course-price-tag">${book.price || ""}</span>
-              <a href="${buyHref}" target="_blank" rel="noopener noreferrer" class="action-btn open-btn">طلب الكتاب 🛒</a>
+              <span class="course-price-tag">${priceNum > 0 ? `${priceNum} ج.م` : "مجاني"}</span>
+              <button type="button" class="action-btn open-btn buy-book-btn">شراء من المحفظة 🛒</button>
             </div>
           </div>
         `;
         card.querySelector(".course-cover-img").addEventListener("error", (e) => { e.target.src = DEFAULT_COVER; });
+        card.querySelector(".buy-book-btn").addEventListener("click", () => openBookOrderModal(book));
         grid.appendChild(card);
       });
     }
+
+    document.getElementById("bookOrderForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!selectedBook || !currentUser) return;
+
+      const basePrice = parsePriceNumber(selectedBook.price);
+      const deliveryMethod = deliveryMethodSelect.value;
+      const shippingFee = deliveryMethod === "shipping" ? SHIPPING_FEE : 0;
+      const totalPrice = basePrice + shippingFee;
+      const phone = orderPhoneInput.value.trim();
+      const address = orderAddressInput.value.trim();
+
+      if (walletBalance < totalPrice) {
+        bookOrderErrorMsg.textContent = "رصيد محفظتك غير كافٍ لإتمام الطلب.";
+        return;
+      }
+      if (deliveryMethod === "shipping" && (!phone || !address)) {
+        bookOrderErrorMsg.textContent = "برجاء إدخال رقم الهاتف والعنوان بالتفصيل للشحن.";
+        return;
+      }
+
+      confirmBookOrderBtn.disabled = true;
+      bookOrderErrorMsg.textContent = "";
+
+      try {
+        const remainingBalance = walletBalance - totalPrice;
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          walletBalance: remainingBalance
+        });
+
+        await addDoc(collection(db, "book_orders"), {
+          userId: currentUser.uid,
+          studentName: currentStudentName,
+          studentEmail: currentStudentEmail,
+          bookId: selectedBook.id,
+          bookTitle: selectedBook.title || "كتاب",
+          bookPrice: basePrice,
+          shippingFee,
+          totalPrice,
+          deliveryMethod,
+          phone: deliveryMethod === "shipping" ? phone : (currentStudentPhone || "-"),
+          address: deliveryMethod === "shipping" ? address : "استلام من مقر الأكاديمية",
+          status: "pending",
+          createdAt: new Date().toISOString()
+        });
+
+        walletBalance = remainingBalance;
+        updateWalletUI();
+        const orderedTitle = selectedBook.title || "كتاب";
+        closeBookOrderModal();
+        openCelebrationModal(`طلب كتاب: ${orderedTitle}`, remainingBalance, null, "متابعة الطلب 📦");
+      } catch (err) {
+        bookOrderErrorMsg.textContent = "حدث خطأ أثناء تنفيذ الطلب، حاول مرة أخرى.";
+        confirmBookOrderBtn.disabled = false;
+      }
+    });
 
     document.getElementById("topupWalletForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -1085,7 +1324,7 @@
         const purchasedId = selectedCourse.id;
         closeUnlockModal();
         drawCourses();
-        openCelebrationModal(purchasedTitle, purchasedId, remainingBalance);
+        openCelebrationModal(purchasedTitle, remainingBalance, `course.html?id=${encodeURIComponent(purchasedId)}`, "دخول الكورس الآن ⬅");
       } catch (err) {
         unlockErrorMsg.textContent = "حدث خطأ أثناء خصم الرصيد وفتح الكورس.";
         confirmBuyCourseBtn.disabled = false;
