@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</title>
+  <title>لوحة التحكم - الأكاديمية الأولمبية لعلوم الرياضة</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
     :root {
       --bg-page: #f0f7ff;
       --bg-card: #ffffff;
-      --bg-sub: rgba(2, 132, 199, 0.04);
-      --bg-input: #f8fafc;
+      --bg-sub: #f8fafc;
       --text-primary: #0f172a;
       --text-secondary: #475569;
       --border-subtle: rgba(2, 132, 199, 0.18);
       --brand-primary: #0284c7;
-      --shadow-card: 0 10px 26px -8px rgba(2, 132, 199, 0.12);
+      --shadow-card: 0 12px 30px -8px rgba(2, 132, 199, 0.14);
     }
 
     html[data-theme="dark"],
@@ -27,37 +26,22 @@
     html.dark {
       --bg-page: #0b1120;
       --bg-card: #131c31;
-      --bg-sub: rgba(30, 41, 59, 0.65);
-      --bg-input: #1e293b;
+      --bg-sub: #1e293b;
       --text-primary: #f1f5f9;
       --text-secondary: #cbd5e1;
-      --border-subtle: rgba(56, 189, 248, 0.22);
+      --border-subtle: rgba(56, 189, 248, 0.24);
       --brand-primary: #38bdf8;
-      --shadow-card: 0 14px 32px -8px rgba(0, 0, 0, 0.55);
+      --shadow-card: 0 16px 36px -8px rgba(0, 0, 0, 0.55);
     }
 
     * { box-sizing: border-box; }
 
     body.admin-layout-body {
-      margin: 0;
       font-family: 'Cairo', sans-serif;
+      margin: 0;
       background-color: var(--bg-page) !important;
       color: var(--text-primary) !important;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    body.admin-layout-body h1,
-    body.admin-layout-body h2,
-    body.admin-layout-body h3,
-    body.admin-layout-body h4,
-    body.admin-layout-body p,
-    body.admin-layout-body span,
-    body.admin-layout-body label,
-    body.admin-layout-body small,
-    body.admin-layout-body strong,
-    body.admin-layout-body td,
-    body.admin-layout-body th {
-      color: inherit;
+      overflow-x: hidden;
     }
 
     .admin-shell {
@@ -66,10 +50,8 @@
     }
 
     .admin-sidebar {
-      width: 275px;
-      flex-shrink: 0;
+      width: 265px;
       background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
       border-left: 1px solid var(--border-subtle);
       padding: 20px 14px;
       display: flex;
@@ -78,110 +60,93 @@
       position: sticky;
       top: 0;
       height: 100vh;
-      overflow-y: auto;
       z-index: 100;
-      transition: transform 0.25s ease, background-color 0.3s ease;
+      transition: transform 0.28s ease;
     }
+
     .sidebar-brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 6px 10px 18px;
+      padding: 6px 8px 18px;
       border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 14px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--brand-primary) !important;
-      font-size: 1rem;
     }
+
     .sidebar-nav {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      overflow-y: auto;
     }
+
     .sidebar-link {
       width: 100%;
       text-align: right;
+      background: transparent;
+      border: none;
       padding: 11px 14px;
       border-radius: 10px;
-      border: none;
-      background: transparent;
-      color: var(--text-primary) !important;
       font-family: 'Cairo', sans-serif;
-      font-size: 0.95rem;
       font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-primary) !important;
       cursor: pointer;
-      transition: 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
     }
+
     .sidebar-link:hover {
-      background: var(--bg-sub);
-      color: var(--brand-primary) !important;
+      background: var(--bg-sub) !important;
     }
+
     .sidebar-link.active {
-      background: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0ea5e9) !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
     }
+
     .sidebar-footer {
       padding-top: 14px;
       border-top: 1px solid var(--border-subtle);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    }
+
+    .sidebar-footer .btn {
+      width: 100%;
     }
 
     .admin-main {
       flex: 1;
+      padding: 22px 26px 40px;
       min-width: 0;
-      padding: 24px;
     }
+
     .admin-topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 22px;
+      flex-wrap: wrap;
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
       padding: 14px 18px;
-      border-radius: 14px;
-      background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-subtle);
+      margin-bottom: 22px;
       box-shadow: var(--shadow-card);
-    }
-    .admin-topbar small {
-      color: var(--text-secondary) !important;
-    }
-
-    .admin-panel.card {
-      background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-card);
-    }
-
-    .form-control {
-      background-color: var(--bg-input) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-subtle) !important;
-      font-family: 'Cairo', sans-serif;
-    }
-
-    .form-control::placeholder {
-      color: var(--text-secondary) !important;
-      opacity: 0.75;
     }
 
     .mobile-menu-btn {
       display: none;
+      background: var(--bg-sub) !important;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary) !important;
       padding: 8px 12px;
       border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-sub);
-      color: var(--brand-primary) !important;
       font-family: 'Cairo', sans-serif;
       font-weight: 800;
       cursor: pointer;
     }
+
     .sidebar-backdrop {
       display: none;
       position: fixed;
@@ -190,23 +155,70 @@
       z-index: 90;
     }
 
+    .card {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--brand-primary) !important;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary) !important;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-sub) !important;
+      color: var(--text-primary) !important;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.94rem;
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 14px;
     }
+
     .stat-box {
       padding: 18px;
       border-radius: 12px;
       background: var(--bg-sub) !important;
       border: 1px solid var(--border-subtle);
     }
+
     .stat-box span {
       display: block;
       font-size: 0.9rem;
       color: var(--text-secondary) !important;
       margin-bottom: 6px;
     }
+
     .stat-box strong {
       font-size: 1.7rem;
       color: var(--brand-primary) !important;
@@ -218,6 +230,7 @@
       gap: 12px;
       margin-top: 12px;
     }
+
     .visibility-item {
       display: flex;
       align-items: center;
@@ -229,6 +242,7 @@
       color: var(--text-primary) !important;
       font-weight: 700;
     }
+
     .visibility-item input[type="checkbox"] {
       width: 20px;
       height: 20px;
@@ -242,6 +256,7 @@
       flex-direction: column;
       gap: 10px;
     }
+
     .manage-item {
       display: flex;
       align-items: center;
@@ -254,10 +269,12 @@
       background: var(--bg-sub) !important;
       color: var(--text-primary) !important;
     }
+
     .manage-item small {
       color: var(--text-secondary) !important;
       word-break: break-all;
     }
+
     .item-actions {
       display: flex;
       align-items: center;
@@ -275,6 +292,7 @@
       font-weight: 700;
       cursor: pointer;
     }
+
     .btn-edit:hover {
       background: #0369a1;
     }
@@ -289,8 +307,27 @@
       font-weight: 700;
       cursor: pointer;
     }
+
     .btn-danger:hover {
       background: #b91c1c;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .status-tag.used {
+      background: rgba(220, 38, 38, 0.14);
+      color: #ef4444 !important;
+    }
+
+    .status-tag.available {
+      background: rgba(16, 185, 129, 0.14);
+      color: #10b981 !important;
     }
 
     .table-wrap {
@@ -298,17 +335,21 @@
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       color: var(--text-primary) !important;
     }
+
     th, td {
       padding: 12px 14px;
       text-align: right;
       border-bottom: 1px solid var(--border-subtle);
       color: var(--text-primary) !important;
+      font-size: 0.92rem;
     }
+
     th {
       background: var(--bg-sub) !important;
       font-weight: 800;
@@ -320,6 +361,7 @@
       gap: 18px;
       margin-bottom: 18px;
     }
+
     .sub-card {
       padding: 16px;
       border-radius: 12px;
@@ -339,9 +381,11 @@
       justify-content: center;
       padding: 16px;
     }
+
     .edit-modal-backdrop.open {
       display: flex;
     }
+
     .edit-modal-box {
       width: 100%;
       max-width: 540px;
@@ -354,6 +398,7 @@
       max-height: 90vh;
       overflow-y: auto;
     }
+
     .edit-modal-footer {
       display: flex;
       justify-content: flex-end;
@@ -389,13 +434,13 @@
 
         <nav class="sidebar-nav">
           <button class="sidebar-link active" data-target="overviewPanel" type="button">📊 الإحصائيات</button>
-          <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
-          <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
-          <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
+          <button class="sidebar-link" data-target="walletCodesPanel" type="button">💰 أكواد الشحن والمحفظة</button>
           <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="booksPanel" type="button">📖 الكتب (إضافة / حذف)</button>
-          <button class="sidebar-link" data-target="codesPanel" type="button">🎟️ أكواد التفعيل (كتابة / توليد / حذف)</button>
+          <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
+          <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
+          <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
           <button class="sidebar-link" data-target="studentsPanel" type="button">👨‍🎓 الطلاب والأجهزة</button>
         </nav>
       </div>
@@ -426,83 +471,69 @@
         <div class="stats-grid">
           <div class="stat-box"><span>إجمالي الطلاب</span><strong id="statStudents">0</strong></div>
           <div class="stat-box"><span>عدد الكورسات</span><strong id="statCourses">0</strong></div>
-          <div class="stat-box"><span>إجمالي الأكواد</span><strong id="statCodes">0</strong></div>
-          <div class="stat-box"><span>الأكواد المستخدمة</span><strong id="statUsedCodes">0</strong></div>
+          <div class="stat-box"><span>إجمالي أكواد الشحن</span><strong id="statWalletCodes">0</strong></div>
+          <div class="stat-box"><span>الأكواد المفعّلة</span><strong id="statUsedWalletCodes">0</strong></div>
         </div>
       </section>
 
-      <!-- 2. إظهار وإخفاء الأقسام -->
-      <section id="visibilityPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">التحكم في إظهار وإخفاء عناصر المنصة</h2>
-        <div class="visibility-list">
-          <label class="visibility-item"><span>قسم الكورسات المتاحة</span><input type="checkbox" id="vis_coursesSection" checked /></label>
-          <label class="visibility-item"><span>قسم الكتب</span><input type="checkbox" id="vis_booksSection" checked /></label>
-          <label class="visibility-item"><span>قسم المحاضرات والفيديو</span><input type="checkbox" id="vis_videosSection" checked /></label>
-          <label class="visibility-item"><span>ملفات PDF والمذكرات</span><input type="checkbox" id="vis_pdfsSection" checked /></label>
-          <label class="visibility-item"><span>تفعيل الكورسات بالكود</span><input type="checkbox" id="vis_activationBox" checked /></label>
-          <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
+      <!-- 2. أكواد الشحن وسجل التفعيل -->
+      <section id="walletCodesPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إدارة أكواد شحن المحفظة وسجل التفعيل</h2>
+
+        <div class="form-group" style="max-width:300px;">
+          <label>قيمة الكود بالجنيه (مثال: 200)</label>
+          <input type="number" id="walletCodeAmount" class="form-control" value="200" min="1" required />
         </div>
-        <div class="form-group" style="margin-top:16px;">
-          <label>نص التنويه العام (يظهر لجميع الطلاب)</label>
-          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه العام هنا..." />
+
+        <div class="split-box">
+          <div class="sub-card">
+            <h3 style="margin-top:0;">إضافة كود شحن مخصص</h3>
+            <form id="customWalletCodeForm">
+              <div class="form-group">
+                <label>اكتب الكود</label>
+                <input type="text" id="customWalletCodeInput" class="form-control" placeholder="مثال: WALLET-200" required />
+              </div>
+              <button type="submit" class="btn btn-primary">حفظ كود الشحن</button>
+            </form>
+            <p id="customWalletCodeMsg" style="margin-top:8px; font-weight:700; color:var(--brand-primary) !important;"></p>
+          </div>
+
+          <div class="sub-card">
+            <h3 style="margin-top:0;">توليد مجموعة أكواد شحن</h3>
+            <form id="genWalletCodesForm">
+              <div class="form-group">
+                <label>عدد الأكواد</label>
+                <input type="number" id="walletCodesCount" class="form-control" value="10" min="1" max="500" required />
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">توليد أكواد الشحن</button>
+                <button type="button" id="exportWalletCsvBtn" class="btn btn-outline">تصدير CSV</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
-        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+
+        <div id="generatedWalletCodesBox" style="margin-bottom:16px; font-weight:700; color:var(--brand-primary) !important; word-break:break-all;"></div>
+
+        <h3>سجل أكواد الشحن وحالة التفعيل</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الكود</th>
+                <th>القيمة</th>
+                <th>الحالة</th>
+                <th>الحساب الذي فعّل الكود</th>
+                <th>تاريخ ووقت التفعيل</th>
+                <th>حذف</th>
+              </tr>
+            </thead>
+            <tbody id="walletCodesTableBody"></tbody>
+          </table>
+        </div>
       </section>
 
-      <!-- 3. إشعار لطالب معين -->
-      <section id="personalNoticePanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إرسال أو تعديل إشعار خاص لطالب معين</h2>
-        <form id="personalNoticeForm">
-          <div class="form-group">
-            <label>اختر الطالب</label>
-            <select id="noticeStudentSelect" class="form-control" required></select>
-          </div>
-          <div class="form-group">
-            <label>نص الإشعار الخاص بهذا الطالب (يظهر له هو فقط)</label>
-            <input type="text" id="personalNoticeInput" class="form-control" placeholder="مثال: يرجى استكمال مشاهدة المحاضرة الأولى..." required />
-          </div>
-          <label class="visibility-item" style="max-width:340px; margin-bottom:16px;">
-            <span>تفعيل ظهور الإشعار لهذا الطالب</span>
-            <input type="checkbox" id="personalNoticeActive" checked />
-          </label>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="submit" class="btn btn-primary">إرسال / حفظ الإشعار</button>
-            <button type="button" id="clearPersonalNoticeBtn" class="btn btn-danger">مسح الإشعار</button>
-          </div>
-        </form>
-        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
-      </section>
-
-      <!-- 4. اللوجو والتواصل -->
-      <section id="brandingPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إعدادات اللوجو وروابط التواصل</h2>
-        <form id="brandingForm">
-          <div class="form-group">
-            <label>رابط صورة اللوجو (أو اتركه فارغاً لاستخدام assets/img/logo.png)</label>
-            <input type="url" id="logoUrlInput" class="form-control" placeholder="https://example.com/logo.png" />
-          </div>
-          <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-            <div class="form-group">
-              <label>رقم الواتساب (بالكود الدولي، مثال: 2010xxxxxxxx)</label>
-              <input type="text" id="whatsappInput" class="form-control" placeholder="201000000000" />
-            </div>
-            <div class="form-group">
-              <label>رابط صفحة الفيسبوك</label>
-              <input type="url" id="facebookInput" class="form-control" placeholder="https://facebook.com/yourpage" />
-            </div>
-          </div>
-          <div style="margin-bottom:16px; display:flex; align-items:center; gap:14px;">
-            <span>معاينة اللوجو:</span>
-            <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو"
-                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid var(--border-subtle); padding:4px; background:#fff;" />
-          </div>
-          <button type="submit" class="btn btn-primary">حفظ اللوجو وروابط التواصل</button>
-        </form>
-        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
-      </section>
-
-      <!-- 5. الكورسات (إضافة وتعديل وحذف) -->
+      <!-- 3. الكورسات (إضافة وتعديل وحذف) -->
       <section id="coursesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كورس جديد</h2>
         <form id="addCourseForm">
@@ -516,8 +547,8 @@
               <input type="text" id="courseCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
             </div>
             <div class="form-group">
-              <label>السعر (اختياري / للعرض)</label>
-              <input type="text" id="coursePrice" class="form-control" placeholder="مثال: 250 ج.م" />
+              <label>سعر الكورس بالجنيه (رقم للخصم من المحفظة)</label>
+              <input type="number" id="coursePrice" class="form-control" placeholder="مثال: 250" min="0" required />
             </div>
           </div>
           <div class="form-group">
@@ -536,7 +567,7 @@
         <div id="coursesManageList" class="manage-list"></div>
       </section>
 
-      <!-- 6. المحاضرات (إضافة وتعديل وحذف داخل كل كورس) -->
+      <!-- 4. المحاضرات (إضافة وتعديل وحذف داخل كل كورس) -->
       <section id="lessonsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة فيديوهات وملفات PDF داخل الكورسات</h2>
         <form id="addLessonForm">
@@ -568,11 +599,11 @@
         </form>
         <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
-        <h3 style="margin-top:26px;">محاضرات الكورس المختار (إمكانية تعديل الرابط أو إضافة PDF أو الحذف)</h3>
+        <h3 style="margin-top:26px;">محاضرات الكورس المختار</h3>
         <div id="lessonsManageList" class="manage-list"></div>
       </section>
 
-      <!-- 7. الكتب (إضافة وحذف) -->
+      <!-- 5. الكتب (إضافة وحذف) -->
       <section id="booksPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كتاب جديد للبيع</h2>
         <form id="addBookForm">
@@ -608,68 +639,83 @@
         </form>
         <p id="bookMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
 
-        <h3 style="margin-top:26px;">الكتب الحالية (إمكانية الحذف)</h3>
+        <h3 style="margin-top:26px;">الكتب الحالية</h3>
         <div id="booksManageList" class="manage-list"></div>
       </section>
 
-      <!-- 8. أكواد التفعيل -->
-      <section id="codesPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إدارة أكواد التفعيل</h2>
-
-        <div class="form-group" style="max-width:420px;">
-          <label>الكورس المرتبط بالأكواد</label>
-          <select id="codeCourseSelect" class="form-control" required></select>
-        </div>
-
-        <div class="split-box">
-          <div class="sub-card">
-            <h3 style="margin-top:0;">إضافة كود مخصص بإيدك</h3>
-            <form id="customCodeForm">
-              <div class="form-group">
-                <label>اكتب الكود</label>
-                <input type="text" id="customCodeInput" class="form-control" placeholder="مثال: OLY-VIP-2026" required />
-              </div>
-              <button type="submit" class="btn btn-primary">حفظ الكود</button>
-            </form>
-            <p id="customCodeMsg" style="margin-top:8px; font-weight:700; color:var(--brand-primary) !important;"></p>
+      <!-- 6. إشعار لطالب معين -->
+      <section id="personalNoticePanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إرسال أو تعديل إشعار خاص لطالب معين</h2>
+        <form id="personalNoticeForm">
+          <div class="form-group">
+            <label>اختر الطالب</label>
+            <select id="noticeStudentSelect" class="form-control" required></select>
           </div>
-
-          <div class="sub-card">
-            <h3 style="margin-top:0;">توليد مجموعة أكواد تلقائياً</h3>
-            <form id="genCodesForm">
-              <div class="form-group">
-                <label>عدد الأكواد</label>
-                <input type="number" id="codesCount" class="form-control" value="10" min="1" max="500" required />
-              </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button type="submit" class="btn btn-primary">توليد الأكواد</button>
-                <button type="button" id="exportCsvBtn" class="btn btn-outline">تصدير CSV</button>
-              </div>
-            </form>
+          <div class="form-group">
+            <label>نص الإشعار الخاص بهذا الطالب</label>
+            <input type="text" id="personalNoticeInput" class="form-control" placeholder="اكتب الإشعار الخاص هنا..." required />
           </div>
-        </div>
+          <label class="visibility-item" style="max-width:340px; margin-bottom:16px;">
+            <span>تفعيل ظهور الإشعار لهذا الطالب</span>
+            <input type="checkbox" id="personalNoticeActive" checked />
+          </label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">إرسال / حفظ الإشعار</button>
+            <button type="button" id="clearPersonalNoticeBtn" class="btn btn-danger">مسح الإشعار</button>
+          </div>
+        </form>
+        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+      </section>
 
-        <div id="generatedCodesBox" style="margin-bottom:16px; font-weight:700; color:var(--brand-primary) !important; word-break:break-all;"></div>
-
-        <h3>قائمة الأكواد الحالية (إمكانية حذف أي كود)</h3>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>الكود</th>
-                <th>الكورس</th>
-                <th>الحالة</th>
-                <th>حذف</th>
-              </tr>
-            </thead>
-            <tbody id="codesTableBody"></tbody>
-          </table>
+      <!-- 7. إظهار وإخفاء الأقسام -->
+      <section id="visibilityPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">التحكم في إظهار وإخفاء عناصر المنصة</h2>
+        <div class="visibility-list">
+          <label class="visibility-item"><span>قسم الكورسات المتاحة</span><input type="checkbox" id="vis_coursesSection" checked /></label>
+          <label class="visibility-item"><span>قسم الكتب</span><input type="checkbox" id="vis_booksSection" checked /></label>
+          <label class="visibility-item"><span>قسم المحاضرات والفيديو</span><input type="checkbox" id="vis_videosSection" checked /></label>
+          <label class="visibility-item"><span>ملفات PDF والمذكرات</span><input type="checkbox" id="vis_pdfsSection" checked /></label>
+          <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
         </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label>نص التنويه العام (يظهر لجميع الطلاب)</label>
+          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه العام هنا..." />
+        </div>
+        <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
+        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+      </section>
+
+      <!-- 8. اللوجو والتواصل -->
+      <section id="brandingPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">إعدادات اللوجو وروابط التواصل</h2>
+        <form id="brandingForm">
+          <div class="form-group">
+            <label>رابط صورة اللوجو (أو اتركه فارغاً لاستخدام assets/img/logo.png)</label>
+            <input type="url" id="logoUrlInput" class="form-control" placeholder="https://example.com/logo.png" />
+          </div>
+          <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+            <div class="form-group">
+              <label>رقم الواتساب (بالكود الدولي، مثال: 2010xxxxxxxx)</label>
+              <input type="text" id="whatsappInput" class="form-control" placeholder="201000000000" />
+            </div>
+            <div class="form-group">
+              <label>رابط صفحة الفيسبوك</label>
+              <input type="url" id="facebookInput" class="form-control" placeholder="https://facebook.com/yourpage" />
+            </div>
+          </div>
+          <div style="margin-bottom:16px; display:flex; align-items:center; gap:14px;">
+            <span>معاينة اللوجو:</span>
+            <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو"
+                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid var(--border-subtle); padding:4px; background:#fff;" />
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ اللوجو وروابط التواصل</button>
+        </form>
+        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
       </section>
 
       <!-- 9. الطلاب والأجهزة -->
       <section id="studentsPanel" class="admin-panel card" style="display:none;">
-        <h2 class="section-title">إدارة الطلاب وتأمين الأجهزة</h2>
+        <h2 class="section-title">إدارة الطلاب والأرصدة وتأمين الأجهزة</h2>
         <div class="table-wrap">
           <table>
             <thead>
@@ -677,6 +723,7 @@
                 <th>الاسم</th>
                 <th>رقم الهاتف</th>
                 <th>البريد الإلكتروني</th>
+                <th>رصيد المحفظة</th>
                 <th>معرّف الجهاز</th>
                 <th>إجراء</th>
               </tr>
@@ -702,8 +749,8 @@
           <input type="text" id="editCourseCategory" class="form-control" required />
         </div>
         <div class="form-group">
-          <label>السعر (اختياري)</label>
-          <input type="text" id="editCoursePrice" class="form-control" />
+          <label>السعر بالجنيه</label>
+          <input type="number" id="editCoursePrice" class="form-control" min="0" required />
         </div>
         <div class="form-group">
           <label>رابط صورة غلاف الكورس (اختياري)</label>
@@ -823,7 +870,7 @@
 
     const visibilityKeys = [
       "coursesSection", "booksSection", "videosSection",
-      "pdfsSection", "activationBox", "announcementBanner"
+      "pdfsSection", "announcementBanner"
     ];
 
     async function loadVisibilitySettings() {
@@ -897,8 +944,21 @@
       document.getElementById("brandingMsg").textContent = "تم حفظ اللوجو وروابط التواصل بنجاح!";
     });
 
-    let lastGenerated = [];
-    let courseTitleMap = {};
+    function formatArabicDateTime(isoString) {
+      if (!isoString) return "-";
+      const dateObj = new Date(isoString);
+      if (Number.isNaN(dateObj.getTime())) return isoString;
+      return dateObj.toLocaleString("ar-EG", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    let lastGeneratedWalletCodes = [];
+    let usersInfoMap = {};
     let editingCourseId = null;
     let editingLessonId = null;
 
@@ -909,7 +969,7 @@
       editingCourseId = courseId;
       document.getElementById("editCourseTitle").value = courseData.title || "";
       document.getElementById("editCourseCategory").value = courseData.category || "";
-      document.getElementById("editCoursePrice").value = courseData.price || "";
+      document.getElementById("editCoursePrice").value = Number(String(courseData.price || "0").replace(/[^\d.]/g, "")) || 0;
       document.getElementById("editCourseImage").value = courseData.imageUrl || "";
       document.getElementById("editCourseDesc").value = courseData.description || "";
       editCourseModal.classList.add("open");
@@ -926,7 +986,7 @@
       await updateDoc(doc(db, "courses", editingCourseId), {
         title: document.getElementById("editCourseTitle").value.trim(),
         category: document.getElementById("editCourseCategory").value.trim(),
-        price: document.getElementById("editCoursePrice").value.trim(),
+        price: Number(document.getElementById("editCoursePrice").value) || 0,
         imageUrl: document.getElementById("editCourseImage").value.trim(),
         description: document.getElementById("editCourseDesc").value.trim(),
         updatedAt: new Date().toISOString()
@@ -966,6 +1026,112 @@
       editingLessonId = null;
       document.getElementById("lessonMsg").textContent = "تم تحديث المحاضرة ورابط PDF بنجاح!";
       await renderLessonsForSelectedCourse();
+    });
+
+    async function loadWalletCodesAdmin() {
+      const snap = await getDocs(collection(db, "wallet_codes"));
+      const tbody = document.getElementById("walletCodesTableBody");
+      tbody.innerHTML = "";
+
+      let usedCount = 0;
+      const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => {
+          const tA = new Date(a.usedAt || a.createdAt || 0).getTime();
+          const tB = new Date(b.usedAt || b.createdAt || 0).getTime();
+          return tB - tA;
+        });
+
+      rows.forEach((w) => {
+        if (w.used) usedCount++;
+        const codeVal = w.code || w.id;
+        const userFromMap = w.usedBy ? usersInfoMap[w.usedBy] : null;
+        const activatorName = w.usedByName || userFromMap?.fullName || (w.usedBy ? "طالب" : "-");
+        const activatorEmail = w.usedByEmail || userFromMap?.email || "";
+        const activatorUid = w.usedBy || "";
+
+        const activatorText = w.used
+          ? `<strong>${activatorName}</strong>${activatorEmail ? `<br><small>${activatorEmail}</small>` : ""}${activatorUid ? `<br><small>ID: ${activatorUid}</small>` : ""}`
+          : "-";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${codeVal}</strong></td>
+          <td>${Number(w.amount) || 0} ج.م</td>
+          <td>
+            <span class="status-tag ${w.used ? "used" : "available"}">
+              ${w.used ? "مُفعّل" : "متاح"}
+            </span>
+          </td>
+          <td>${activatorText}</td>
+          <td>${w.used ? formatArabicDateTime(w.usedAt) : "-"}</td>
+          <td><button class="btn-danger" type="button">حذف</button></td>
+        `;
+        tr.querySelector("button").addEventListener("click", async () => {
+          await deleteDoc(doc(db, "wallet_codes", w.id));
+          loadWalletCodesAdmin();
+        });
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("statWalletCodes").textContent = snap.size;
+      document.getElementById("statUsedWalletCodes").textContent = usedCount;
+    }
+
+    document.getElementById("customWalletCodeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = document.getElementById("customWalletCodeInput").value.trim().toUpperCase();
+      const amount = Number(document.getElementById("walletCodeAmount").value);
+      if (!code || !amount || amount <= 0) return;
+
+      await setDoc(doc(db, "wallet_codes", code), {
+        code,
+        amount,
+        used: false,
+        usedBy: "",
+        usedByName: "",
+        usedByEmail: "",
+        usedAt: "",
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById("customWalletCodeMsg").textContent = `تم حفظ كود الشحن ${code} بقيمة ${amount} ج.م!`;
+      document.getElementById("customWalletCodeInput").value = "";
+      loadWalletCodesAdmin();
+    });
+
+    document.getElementById("genWalletCodesForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const count = Number(document.getElementById("walletCodesCount").value);
+      const amount = Number(document.getElementById("walletCodeAmount").value);
+      if (!amount || amount <= 0) return;
+
+      lastGeneratedWalletCodes = [];
+      for (let i = 0; i < count; i++) {
+        const code = "WAL-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+        lastGeneratedWalletCodes.push(code);
+        await setDoc(doc(db, "wallet_codes", code), {
+          code,
+          amount,
+          used: false,
+          usedBy: "",
+          usedByName: "",
+          usedByEmail: "",
+          usedAt: "",
+          createdAt: new Date().toISOString()
+        });
+      }
+      document.getElementById("generatedWalletCodesBox").textContent = lastGeneratedWalletCodes.join(" , ");
+      loadWalletCodesAdmin();
+    });
+
+    document.getElementById("exportWalletCsvBtn").addEventListener("click", () => {
+      if (!lastGeneratedWalletCodes.length) return alert("ولّد أكواد شحن أولاً.");
+      const csv = "WalletCode\n" + lastGeneratedWalletCodes.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "olympic-wallet-codes.csv";
+      a.click();
     });
 
     async function loadBooksAdmin() {
@@ -1014,43 +1180,55 @@
     async function loadAdminData() {
       const usersSnap = await getDocs(collection(db, "users"));
       const coursesSnap = await getDocs(collection(db, "courses"));
-      const codesSnap = await getDocs(collection(db, "activation_codes"));
 
       let studentsCount = 0;
-      let usedCodesCount = 0;
-      courseTitleMap = {};
+      usersInfoMap = {};
 
       const noticeSelect = document.getElementById("noticeStudentSelect");
       noticeSelect.innerHTML = "";
 
+      const tbody = document.getElementById("studentsTableBody");
+      tbody.innerHTML = "";
+
       usersSnap.forEach((uDoc) => {
         const u = uDoc.data();
+        usersInfoMap[uDoc.id] = u;
         if (u.role !== "admin") {
           studentsCount++;
           const opt = document.createElement("option");
           opt.value = uDoc.id;
           opt.textContent = `${u.fullName || "طالب"} (${u.email || uDoc.id})`;
           noticeSelect.appendChild(opt);
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${u.fullName || "-"}</td>
+            <td>${u.phone || "-"}</td>
+            <td>${u.email || "-"}</td>
+            <td><strong>${Number(u.walletBalance) || 0} ج.م</strong></td>
+            <td>${u.deviceId || "غير مرتبط"}</td>
+            <td><button class="btn btn-outline" type="button">Reset الجهاز</button></td>
+          `;
+          tr.querySelector("button").addEventListener("click", async () => {
+            await updateDoc(doc(db, "users", uDoc.id), { deviceId: "" });
+            alert("تم إلغاء ربط الجهاز بنجاح.");
+            loadAdminData();
+          });
+          tbody.appendChild(tr);
         }
-      });
-
-      await fillSelectedStudentNotice();
-      await loadBooksAdmin();
-
-      codesSnap.forEach((cDoc) => {
-        if (cDoc.data().used) usedCodesCount++;
       });
 
       document.getElementById("statStudents").textContent = studentsCount;
       document.getElementById("statCourses").textContent = coursesSnap.size;
-      document.getElementById("statCodes").textContent = codesSnap.size;
-      document.getElementById("statUsedCodes").textContent = usedCodesCount;
 
-      const selects = [
-        document.getElementById("lessonCourseSelect"),
-        document.getElementById("codeCourseSelect")
-      ];
-      selects.forEach((sel) => (sel.innerHTML = ""));
+      await Promise.all([
+        fillSelectedStudentNotice(),
+        loadWalletCodesAdmin(),
+        loadBooksAdmin()
+      ]);
+
+      const lessonCourseSelect = document.getElementById("lessonCourseSelect");
+      lessonCourseSelect.innerHTML = "";
 
       const coursesListEl = document.getElementById("coursesManageList");
       coursesListEl.innerHTML = "";
@@ -1058,21 +1236,18 @@
       coursesSnap.forEach((cDoc) => {
         const courseData = cDoc.data();
         const title = courseData.title || cDoc.id;
-        courseTitleMap[cDoc.id] = title;
 
-        selects.forEach((sel) => {
-          const opt = document.createElement("option");
-          opt.value = cDoc.id;
-          opt.textContent = title;
-          sel.appendChild(opt);
-        });
+        const opt = document.createElement("option");
+        opt.value = cDoc.id;
+        opt.textContent = title;
+        lessonCourseSelect.appendChild(opt);
 
         const item = document.createElement("div");
         item.className = "manage-item";
         item.innerHTML = `
           <div>
             <strong>${title}</strong>
-            <small style="display:block;">${courseData.category || ""} ${courseData.price ? "• " + courseData.price : ""}</small>
+            <small style="display:block;">${courseData.category || ""} • السعر: ${courseData.price || 0} ج.م</small>
           </div>
           <div class="item-actions">
             <button class="btn-edit" type="button">تعديل</button>
@@ -1086,8 +1261,6 @@
           if (!confirm(`هل أنت متأكد من حذف كورس "${title}" بالكامل؟`)) return;
           const lessonsSub = await getDocs(collection(db, "courses", cDoc.id, "lessons"));
           for (const l of lessonsSub.docs) await deleteDoc(l.ref);
-          const examsSub = await getDocs(collection(db, "courses", cDoc.id, "exams"));
-          for (const ex of examsSub.docs) await deleteDoc(ex.ref);
           await deleteDoc(doc(db, "courses", cDoc.id));
           loadAdminData();
         });
@@ -1095,46 +1268,6 @@
       });
 
       await renderLessonsForSelectedCourse();
-
-      const codesTbody = document.getElementById("codesTableBody");
-      codesTbody.innerHTML = "";
-      codesSnap.forEach((cDoc) => {
-        const c = cDoc.data();
-        const codeVal = c.code || cDoc.id;
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${codeVal}</strong></td>
-          <td>${courseTitleMap[c.courseId] || c.courseId || "-"}</td>
-          <td>${c.used ? "مستخدم" : "متاح"}</td>
-          <td><button class="btn-danger" type="button">حذف</button></td>
-        `;
-        tr.querySelector("button").addEventListener("click", async () => {
-          await deleteDoc(doc(db, "activation_codes", cDoc.id));
-          loadAdminData();
-        });
-        codesTbody.appendChild(tr);
-      });
-
-      const tbody = document.getElementById("studentsTableBody");
-      tbody.innerHTML = "";
-      usersSnap.forEach((uDoc) => {
-        const u = uDoc.data();
-        if (u.role === "admin") return;
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${u.fullName || "-"}</td>
-          <td>${u.phone || "-"}</td>
-          <td>${u.email || "-"}</td>
-          <td>${u.deviceId || "غير مرتبط"}</td>
-          <td><button class="btn btn-outline" type="button">Reset الجهاز</button></td>
-        `;
-        tr.querySelector("button").addEventListener("click", async () => {
-          await updateDoc(doc(db, "users", uDoc.id), { deviceId: "" });
-          alert("تم إلغاء ربط الجهاز بنجاح.");
-          loadAdminData();
-        });
-        tbody.appendChild(tr);
-      });
     }
 
     async function fillSelectedStudentNotice() {
@@ -1223,7 +1356,7 @@
       await addDoc(collection(db, "courses"), {
         title: document.getElementById("courseTitle").value.trim(),
         category: document.getElementById("courseCategory").value.trim(),
-        price: document.getElementById("coursePrice").value.trim(),
+        price: Number(document.getElementById("coursePrice").value) || 0,
         imageUrl: document.getElementById("courseImage").value.trim(),
         description: document.getElementById("courseDesc").value.trim(),
         createdAt: new Date().toISOString()
@@ -1246,52 +1379,6 @@
       document.getElementById("lessonMsg").textContent = "تمت إضافة المحاضرة بنجاح!";
       e.target.reset();
       renderLessonsForSelectedCourse();
-    });
-
-    document.getElementById("customCodeForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const code = document.getElementById("customCodeInput").value.trim().toUpperCase();
-      const courseId = document.getElementById("codeCourseSelect").value;
-      if (!code) return;
-      await setDoc(doc(db, "activation_codes", code), {
-        code,
-        courseId,
-        used: false,
-        createdAt: new Date().toISOString()
-      });
-      document.getElementById("customCodeMsg").textContent = `تم حفظ الكود ${code} بنجاح!`;
-      document.getElementById("customCodeInput").value = "";
-      loadAdminData();
-    });
-
-    document.getElementById("genCodesForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const count = Number(document.getElementById("codesCount").value);
-      const courseId = document.getElementById("codeCourseSelect").value;
-      lastGenerated = [];
-      for (let i = 0; i < count; i++) {
-        const code = "OLY-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-        lastGenerated.push(code);
-        await setDoc(doc(db, "activation_codes", code), {
-          code,
-          courseId,
-          used: false,
-          createdAt: new Date().toISOString()
-        });
-      }
-      document.getElementById("generatedCodesBox").textContent = lastGenerated.join(" , ");
-      loadAdminData();
-    });
-
-    document.getElementById("exportCsvBtn").addEventListener("click", () => {
-      if (!lastGenerated.length) return alert("ولّد أكواد أولاً.");
-      const csv = "Code\n" + lastGenerated.join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "olympic-activation-codes.csv";
-      a.click();
     });
   </script>
 </body>
