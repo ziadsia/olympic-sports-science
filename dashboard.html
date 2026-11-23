@@ -12,7 +12,7 @@
     :root {
       --bg-page: #f0f7ff;
       --bg-card: #ffffff;
-      --bg-header: rgba(255, 255, 255, 0.88);
+      --bg-header: rgba(255, 255, 255, 0.9);
       --text-primary: #0f172a;
       --text-secondary: #475569;
       --border-subtle: rgba(2, 132, 199, 0.16);
@@ -27,7 +27,7 @@
     html.dark {
       --bg-page: #0b1120;
       --bg-card: #131c31;
-      --bg-header: rgba(19, 28, 49, 0.9);
+      --bg-header: rgba(19, 28, 49, 0.92);
       --text-primary: #f1f5f9;
       --text-secondary: #cbd5e1;
       --border-subtle: rgba(56, 189, 248, 0.22);
@@ -41,21 +41,17 @@
     body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
-      background-color: var(--bg-page) !important;
-      color: var(--text-primary) !important;
-      transition: background-color 0.35s ease, color 0.35s ease;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
       overflow-x: hidden;
-    }
-
-    h1, h2, h3, h4, p, span, label, small, a, strong {
-      color: inherit;
     }
 
     .announcement-bar {
       background: linear-gradient(90deg, #0284c7, #0ea5e9, #0284c7);
       background-size: 200% auto;
       animation: gradientSlide 6s linear infinite;
-      color: #ffffff !important;
+      color: #ffffff;
       padding: 10px 16px;
       text-align: center;
       font-weight: 700;
@@ -68,7 +64,7 @@
     }
 
     .personal-notice-card {
-      background: var(--bg-card) !important;
+      background: var(--bg-card);
       border: 1px solid rgba(245, 158, 11, 0.45);
       border-right: 5px solid #f59e0b;
       border-radius: 16px;
@@ -77,22 +73,14 @@
       box-shadow: var(--shadow-card);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .personal-notice-content {
-      display: flex;
-      align-items: center;
       gap: 12px;
-      line-height: 1.7;
       font-weight: 700;
+      line-height: 1.7;
     }
 
     .navbar {
-      background: var(--bg-header) !important;
+      background: var(--bg-header);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
@@ -100,29 +88,22 @@
     }
 
     .brand span {
-      color: var(--brand-primary) !important;
+      color: var(--brand-primary);
       font-weight: 800;
     }
 
     .welcome-banner {
       border-radius: 20px;
-      padding: 28px 26px;
+      padding: 26px;
       margin-bottom: 24px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 55%, #0c4a6e 100%);
-      color: #ffffff !important;
+      color: #ffffff;
       box-shadow: 0 16px 34px -10px rgba(2, 132, 199, 0.45);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 18px;
-    }
-
-    .welcome-banner h1,
-    .welcome-banner p,
-    .welcome-banner small,
-    .welcome-banner span {
-      color: #ffffff !important;
     }
 
     .banner-pills-group {
@@ -134,7 +115,6 @@
 
     .student-stats-pill {
       background: rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(8px);
       padding: 10px 16px;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -144,7 +124,7 @@
 
     .wallet-topup-btn {
       background: #10b981;
-      color: #ffffff !important;
+      color: #ffffff;
       border: none;
       padding: 10px 16px;
       border-radius: 14px;
@@ -152,12 +132,6 @@
       font-weight: 800;
       font-size: 0.92rem;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
-      transition: transform 0.2s ease;
-    }
-
-    .wallet-topup-btn:hover {
-      transform: translateY(-2px);
     }
 
     .main-category-switch {
@@ -172,19 +146,17 @@
       border-radius: 14px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card);
-      color: var(--text-primary) !important;
+      color: var(--text-primary);
       font-family: 'Cairo', sans-serif;
       font-weight: 800;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.25s ease;
     }
 
     .cat-switch-btn.active {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: #ffffff !important;
+      color: #ffffff;
       border-color: transparent;
-      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
     }
 
     .filter-bar {
@@ -207,17 +179,16 @@
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card);
-      color: var(--text-primary) !important;
+      color: var(--text-primary);
       font-family: 'Cairo', sans-serif;
       font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.25s ease;
     }
 
     .filter-chip.active {
       background: #0284c7;
-      color: #ffffff !important;
+      color: #ffffff;
       border-color: #0284c7;
     }
 
@@ -229,18 +200,18 @@
 
     .pro-course-card {
       border-radius: 20px;
-      background: var(--bg-card) !important;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease;
     }
 
     .pro-course-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: #0284c7;
     }
 
@@ -262,7 +233,7 @@
     .course-cover-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.12) 55%, transparent 100%);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.72) 0%, transparent 65%);
       pointer-events: none;
     }
 
@@ -281,8 +252,8 @@
     .cat-pill {
       padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.72);
-      color: #ffffff !important;
+      background: rgba(15, 23, 42, 0.75);
+      color: #ffffff;
       font-size: 0.78rem;
       font-weight: 700;
     }
@@ -292,19 +263,16 @@
       border-radius: 999px;
       font-size: 0.78rem;
       font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .status-pill.locked {
-      background: rgba(220, 38, 38, 0.88);
-      color: #ffffff !important;
+      background: rgba(220, 38, 38, 0.9);
+      color: #ffffff;
     }
 
     .status-pill.unlocked {
-      background: rgba(5, 150, 105, 0.9);
-      color: #ffffff !important;
+      background: rgba(5, 150, 105, 0.92);
+      color: #ffffff;
     }
 
     .course-body {
@@ -320,14 +288,13 @@
       margin: 0 0 8px;
       font-size: 1.18rem;
       font-weight: 800;
-      color: var(--text-primary) !important;
     }
 
     .course-desc {
       margin: 0;
       font-size: 0.92rem;
       line-height: 1.7;
-      color: var(--text-secondary) !important;
+      color: var(--text-secondary);
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -346,7 +313,7 @@
     .course-price-tag {
       font-weight: 900;
       font-size: 1.02rem;
-      color: var(--brand-primary) !important;
+      color: var(--brand-primary);
     }
 
     .action-btn {
@@ -360,18 +327,17 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.25s ease;
       border: none;
     }
 
     .action-btn.open-btn {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: #ffffff !important;
+      color: #ffffff;
     }
 
     .action-btn.lock-btn {
       background: rgba(2, 132, 199, 0.12);
-      color: var(--brand-primary) !important;
+      color: var(--brand-primary);
       border: 1px solid rgba(2, 132, 199, 0.3);
     }
 
@@ -392,7 +358,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff !important;
+      color: #ffffff;
       text-decoration: none;
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
     }
@@ -430,8 +396,8 @@
     .modal-box {
       width: 100%;
       max-width: 440px;
-      background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
+      background: var(--bg-card);
+      color: var(--text-primary);
       border-radius: 20px;
       padding: 24px;
       border: 1px solid var(--border-subtle);
@@ -439,9 +405,9 @@
     }
 
     .modal-box input.form-control {
-      background: var(--input-bg) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-subtle) !important;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
       padding: 12px 14px;
       border-radius: 12px;
       font-family: 'Cairo', sans-serif;
@@ -456,6 +422,90 @@
       justify-content: flex-end;
       margin-top: 16px;
       flex-wrap: wrap;
+    }
+
+    /* التهنئة والأنيميشن عند شراء الكورس */
+    .celebration-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 320;
+      overflow: hidden;
+    }
+
+    .celebration-backdrop.open {
+      display: flex;
+    }
+
+    .celebration-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 450px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+      animation: celebPopIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes celebPopIn {
+      0% { opacity: 0; transform: scale(0.72) translateY(24px); }
+      70% { transform: scale(1.03) translateY(-3px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .trophy-badge {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 12px 28px rgba(16, 185, 129, 0.42);
+      animation: trophyPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes trophyPulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.08) rotate(-4deg); }
+    }
+
+    .celebration-course-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 14px 0 18px;
+      font-weight: 800;
+      color: var(--brand-primary);
+    }
+
+    .confetti-piece {
+      position: fixed;
+      top: -18px;
+      width: 10px;
+      height: 16px;
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 310;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg) translateX(45px); opacity: 0; }
     }
   </style>
 </head>
@@ -481,7 +531,7 @@
         <h1 style="margin:0 0 6px; font-size:1.5rem; font-weight:900;">
           أهلاً بك، <span id="studentName">طالب</span> 👋
         </h1>
-        <p style="margin:0; opacity:0.9; font-size:0.95rem;">
+        <p style="margin:0; opacity:0.92; font-size:0.95rem;">
           اشحن محفظتك بكود شحن واشتري الكورسات التي تناسبك مباشرة من رصيدك.
         </p>
       </div>
@@ -497,12 +547,10 @@
     </div>
 
     <div id="personalNoticeBanner" class="personal-notice-card" style="display:none;">
-      <div class="personal-notice-content">
-        <span>📩</span>
-        <div>
-          <small style="display:block; color:#f59e0b !important; font-weight:800; margin-bottom:2px;">رسالة وإشعار خاص لك</small>
-          <span id="personalNoticeText"></span>
-        </div>
+      <span>📩</span>
+      <div>
+        <small style="display:block; color:#f59e0b; font-weight:800; margin-bottom:2px;">رسالة وإشعار خاص لك</small>
+        <span id="personalNoticeText"></span>
       </div>
     </div>
 
@@ -513,22 +561,20 @@
 
     <section id="coursesSection" data-vis="coursesSection">
       <div class="filter-bar">
-        <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكورسات المتاحة</h2>
+        <h2 class="section-title" style="margin:0; color: var(--brand-primary);">الكورسات المتاحة</h2>
         <div class="filter-tabs">
           <button class="filter-chip active" data-filter="all" type="button">الكل</button>
           <button class="filter-chip" data-filter="unlocked" type="button">🔓 المفتوحة</button>
           <button class="filter-chip" data-filter="locked" type="button">🔒 المقفولة</button>
         </div>
       </div>
-
       <div id="dashboardCoursesGrid" class="courses-grid"></div>
     </section>
 
     <section id="booksSection" data-vis="booksSection" style="display:none;">
       <div class="filter-bar">
-        <h2 class="section-title" style="margin:0; color: var(--brand-primary) !important;">الكتب المتاحة</h2>
+        <h2 class="section-title" style="margin:0; color: var(--brand-primary);">الكتب المتاحة</h2>
       </div>
-
       <div id="dashboardBooksGrid" class="courses-grid"></div>
     </section>
   </main>
@@ -542,11 +588,11 @@
     </a>
   </div>
 
-  <!-- مودال شحن المحفظة بكود شحن -->
+  <!-- مودال شحن المحفظة -->
   <div id="walletModal" class="modal-backdrop">
     <div class="modal-box">
-      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">💰 شحن رصيد المحفظة</h3>
-      <p style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;">
+      <h3 style="margin:0 0 6px; color: var(--brand-primary);">💰 شحن رصيد المحفظة</h3>
+      <p style="margin:0 0 14px; font-weight:700; color: var(--text-secondary);">
         رصيدك الحالي: <strong id="modalWalletBalanceText">0</strong> ج.م
       </p>
       <form id="topupWalletForm">
@@ -566,13 +612,11 @@
   <!-- مودال شراء كورس من المحفظة -->
   <div id="unlockModal" class="modal-backdrop">
     <div class="modal-box">
-      <h3 style="margin:0 0 6px; color: var(--brand-primary) !important;">🛒 شراء وفتح الكورس من المحفظة</h3>
+      <h3 style="margin:0 0 6px; color: var(--brand-primary);">🛒 شراء وفتح الكورس من المحفظة</h3>
       <p id="modalCourseTitle" style="margin:0 0 8px; font-weight:800;"></p>
-      <p id="modalCoursePriceInfo" style="margin:0 0 8px; font-weight:700; color: var(--brand-primary) !important;"></p>
-      <p id="modalCurrentBalanceInfo" style="margin:0 0 14px; font-weight:700; color: var(--text-secondary) !important;"></p>
-
-      <p id="unlockErrorMsg" style="color:#ef4444 !important; font-weight:700; min-height:22px; margin:8px 0 0;"></p>
-
+      <p id="modalCoursePriceInfo" style="margin:0 0 8px; font-weight:700; color: var(--brand-primary);"></p>
+      <p id="modalCurrentBalanceInfo" style="margin:0 0 14px; font-weight:700; color: var(--text-secondary);"></p>
+      <p id="unlockErrorMsg" style="color:#ef4444; font-weight:700; min-height:22px; margin:8px 0 0;"></p>
       <div class="modal-actions">
         <button type="button" id="closeModalBtn" class="btn btn-outline">إلغاء</button>
         <button type="button" id="topupFromCourseModalBtn" class="btn btn-outline" style="display:none;">➕ شحن المحفظة</button>
@@ -581,24 +625,42 @@
     </div>
   </div>
 
+  <!-- مودال التهنئة والأنيميشن بعد شراء الكورس -->
+  <div id="celebrationModal" class="celebration-backdrop">
+    <div class="celebration-card">
+      <div class="trophy-badge">🎉</div>
+      <h2 style="margin:0 0 8px; font-size:1.45rem; font-weight:900; color:#10b981;">
+        ألف مبروك! تم فتح الكورس بنجاح
+      </h2>
+      <p style="margin:0; color:var(--text-secondary); font-weight:700; line-height:1.7;">
+        نتمنى لك رحلة تعلم موفقة ومليئة بالتميز داخل الأكاديمية الأولمبية.
+      </p>
+      <div class="celebration-course-box">
+        📚 <span id="celebCourseTitle">اسم الكورس</span>
+      </div>
+      <p style="margin:0 0 18px; font-weight:800; font-size:0.95rem;">
+        💰 رصيد محفظتك المتبقي: <span id="celebRemainingBalance" style="color:#10b981;">0</span> ج.م
+      </p>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button type="button" id="stayInDashboardBtn" class="btn btn-outline">العودة للوحة</button>
+        <a id="goToPurchasedCourseBtn" href="#" class="btn btn-primary">دخول الكورس الآن ⬅</a>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      collection, getDocs, doc, getDoc, updateDoc, arrayUnion
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, getDocs, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
 
     const themeBtn = document.getElementById("themeToggle");
     function syncThemeAttribute() {
       const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
-      if (saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark")) {
-        document.documentElement.setAttribute("data-theme", "dark");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
+      const isDark = saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark");
+      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
     }
     syncThemeAttribute();
     themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
@@ -619,14 +681,12 @@
       waBtn.style.display = "flex";
     }
 
-    const logoEl = document.getElementById("siteLogo");
     try {
       const brandSnap = await getDoc(doc(db, "settings", "branding"));
       if (brandSnap.exists()) {
         const bData = brandSnap.data();
         if (bData.logoUrl) {
-          logoEl.src = bData.logoUrl;
-          logoEl.style.display = "inline-block";
+          document.getElementById("siteLogo").src = bData.logoUrl;
         }
         if (bData.whatsapp) {
           whatsappNumber = bData.whatsapp;
@@ -662,16 +722,9 @@
 
     const DEFAULT_COVER = "data:image/svg+xml;utf8," + encodeURIComponent(`
       <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
-        <defs>
-          <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0284c7"/>
-            <stop offset="50%" stop-color="#0369a1"/>
-            <stop offset="100%" stop-color="#0f172a"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0284c7"/><stop offset="100%" stop-color="#0f172a"/></linearGradient></defs>
         <rect width="800" height="450" fill="url(#g)"/>
-        <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="34" font-weight="bold">الأكاديمية الأولمبية</text>
-        <text x="50%" y="59%" dominant-baseline="middle" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="22">لعلوم الرياضة</text>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="32" font-weight="bold">الأكاديمية الأولمبية لعلوم الرياضة</text>
       </svg>
     `);
 
@@ -709,8 +762,7 @@
     function parsePriceNumber(priceVal) {
       if (typeof priceVal === "number") return Math.max(0, priceVal);
       if (!priceVal) return 0;
-      const digits = String(priceVal).replace(/[^\d.]/g, "");
-      const num = parseFloat(digits);
+      const num = parseFloat(String(priceVal).replace(/[^\d.]/g, ""));
       return Number.isNaN(num) ? 0 : num;
     }
 
@@ -726,15 +778,9 @@
       walletCodeInput.focus();
     }
 
-    function closeWalletModal() {
-      walletModal.classList.remove("open");
-    }
-
     document.getElementById("openWalletModalBtn").addEventListener("click", openWalletModal);
-    document.getElementById("closeWalletModalBtn").addEventListener("click", closeWalletModal);
-    walletModal.addEventListener("click", (e) => {
-      if (e.target === walletModal) closeWalletModal();
-    });
+    document.getElementById("closeWalletModalBtn").addEventListener("click", () => walletModal.classList.remove("open"));
+    walletModal.addEventListener("click", (e) => { if (e.target === walletModal) walletModal.classList.remove("open"); });
 
     const unlockModal = document.getElementById("unlockModal");
     const modalCourseTitle = document.getElementById("modalCourseTitle");
@@ -747,14 +793,12 @@
     function openUnlockModal(course) {
       selectedCourse = course;
       const priceNum = parsePriceNumber(course.price);
-
       modalCourseTitle.textContent = `الكورس: ${course.title}`;
       modalCoursePriceInfo.textContent = `سعر الكورس: ${priceNum} ج.م`;
       modalCurrentBalanceInfo.textContent = `رصيد محفظتك الحالي: ${walletBalance} ج.م`;
 
       if (walletBalance < priceNum) {
-        const needed = priceNum - walletBalance;
-        unlockErrorMsg.textContent = `رصيدك غير كافٍ، ينقصك ${needed} ج.م لشراء الكورس.`;
+        unlockErrorMsg.textContent = `رصيدك غير كافٍ، ينقصك ${priceNum - walletBalance} ج.م لشراء الكورس.`;
         confirmBuyCourseBtn.disabled = true;
         topupFromCourseModalBtn.style.display = "inline-flex";
       } else {
@@ -774,14 +818,34 @@
     }
 
     document.getElementById("closeModalBtn").addEventListener("click", closeUnlockModal);
-    unlockModal.addEventListener("click", (e) => {
-      if (e.target === unlockModal) closeUnlockModal();
-    });
+    unlockModal.addEventListener("click", (e) => { if (e.target === unlockModal) closeUnlockModal(); });
+    topupFromCourseModalBtn.addEventListener("click", () => { closeUnlockModal(); openWalletModal(); });
 
-    topupFromCourseModalBtn.addEventListener("click", () => {
-      closeUnlockModal();
-      openWalletModal();
-    });
+    const celebrationModal = document.getElementById("celebrationModal");
+    function spawnConfettiBurst() {
+      const colors = ["#10b981", "#0ea5e9", "#f59e0b", "#ec4899", "#8b5cf6", "#ef4444"];
+      for (let i = 0; i < 40; i++) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.animationDuration = `${1.6 + Math.random() * 1.4}s`;
+        piece.style.animationDelay = `${Math.random() * 0.35}s`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 3200);
+      }
+    }
+
+    function openCelebrationModal(courseTitle, courseId, remainingBalance) {
+      document.getElementById("celebCourseTitle").textContent = courseTitle || "الكورس";
+      document.getElementById("celebRemainingBalance").textContent = remainingBalance;
+      document.getElementById("goToPurchasedCourseBtn").href = `course.html?id=${encodeURIComponent(courseId)}`;
+      celebrationModal.classList.add("open");
+      spawnConfettiBurst();
+    }
+
+    document.getElementById("stayInDashboardBtn").addEventListener("click", () => celebrationModal.classList.remove("open"));
+    celebrationModal.addEventListener("click", (e) => { if (e.target === celebrationModal) celebrationModal.classList.remove("open"); });
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await signOut(auth);
@@ -803,38 +867,26 @@
         return;
       }
       currentUser = user;
-
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
+      const userSnap = await getDoc(doc(db, "users", user.uid));
       const userData = userSnap.exists() ? userSnap.data() : {};
 
       currentStudentName = userData.fullName || user.email?.split("@")[0] || "طالب";
       currentStudentEmail = userData.email || user.email || "";
-      document.getElementById("studentName").textContent = currentStudentName;
       currentStudentLabel = `${currentStudentName} (${currentStudentEmail})`;
+      document.getElementById("studentName").textContent = currentStudentName;
       applyWhatsAppLink();
 
       walletBalance = Number(userData.walletBalance) || 0;
       updateWalletUI();
 
-      const noticeBanner = document.getElementById("personalNoticeBanner");
-      const noticeTextEl = document.getElementById("personalNoticeText");
       const noticeText = (userData.personalNotice || userData.notice || "").trim();
-      const isNoticeActive =
-        userData.personalNoticeActive === true ||
-        userData.personalNoticeActive === "true" ||
-        (userData.personalNoticeActive === undefined && Boolean(noticeText));
-
+      const isNoticeActive = userData.personalNoticeActive === true || (userData.personalNoticeActive === undefined && Boolean(noticeText));
       if (isNoticeActive && noticeText) {
-        noticeTextEl.textContent = noticeText;
-        noticeBanner.style.display = "flex";
-      } else {
-        noticeBanner.style.display = "none";
+        document.getElementById("personalNoticeText").textContent = noticeText;
+        document.getElementById("personalNoticeBanner").style.display = "flex";
       }
 
-      const list = Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : [];
-      enrolledSet = new Set(list);
-
+      enrolledSet = new Set(Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : []);
       document.getElementById("studentBody").style.display = "block";
       await Promise.all([fetchAndRenderCourses(), fetchAndRenderBooks()]);
     });
@@ -847,11 +899,8 @@
 
     function drawCourses() {
       const grid = document.getElementById("dashboardCoursesGrid");
-      const total = allCoursesCache.length;
-      const unlockedCount = allCoursesCache.filter((c) => enrolledSet.has(c.id)).length;
-
-      document.getElementById("totalCounter").textContent = total;
-      document.getElementById("unlockedCounter").textContent = unlockedCount;
+      document.getElementById("totalCounter").textContent = allCoursesCache.length;
+      document.getElementById("unlockedCounter").textContent = allCoursesCache.filter((c) => enrolledSet.has(c.id)).length;
 
       const filtered = allCoursesCache.filter((course) => {
         const isUnlocked = enrolledSet.has(course.id);
@@ -861,7 +910,7 @@
       });
 
       if (!filtered.length) {
-        grid.innerHTML = `<p style="opacity:0.8; grid-column: 1 / -1; text-align:center; padding:30px;">لا توجد كورسات في هذا القسم حالياً.</p>`;
+        grid.innerHTML = `<p style="opacity:0.8; grid-column:1/-1; text-align:center; padding:30px;">لا توجد كورسات في هذا القسم حالياً.</p>`;
         return;
       }
 
@@ -875,22 +924,18 @@
         card.className = "pro-course-card";
         card.innerHTML = `
           <div class="course-cover-wrap">
-            <img class="course-cover-img" src="${coverSrc}" alt="${course.title || "صورة الكورس"}" loading="lazy" />
+            <img class="course-cover-img" src="${coverSrc}" alt="${course.title || "كورس"}" loading="lazy" />
             <div class="course-cover-overlay"></div>
             <div class="cover-badges">
               <span class="cat-pill">${course.category || "علوم الرياضة"}</span>
-              <span class="status-pill ${isUnlocked ? "unlocked" : "locked"}">
-                ${isUnlocked ? "🔓 مفتوح" : "🔒 مقفول"}
-              </span>
+              <span class="status-pill ${isUnlocked ? "unlocked" : "locked"}">${isUnlocked ? "🔓 مفتوح" : "🔒 مقفول"}</span>
             </div>
           </div>
-
           <div class="course-body">
             <div>
               <h3 class="course-title">${course.title || "كورس"}</h3>
               <p class="course-desc">${course.description || ""}</p>
             </div>
-
             <div class="course-footer">
               <span class="course-price-tag">${priceNum > 0 ? `${priceNum} ج.م` : "مجاني"}</span>
               ${
@@ -901,28 +946,21 @@
             </div>
           </div>
         `;
-
-        const imgEl = card.querySelector(".course-cover-img");
-        imgEl.addEventListener("error", () => {
-          imgEl.src = DEFAULT_COVER;
-        });
-
+        card.querySelector(".course-cover-img").addEventListener("error", (e) => { e.target.src = DEFAULT_COVER; });
         if (!isUnlocked) {
           card.querySelector(".unlock-btn").addEventListener("click", () => openUnlockModal(course));
         }
-
         grid.appendChild(card);
       });
     }
 
     async function fetchAndRenderBooks() {
       const grid = document.getElementById("dashboardBooksGrid");
-      if (!grid) return;
       const snap = await getDocs(collection(db, "books"));
       const books = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
       if (!books.length) {
-        grid.innerHTML = `<p style="opacity:0.8; grid-column: 1 / -1; text-align:center; padding:30px;">لا توجد كتب متاحة للبيع حالياً.</p>`;
+        grid.innerHTML = `<p style="opacity:0.8; grid-column:1/-1; text-align:center; padding:30px;">لا توجد كتب متاحة للبيع حالياً.</p>`;
         return;
       }
 
@@ -939,7 +977,7 @@
         card.className = "pro-course-card";
         card.innerHTML = `
           <div class="course-cover-wrap">
-            <img class="course-cover-img" src="${coverSrc}" alt="${book.title || "غلاف الكتاب"}" loading="lazy" />
+            <img class="course-cover-img" src="${coverSrc}" alt="${book.title || "كتاب"}" loading="lazy" />
             <div class="course-cover-overlay"></div>
             <div class="cover-badges">
               <span class="cat-pill">${book.category || "كتب رياضية"}</span>
@@ -957,12 +995,7 @@
             </div>
           </div>
         `;
-
-        const imgEl = card.querySelector(".course-cover-img");
-        imgEl.addEventListener("error", () => {
-          imgEl.src = DEFAULT_COVER;
-        });
-
+        card.querySelector(".course-cover-img").addEventListener("error", (e) => { e.target.src = DEFAULT_COVER; });
         grid.appendChild(card);
       });
     }
@@ -1028,7 +1061,6 @@
 
     confirmBuyCourseBtn.addEventListener("click", async () => {
       if (!selectedCourse || !currentUser) return;
-
       const priceNum = parsePriceNumber(selectedCourse.price);
       if (walletBalance < priceNum) {
         unlockErrorMsg.textContent = "رصيد محفظتك غير كافٍ لإتمام الشراء.";
@@ -1040,7 +1072,6 @@
 
       try {
         const remainingBalance = walletBalance - priceNum;
-
         await updateDoc(doc(db, "users", currentUser.uid), {
           walletBalance: remainingBalance,
           enrolledCourses: arrayUnion(selectedCourse.id)
@@ -1050,11 +1081,11 @@
         enrolledSet.add(selectedCourse.id);
         updateWalletUI();
 
-        const targetCourseId = selectedCourse.id;
+        const purchasedTitle = selectedCourse.title;
+        const purchasedId = selectedCourse.id;
         closeUnlockModal();
         drawCourses();
-
-        location.href = `course.html?id=${encodeURIComponent(targetCourseId)}`;
+        openCelebrationModal(purchasedTitle, purchasedId, remainingBalance);
       } catch (err) {
         unlockErrorMsg.textContent = "حدث خطأ أثناء خصم الرصيد وفتح الكورس.";
         confirmBuyCourseBtn.disabled = false;
