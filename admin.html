@@ -39,19 +39,16 @@
     body.admin-layout-body {
       font-family: 'Cairo', sans-serif;
       margin: 0;
-      background-color: var(--bg-page) !important;
-      color: var(--text-primary) !important;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
       overflow-x: hidden;
     }
 
-    .admin-shell {
-      display: flex;
-      min-height: 100vh;
-    }
+    .admin-shell { display: flex; min-height: 100vh; }
 
     .admin-sidebar {
       width: 265px;
-      background: var(--bg-card) !important;
+      background: var(--bg-card);
       border-left: 1px solid var(--border-subtle);
       padding: 20px 14px;
       display: flex;
@@ -72,15 +69,10 @@
       border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 14px;
       font-weight: 900;
-      color: var(--brand-primary) !important;
+      color: var(--brand-primary);
     }
 
-    .sidebar-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      overflow-y: auto;
-    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
 
     .sidebar-link {
       width: 100%;
@@ -92,34 +84,20 @@
       font-family: 'Cairo', sans-serif;
       font-weight: 700;
       font-size: 0.92rem;
-      color: var(--text-primary) !important;
+      color: var(--text-primary);
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .sidebar-link:hover {
-      background: var(--bg-sub) !important;
-    }
-
+    .sidebar-link:hover { background: var(--bg-sub); }
     .sidebar-link.active {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9) !important;
-      color: #ffffff !important;
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #ffffff;
     }
 
-    .sidebar-footer {
-      padding-top: 14px;
-      border-top: 1px solid var(--border-subtle);
-    }
+    .sidebar-footer { padding-top: 14px; border-top: 1px solid var(--border-subtle); }
+    .sidebar-footer .btn { width: 100%; }
 
-    .sidebar-footer .btn {
-      width: 100%;
-    }
-
-    .admin-main {
-      flex: 1;
-      padding: 22px 26px 40px;
-      min-width: 0;
-    }
+    .admin-main { flex: 1; padding: 22px 26px 40px; min-width: 0; }
 
     .admin-topbar {
       display: flex;
@@ -127,7 +105,7 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      background: var(--bg-card) !important;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
       padding: 14px 18px;
@@ -137,9 +115,9 @@
 
     .mobile-menu-btn {
       display: none;
-      background: var(--bg-sub) !important;
+      background: var(--bg-sub);
       border: 1px solid var(--border-subtle);
-      color: var(--text-primary) !important;
+      color: var(--text-primary);
       padding: 8px 12px;
       border-radius: 10px;
       font-family: 'Cairo', sans-serif;
@@ -156,7 +134,7 @@
     }
 
     .card {
-      background: var(--bg-card) !important;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
       padding: 22px;
@@ -167,70 +145,30 @@
       margin: 0 0 18px;
       font-size: 1.2rem;
       font-weight: 900;
-      color: var(--brand-primary) !important;
+      color: var(--brand-primary);
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--text-primary) !important;
-    }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.9rem; }
 
     .form-control {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
       border: 1px solid var(--border-subtle);
-      background: var(--bg-sub) !important;
-      color: var(--text-primary) !important;
+      background: var(--bg-sub);
+      color: var(--text-primary);
       font-family: 'Cairo', sans-serif;
       font-size: 0.94rem;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 14px;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+    .stat-box { padding: 18px; border-radius: 12px; background: var(--bg-sub); border: 1px solid var(--border-subtle); }
+    .stat-box span { display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 6px; }
+    .stat-box strong { font-size: 1.7rem; color: var(--brand-primary); }
 
-    .stat-box {
-      padding: 18px;
-      border-radius: 12px;
-      background: var(--bg-sub) !important;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .stat-box span {
-      display: block;
-      font-size: 0.9rem;
-      color: var(--text-secondary) !important;
-      margin-bottom: 6px;
-    }
-
-    .stat-box strong {
-      font-size: 1.7rem;
-      color: var(--brand-primary) !important;
-    }
-
-    .visibility-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
+    .visibility-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 12px; }
     .visibility-item {
       display: flex;
       align-items: center;
@@ -238,25 +176,12 @@
       padding: 14px 16px;
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
-      background: var(--bg-sub) !important;
-      color: var(--text-primary) !important;
+      background: var(--bg-sub);
       font-weight: 700;
     }
+    .visibility-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #0284c7; cursor: pointer; }
 
-    .visibility-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: #0284c7;
-      cursor: pointer;
-    }
-
-    .manage-list {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .manage-list { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
     .manage-item {
       display: flex;
       align-items: center;
@@ -266,40 +191,25 @@
       padding: 12px 16px;
       border-radius: 10px;
       border: 1px solid var(--border-subtle);
-      background: var(--bg-sub) !important;
-      color: var(--text-primary) !important;
+      background: var(--bg-sub);
     }
-
-    .manage-item small {
-      color: var(--text-secondary) !important;
-      word-break: break-all;
-    }
-
-    .item-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .manage-item small { color: var(--text-secondary); word-break: break-all; }
+    .item-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .btn-edit {
       background: #0284c7;
-      color: #ffffff !important;
+      color: #ffffff;
       border: none;
       padding: 7px 14px;
       border-radius: 8px;
       font-family: 'Cairo', sans-serif;
       font-weight: 700;
       cursor: pointer;
-    }
-
-    .btn-edit:hover {
-      background: #0369a1;
     }
 
     .btn-danger {
       background: #dc2626;
-      color: #ffffff !important;
+      color: #ffffff;
       border: none;
       padding: 7px 14px;
       border-radius: 8px;
@@ -308,67 +218,17 @@
       cursor: pointer;
     }
 
-    .btn-danger:hover {
-      background: #b91c1c;
-    }
+    .status-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; }
+    .status-tag.used { background: rgba(220, 38, 38, 0.14); color: #ef4444; }
+    .status-tag.available { background: rgba(16, 185, 129, 0.14); color: #10b981; }
 
-    .status-tag {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 800;
-    }
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-subtle); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border-subtle); font-size: 0.92rem; }
+    th { background: var(--bg-sub); font-weight: 800; }
 
-    .status-tag.used {
-      background: rgba(220, 38, 38, 0.14);
-      color: #ef4444 !important;
-    }
-
-    .status-tag.available {
-      background: rgba(16, 185, 129, 0.14);
-      color: #10b981 !important;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid var(--border-subtle);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: var(--text-primary) !important;
-    }
-
-    th, td {
-      padding: 12px 14px;
-      text-align: right;
-      border-bottom: 1px solid var(--border-subtle);
-      color: var(--text-primary) !important;
-      font-size: 0.92rem;
-    }
-
-    th {
-      background: var(--bg-sub) !important;
-      font-weight: 800;
-    }
-
-    .split-box {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .sub-card {
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-sub) !important;
-      color: var(--text-primary) !important;
-    }
+    .split-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 18px; }
+    .sub-card { padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); background: var(--bg-sub); }
 
     .edit-modal-backdrop {
       display: none;
@@ -381,16 +241,13 @@
       justify-content: center;
       padding: 16px;
     }
-
-    .edit-modal-backdrop.open {
-      display: flex;
-    }
+    .edit-modal-backdrop.open { display: flex; }
 
     .edit-modal-box {
       width: 100%;
       max-width: 540px;
-      background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
+      background: var(--bg-card);
+      color: var(--text-primary);
       border: 1px solid var(--border-subtle);
       border-radius: 18px;
       padding: 22px;
@@ -399,22 +256,11 @@
       overflow-y: auto;
     }
 
-    .edit-modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 16px;
-    }
+    .edit-modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 
     @media (max-width: 900px) {
       .mobile-menu-btn { display: inline-flex; align-items: center; gap: 6px; }
-      .admin-sidebar {
-        position: fixed;
-        right: 0;
-        top: 0;
-        height: 100vh;
-        transform: translateX(100%);
-      }
+      .admin-sidebar { position: fixed; right: 0; top: 0; height: 100vh; transform: translateX(100%); }
       .admin-sidebar.open { transform: translateX(0); }
       .sidebar-backdrop.open { display: block; }
       .admin-main { padding: 14px; }
@@ -455,7 +301,7 @@
         <div style="display:flex; align-items:center; gap:10px;">
           <button id="mobileMenuBtn" class="mobile-menu-btn" type="button">☰ القائمة</button>
           <div>
-            <h1 id="activePanelTitle" style="margin:0; font-size:1.25rem; color:var(--brand-primary) !important;">الإحصائيات</h1>
+            <h1 id="activePanelTitle" style="margin:0; font-size:1.25rem; color:var(--brand-primary);">الإحصائيات</h1>
             <small>لوحة تحكم الإدارة - الأكاديمية الأولمبية لعلوم الرياضة</small>
           </div>
         </div>
@@ -465,7 +311,6 @@
         </div>
       </header>
 
-      <!-- 1. الإحصائيات -->
       <section id="overviewPanel" class="admin-panel card">
         <h2 class="section-title">نظرة عامة على المنصة</h2>
         <div class="stats-grid">
@@ -476,7 +321,6 @@
         </div>
       </section>
 
-      <!-- 2. أكواد الشحن وسجل التفعيل -->
       <section id="walletCodesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة أكواد شحن المحفظة وسجل التفعيل</h2>
 
@@ -495,7 +339,7 @@
               </div>
               <button type="submit" class="btn btn-primary">حفظ كود الشحن</button>
             </form>
-            <p id="customWalletCodeMsg" style="margin-top:8px; font-weight:700; color:var(--brand-primary) !important;"></p>
+            <p id="customWalletCodeMsg" style="margin-top:8px; font-weight:700; color:var(--brand-primary);"></p>
           </div>
 
           <div class="sub-card">
@@ -513,7 +357,7 @@
           </div>
         </div>
 
-        <div id="generatedWalletCodesBox" style="margin-bottom:16px; font-weight:700; color:var(--brand-primary) !important; word-break:break-all;"></div>
+        <div id="generatedWalletCodesBox" style="margin-bottom:16px; font-weight:700; color:var(--brand-primary); word-break:break-all;"></div>
 
         <h3>سجل أكواد الشحن وحالة التفعيل</h3>
         <div class="table-wrap">
@@ -533,7 +377,6 @@
         </div>
       </section>
 
-      <!-- 3. الكورسات (إضافة وتعديل وحذف) -->
       <section id="coursesPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كورس جديد</h2>
         <form id="addCourseForm">
@@ -547,7 +390,7 @@
               <input type="text" id="courseCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
             </div>
             <div class="form-group">
-              <label>سعر الكورس بالجنيه (رقم للخصم من المحفظة)</label>
+              <label>سعر الكورس بالجنيه</label>
               <input type="number" id="coursePrice" class="form-control" placeholder="مثال: 250" min="0" required />
             </div>
           </div>
@@ -561,13 +404,12 @@
           </div>
           <button type="submit" class="btn btn-primary">حفظ الكورس</button>
         </form>
-        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="courseMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary);"></p>
 
-        <h3 style="margin-top:26px;">الكورسات الحالية (إمكانية التعديل أو الحذف)</h3>
+        <h3 style="margin-top:26px;">الكورسات الحالية</h3>
         <div id="coursesManageList" class="manage-list"></div>
       </section>
 
-      <!-- 4. المحاضرات (إضافة وتعديل وحذف داخل كل كورس) -->
       <section id="lessonsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة فيديوهات وملفات PDF داخل الكورسات</h2>
         <form id="addLessonForm">
@@ -597,53 +439,51 @@
           </div>
           <button type="submit" class="btn btn-primary">إضافة المحاضرة</button>
         </form>
-        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="lessonMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary);"></p>
 
         <h3 style="margin-top:26px;">محاضرات الكورس المختار</h3>
         <div id="lessonsManageList" class="manage-list"></div>
       </section>
 
-      <!-- 5. الكتب (إضافة وحذف) -->
       <section id="booksPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إضافة كتاب جديد للبيع</h2>
         <form id="addBookForm">
           <div class="grid-3">
             <div class="form-group">
               <label>اسم الكتاب</label>
-              <input type="text" id="bookTitle" class="form-control" placeholder="مثال: أساسيات التدريب الرياضي" required />
+              <input type="text" id="bookTitle" class="form-control" required />
             </div>
             <div class="form-group">
               <label>التصنيف / المؤلف</label>
-              <input type="text" id="bookCategory" class="form-control" placeholder="مثال: علوم الرياضة" required />
+              <input type="text" id="bookCategory" class="form-control" required />
             </div>
             <div class="form-group">
               <label>السعر</label>
-              <input type="text" id="bookPrice" class="form-control" placeholder="مثال: 180 ج.م" required />
+              <input type="text" id="bookPrice" class="form-control" required />
             </div>
           </div>
           <div class="grid-3">
             <div class="form-group">
               <label>رابط صورة غلاف الكتاب (اختياري)</label>
-              <input type="url" id="bookImage" class="form-control" placeholder="https://example.com/book.jpg" />
+              <input type="url" id="bookImage" class="form-control" />
             </div>
             <div class="form-group" style="grid-column: span 2;">
-              <label>رابط شراء أو طلب مباشر (اختياري - لو فارغ يُستخدم واتساب الأكاديمية)</label>
-              <input type="url" id="bookOrderUrl" class="form-control" placeholder="https://..." />
+              <label>رابط شراء أو طلب مباشر (اختياري)</label>
+              <input type="url" id="bookOrderUrl" class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label>وصف الكتاب</label>
-            <textarea id="bookDesc" class="form-control" rows="2" placeholder="نبذة مختصرة عن الكتاب..." required></textarea>
+            <textarea id="bookDesc" class="form-control" rows="2" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary">حفظ الكتاب</button>
         </form>
-        <p id="bookMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="bookMsg" style="margin-top:10px; font-weight:700; color:var(--brand-primary);"></p>
 
         <h3 style="margin-top:26px;">الكتب الحالية</h3>
         <div id="booksManageList" class="manage-list"></div>
       </section>
 
-      <!-- 6. إشعار لطالب معين -->
       <section id="personalNoticePanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إرسال أو تعديل إشعار خاص لطالب معين</h2>
         <form id="personalNoticeForm">
@@ -653,7 +493,7 @@
           </div>
           <div class="form-group">
             <label>نص الإشعار الخاص بهذا الطالب</label>
-            <input type="text" id="personalNoticeInput" class="form-control" placeholder="اكتب الإشعار الخاص هنا..." required />
+            <input type="text" id="personalNoticeInput" class="form-control" required />
           </div>
           <label class="visibility-item" style="max-width:340px; margin-bottom:16px;">
             <span>تفعيل ظهور الإشعار لهذا الطالب</span>
@@ -664,10 +504,9 @@
             <button type="button" id="clearPersonalNoticeBtn" class="btn btn-danger">مسح الإشعار</button>
           </div>
         </form>
-        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="personalNoticeMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary);"></p>
       </section>
 
-      <!-- 7. إظهار وإخفاء الأقسام -->
       <section id="visibilityPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">التحكم في إظهار وإخفاء عناصر المنصة</h2>
         <div class="visibility-list">
@@ -678,42 +517,39 @@
           <label class="visibility-item"><span>إشعار / تنويه عام</span><input type="checkbox" id="vis_announcementBanner" /></label>
         </div>
         <div class="form-group" style="margin-top:16px;">
-          <label>نص التنويه العام (يظهر لجميع الطلاب)</label>
-          <input type="text" id="announcementText" class="form-control" placeholder="اكتب التنويه العام هنا..." />
+          <label>نص التنويه العام</label>
+          <input type="text" id="announcementText" class="form-control" />
         </div>
         <button id="saveVisibilityBtn" class="btn btn-primary" type="button">حفظ إعدادات الظهور</button>
-        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="visibilityMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary);"></p>
       </section>
 
-      <!-- 8. اللوجو والتواصل -->
       <section id="brandingPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إعدادات اللوجو وروابط التواصل</h2>
         <form id="brandingForm">
           <div class="form-group">
-            <label>رابط صورة اللوجو (أو اتركه فارغاً لاستخدام assets/img/logo.png)</label>
-            <input type="url" id="logoUrlInput" class="form-control" placeholder="https://example.com/logo.png" />
+            <label>رابط صورة اللوجو</label>
+            <input type="url" id="logoUrlInput" class="form-control" />
           </div>
-          <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="grid-3">
             <div class="form-group">
-              <label>رقم الواتساب (بالكود الدولي، مثال: 2010xxxxxxxx)</label>
-              <input type="text" id="whatsappInput" class="form-control" placeholder="201000000000" />
+              <label>رقم الواتساب (بالكود الدولي)</label>
+              <input type="text" id="whatsappInput" class="form-control" />
             </div>
             <div class="form-group">
               <label>رابط صفحة الفيسبوك</label>
-              <input type="url" id="facebookInput" class="form-control" placeholder="https://facebook.com/yourpage" />
+              <input type="url" id="facebookInput" class="form-control" />
             </div>
           </div>
           <div style="margin-bottom:16px; display:flex; align-items:center; gap:14px;">
             <span>معاينة اللوجو:</span>
-            <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو"
-                 style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid var(--border-subtle); padding:4px; background:#fff;" />
+            <img id="logoPreview" src="assets/img/logo.png" alt="معاينة اللوجو" style="width:56px; height:56px; object-fit:contain; border-radius:10px; border:1px solid var(--border-subtle); padding:4px; background:#fff;" />
           </div>
           <button type="submit" class="btn btn-primary">حفظ اللوجو وروابط التواصل</button>
         </form>
-        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary) !important;"></p>
+        <p id="brandingMsg" style="margin-top:12px; font-weight:700; color:var(--brand-primary);"></p>
       </section>
 
-      <!-- 9. الطلاب والأجهزة -->
       <section id="studentsPanel" class="admin-panel card" style="display:none;">
         <h2 class="section-title">إدارة الطلاب والأرصدة وتأمين الأجهزة</h2>
         <div class="table-wrap">
@@ -738,28 +574,13 @@
   <!-- مودال تعديل الكورس -->
   <div id="editCourseModal" class="edit-modal-backdrop">
     <div class="edit-modal-box">
-      <h3 style="margin:0 0 14px; color:var(--brand-primary) !important;">✏️ تعديل بيانات الكورس</h3>
+      <h3 style="margin:0 0 14px; color:var(--brand-primary);">✏️ تعديل بيانات الكورس</h3>
       <form id="editCourseForm">
-        <div class="form-group">
-          <label>اسم الكورس</label>
-          <input type="text" id="editCourseTitle" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label>التصنيف / القسم</label>
-          <input type="text" id="editCourseCategory" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label>السعر بالجنيه</label>
-          <input type="number" id="editCoursePrice" class="form-control" min="0" required />
-        </div>
-        <div class="form-group">
-          <label>رابط صورة غلاف الكورس (اختياري)</label>
-          <input type="url" id="editCourseImage" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>وصف الكورس</label>
-          <textarea id="editCourseDesc" class="form-control" rows="2" required></textarea>
-        </div>
+        <div class="form-group"><label>اسم الكورس</label><input type="text" id="editCourseTitle" class="form-control" required /></div>
+        <div class="form-group"><label>التصنيف / القسم</label><input type="text" id="editCourseCategory" class="form-control" required /></div>
+        <div class="form-group"><label>السعر بالجنيه</label><input type="number" id="editCoursePrice" class="form-control" min="0" required /></div>
+        <div class="form-group"><label>رابط صورة غلاف الكورس</label><input type="url" id="editCourseImage" class="form-control" /></div>
+        <div class="form-group"><label>وصف الكورس</label><textarea id="editCourseDesc" class="form-control" rows="2" required></textarea></div>
         <div class="edit-modal-footer">
           <button type="button" id="cancelEditCourseBtn" class="btn btn-outline">إلغاء</button>
           <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
@@ -771,24 +592,12 @@
   <!-- مودال تعديل المحاضرة -->
   <div id="editLessonModal" class="edit-modal-backdrop">
     <div class="edit-modal-box">
-      <h3 style="margin:0 0 14px; color:var(--brand-primary) !important;">✏️ تعديل المحاضرة وملف PDF</h3>
+      <h3 style="margin:0 0 14px; color:var(--brand-primary);">✏️ تعديل المحاضرة وملف PDF</h3>
       <form id="editLessonForm">
-        <div class="form-group">
-          <label>عنوان المحاضرة</label>
-          <input type="text" id="editLessonTitle" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label>ترتيب المحاضرة</label>
-          <input type="number" id="editLessonOrder" class="form-control" min="1" required />
-        </div>
-        <div class="form-group">
-          <label>رابط الفيديو (YouTube / رابط مباشر)</label>
-          <input type="url" id="editLessonVideoUrl" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label>رابط ملف PDF (إضافة أو تعديل)</label>
-          <input type="url" id="editLessonPdfUrl" class="form-control" placeholder="https://example.com/file.pdf" />
-        </div>
+        <div class="form-group"><label>عنوان المحاضرة</label><input type="text" id="editLessonTitle" class="form-control" required /></div>
+        <div class="form-group"><label>ترتيب المحاضرة</label><input type="number" id="editLessonOrder" class="form-control" min="1" required /></div>
+        <div class="form-group"><label>رابط الفيديو</label><input type="url" id="editLessonVideoUrl" class="form-control" required /></div>
+        <div class="form-group"><label>رابط ملف PDF</label><input type="url" id="editLessonPdfUrl" class="form-control" /></div>
         <div class="edit-modal-footer">
           <button type="button" id="cancelEditLessonBtn" class="btn btn-outline">إلغاء</button>
           <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
@@ -801,20 +610,15 @@
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc, deleteDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
 
     const themeBtn = document.getElementById("themeToggle");
     function syncThemeAttribute() {
       const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
-      if (saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark")) {
-        document.documentElement.setAttribute("data-theme", "dark");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
+      const isDark = saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark");
+      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
     }
     syncThemeAttribute();
     themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
@@ -840,19 +644,14 @@
       btn.addEventListener("click", () => {
         navLinks.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-        panels.forEach((p) => {
-          p.style.display = p.id === btn.dataset.target ? "block" : "none";
-        });
+        panels.forEach((p) => { p.style.display = p.id === btn.dataset.target ? "block" : "none"; });
         activePanelTitle.textContent = btn.textContent.trim();
         toggleSidebar(false);
       });
     });
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        location.href = "admin-login.html";
-        return;
-      }
+      if (!user) { location.href = "admin-login.html"; return; }
       const snap = await getDoc(doc(db, "users", user.uid));
       if (!snap.exists() || snap.data().role !== "admin") {
         await signOut(auth);
@@ -868,27 +667,20 @@
       location.href = "admin-login.html";
     });
 
-    const visibilityKeys = [
-      "coursesSection", "booksSection", "videosSection",
-      "pdfsSection", "announcementBanner"
-    ];
+    const visibilityKeys = ["coursesSection", "booksSection", "videosSection", "pdfsSection", "announcementBanner"];
 
     async function loadVisibilitySettings() {
       const snap = await getDoc(doc(db, "settings", "visibility"));
       const data = snap.exists() ? snap.data() : {};
       visibilityKeys.forEach((key) => {
         const el = document.getElementById("vis_" + key);
-        if (!el) return;
-        el.checked = typeof data[key] === "boolean" ? data[key] : (key !== "announcementBanner");
+        if (el) el.checked = typeof data[key] === "boolean" ? data[key] : (key !== "announcementBanner");
       });
       document.getElementById("announcementText").value = data.announcementText || "";
     }
 
     document.getElementById("saveVisibilityBtn").addEventListener("click", async () => {
-      const payload = {
-        announcementText: document.getElementById("announcementText").value.trim(),
-        updatedAt: new Date().toISOString()
-      };
+      const payload = { announcementText: document.getElementById("announcementText").value.trim(), updatedAt: new Date().toISOString() };
       visibilityKeys.forEach((key) => {
         const el = document.getElementById("vis_" + key);
         payload[key] = el ? el.checked : true;
@@ -913,12 +705,8 @@
       const snap = await getDoc(doc(db, "settings", "branding"));
       if (snap.exists()) {
         const data = snap.data();
-        if (data.logoUrl) {
-          logoUrlInput.value = data.logoUrl;
-          applyLogo(data.logoUrl);
-        } else {
-          applyLogo("assets/img/logo.png");
-        }
+        logoUrlInput.value = data.logoUrl || "";
+        applyLogo(data.logoUrl || "");
         whatsappInput.value = data.whatsapp || "";
         facebookInput.value = data.facebook || "";
       } else {
@@ -930,31 +718,21 @@
 
     document.getElementById("brandingForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const urlVal = logoUrlInput.value.trim();
-      const whatsappVal = whatsappInput.value.trim();
-      const facebookVal = facebookInput.value.trim();
-
       await setDoc(doc(db, "settings", "branding"), {
-        logoUrl: urlVal,
-        whatsapp: whatsappVal,
-        facebook: facebookVal,
+        logoUrl: logoUrlInput.value.trim(),
+        whatsapp: whatsappInput.value.trim(),
+        facebook: facebookInput.value.trim(),
         updatedAt: new Date().toISOString()
       }, { merge: true });
-      applyLogo(urlVal);
+      applyLogo(logoUrlInput.value.trim());
       document.getElementById("brandingMsg").textContent = "تم حفظ اللوجو وروابط التواصل بنجاح!";
     });
 
     function formatArabicDateTime(isoString) {
       if (!isoString) return "-";
-      const dateObj = new Date(isoString);
-      if (Number.isNaN(dateObj.getTime())) return isoString;
-      return dateObj.toLocaleString("ar-EG", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      const d = new Date(isoString);
+      if (Number.isNaN(d.getTime())) return isoString;
+      return d.toLocaleString("ar-EG", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     }
 
     let lastGeneratedWalletCodes = [];
@@ -975,10 +753,7 @@
       editCourseModal.classList.add("open");
     }
 
-    document.getElementById("cancelEditCourseBtn").addEventListener("click", () => {
-      editCourseModal.classList.remove("open");
-      editingCourseId = null;
-    });
+    document.getElementById("cancelEditCourseBtn").addEventListener("click", () => { editCourseModal.classList.remove("open"); editingCourseId = null; });
 
     document.getElementById("editCourseForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -1006,10 +781,7 @@
       editLessonModal.classList.add("open");
     }
 
-    document.getElementById("cancelEditLessonBtn").addEventListener("click", () => {
-      editLessonModal.classList.remove("open");
-      editingLessonId = null;
-    });
+    document.getElementById("cancelEditLessonBtn").addEventListener("click", () => { editLessonModal.classList.remove("open"); editingLessonId = null; });
 
     document.getElementById("editLessonForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -1035,33 +807,23 @@
 
       let usedCount = 0;
       const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
-        .sort((a, b) => {
-          const tA = new Date(a.usedAt || a.createdAt || 0).getTime();
-          const tB = new Date(b.usedAt || b.createdAt || 0).getTime();
-          return tB - tA;
-        });
+        .sort((a, b) => new Date(b.usedAt || b.createdAt || 0).getTime() - new Date(a.usedAt || a.createdAt || 0).getTime());
 
       rows.forEach((w) => {
         if (w.used) usedCount++;
         const codeVal = w.code || w.id;
-        const userFromMap = w.usedBy ? usersInfoMap[w.usedBy] : null;
-        const activatorName = w.usedByName || userFromMap?.fullName || (w.usedBy ? "طالب" : "-");
-        const activatorEmail = w.usedByEmail || userFromMap?.email || "";
-        const activatorUid = w.usedBy || "";
-
+        const u = w.usedBy ? usersInfoMap[w.usedBy] : null;
+        const activatorName = w.usedByName || u?.fullName || (w.usedBy ? "طالب" : "-");
+        const activatorEmail = w.usedByEmail || u?.email || "";
         const activatorText = w.used
-          ? `<strong>${activatorName}</strong>${activatorEmail ? `<br><small>${activatorEmail}</small>` : ""}${activatorUid ? `<br><small>ID: ${activatorUid}</small>` : ""}`
+          ? `<strong>${activatorName}</strong>${activatorEmail ? `<br><small>${activatorEmail}</small>` : ""}`
           : "-";
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${codeVal}</strong></td>
           <td>${Number(w.amount) || 0} ج.م</td>
-          <td>
-            <span class="status-tag ${w.used ? "used" : "available"}">
-              ${w.used ? "مُفعّل" : "متاح"}
-            </span>
-          </td>
+          <td><span class="status-tag ${w.used ? "used" : "available"}">${w.used ? "مُفعّل" : "متاح"}</span></td>
           <td>${activatorText}</td>
           <td>${w.used ? formatArabicDateTime(w.usedAt) : "-"}</td>
           <td><button class="btn-danger" type="button">حذف</button></td>
@@ -1084,14 +846,7 @@
       if (!code || !amount || amount <= 0) return;
 
       await setDoc(doc(db, "wallet_codes", code), {
-        code,
-        amount,
-        used: false,
-        usedBy: "",
-        usedByName: "",
-        usedByEmail: "",
-        usedAt: "",
-        createdAt: new Date().toISOString()
+        code, amount, used: false, usedBy: "", usedByName: "", usedByEmail: "", usedAt: "", createdAt: new Date().toISOString()
       });
       document.getElementById("customWalletCodeMsg").textContent = `تم حفظ كود الشحن ${code} بقيمة ${amount} ج.م!`;
       document.getElementById("customWalletCodeInput").value = "";
@@ -1109,14 +864,7 @@
         const code = "WAL-" + Math.random().toString(36).substring(2, 8).toUpperCase();
         lastGeneratedWalletCodes.push(code);
         await setDoc(doc(db, "wallet_codes", code), {
-          code,
-          amount,
-          used: false,
-          usedBy: "",
-          usedByName: "",
-          usedByEmail: "",
-          usedAt: "",
-          createdAt: new Date().toISOString()
+          code, amount, used: false, usedBy: "", usedByName: "", usedByEmail: "", usedAt: "", createdAt: new Date().toISOString()
         });
       }
       document.getElementById("generatedWalletCodesBox").textContent = lastGeneratedWalletCodes.join(" , ");
@@ -1125,39 +873,31 @@
 
     document.getElementById("exportWalletCsvBtn").addEventListener("click", () => {
       if (!lastGeneratedWalletCodes.length) return alert("ولّد أكواد شحن أولاً.");
-      const csv = "WalletCode\n" + lastGeneratedWalletCodes.join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
+      const blob = new Blob(["WalletCode\n" + lastGeneratedWalletCodes.join("\n")], { type: "text/csv;charset=utf-8;" });
       const a = document.createElement("a");
-      a.href = url;
+      a.href = URL.createObjectURL(blob);
       a.download = "olympic-wallet-codes.csv";
       a.click();
     });
 
     async function loadBooksAdmin() {
       const booksSnap = await getDocs(collection(db, "books"));
-      const booksListEl = document.getElementById("booksManageList");
-      booksListEl.innerHTML = "";
-
+      const listEl = document.getElementById("booksManageList");
+      listEl.innerHTML = "";
       booksSnap.forEach((bDoc) => {
         const b = bDoc.data();
         const item = document.createElement("div");
         item.className = "manage-item";
         item.innerHTML = `
-          <div>
-            <strong>${b.title || "كتاب"}</strong>
-            <small style="display:block;">${b.category || ""} ${b.price ? "• " + b.price : ""}</small>
-          </div>
-          <div class="item-actions">
-            <button class="btn-danger" type="button">حذف الكتاب</button>
-          </div>
+          <div><strong>${b.title || "كتاب"}</strong><small style="display:block;">${b.category || ""} ${b.price ? "• " + b.price : ""}</small></div>
+          <div class="item-actions"><button class="btn-danger" type="button">حذف الكتاب</button></div>
         `;
         item.querySelector("button").addEventListener("click", async () => {
           if (!confirm(`هل أنت متأكد من حذف كتاب "${b.title || ""}"؟`)) return;
           await deleteDoc(doc(db, "books", bDoc.id));
           loadBooksAdmin();
         });
-        booksListEl.appendChild(item);
+        listEl.appendChild(item);
       });
     }
 
@@ -1186,7 +926,6 @@
 
       const noticeSelect = document.getElementById("noticeStudentSelect");
       noticeSelect.innerHTML = "";
-
       const tbody = document.getElementById("studentsTableBody");
       tbody.innerHTML = "";
 
@@ -1221,15 +960,10 @@
       document.getElementById("statStudents").textContent = studentsCount;
       document.getElementById("statCourses").textContent = coursesSnap.size;
 
-      await Promise.all([
-        fillSelectedStudentNotice(),
-        loadWalletCodesAdmin(),
-        loadBooksAdmin()
-      ]);
+      await Promise.all([fillSelectedStudentNotice(), loadWalletCodesAdmin(), loadBooksAdmin()]);
 
       const lessonCourseSelect = document.getElementById("lessonCourseSelect");
       lessonCourseSelect.innerHTML = "";
-
       const coursesListEl = document.getElementById("coursesManageList");
       coursesListEl.innerHTML = "";
 
@@ -1245,18 +979,13 @@
         const item = document.createElement("div");
         item.className = "manage-item";
         item.innerHTML = `
-          <div>
-            <strong>${title}</strong>
-            <small style="display:block;">${courseData.category || ""} • السعر: ${courseData.price || 0} ج.م</small>
-          </div>
+          <div><strong>${title}</strong><small style="display:block;">${courseData.category || ""} • السعر: ${courseData.price || 0} ج.م</small></div>
           <div class="item-actions">
             <button class="btn-edit" type="button">تعديل</button>
             <button class="btn-danger" type="button">حذف الكورس</button>
           </div>
         `;
-        item.querySelector(".btn-edit").addEventListener("click", () => {
-          openEditCourseModal(cDoc.id, courseData);
-        });
+        item.querySelector(".btn-edit").addEventListener("click", () => openEditCourseModal(cDoc.id, courseData));
         item.querySelector(".btn-danger").addEventListener("click", async () => {
           if (!confirm(`هل أنت متأكد من حذف كورس "${title}" بالكامل؟`)) return;
           const lessonsSub = await getDocs(collection(db, "courses", cDoc.id, "lessons"));
@@ -1284,13 +1013,10 @@
     document.getElementById("personalNoticeForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const uid = document.getElementById("noticeStudentSelect").value;
-      const text = document.getElementById("personalNoticeInput").value.trim();
-      const active = document.getElementById("personalNoticeActive").checked;
       if (!uid) return;
-
       await updateDoc(doc(db, "users", uid), {
-        personalNotice: text,
-        personalNoticeActive: active,
+        personalNotice: document.getElementById("personalNoticeInput").value.trim(),
+        personalNoticeActive: document.getElementById("personalNoticeActive").checked,
         personalNoticeUpdatedAt: new Date().toISOString()
       });
       document.getElementById("personalNoticeMsg").textContent = "تم حفظ الإشعار الخاص بالطالب بنجاح!";
@@ -1299,10 +1025,7 @@
     document.getElementById("clearPersonalNoticeBtn").addEventListener("click", async () => {
       const uid = document.getElementById("noticeStudentSelect").value;
       if (!uid) return;
-      await updateDoc(doc(db, "users", uid), {
-        personalNotice: "",
-        personalNoticeActive: false
-      });
+      await updateDoc(doc(db, "users", uid), { personalNotice: "", personalNoticeActive: false });
       document.getElementById("personalNoticeInput").value = "";
       document.getElementById("personalNoticeActive").checked = false;
       document.getElementById("personalNoticeMsg").textContent = "تم مسح الإشعار الخاص بالطالب.";
@@ -1330,16 +1053,14 @@
           <div>
             <strong>${les.order || 1}. ${les.title}</strong>
             <small style="display:block;">فيديو: ${les.videoUrl || "-"}</small>
-            <small style="display:block;">PDF: ${les.pdfUrl ? les.pdfUrl : "غير مضاف"}</small>
+            <small style="display:block;">PDF: ${les.pdfUrl || "غير مضاف"}</small>
           </div>
           <div class="item-actions">
             <button class="btn-edit" type="button">تعديل / إضافة PDF</button>
             <button class="btn-danger" type="button">حذف المحاضرة</button>
           </div>
         `;
-        row.querySelector(".btn-edit").addEventListener("click", () => {
-          openEditLessonModal(les.id, les);
-        });
+        row.querySelector(".btn-edit").addEventListener("click", () => openEditLessonModal(les.id, les));
         row.querySelector(".btn-danger").addEventListener("click", async () => {
           if (!confirm(`حذف المحاضرة "${les.title}"؟`)) return;
           await deleteDoc(doc(db, "courses", courseId, "lessons", les.id));
