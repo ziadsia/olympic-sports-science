@@ -284,6 +284,7 @@
           <button class="sidebar-link" data-target="coursesPanel" type="button">📚 الكورسات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="lessonsPanel" type="button">🎥 المحاضرات (إضافة / تعديل / حذف)</button>
           <button class="sidebar-link" data-target="booksPanel" type="button">📖 الكتب (إضافة / حذف)</button>
+          <button class="sidebar-link" data-target="bookOrdersPanel" type="button">📦 طلبات الكتب والشحن</button>
           <button class="sidebar-link" data-target="personalNoticePanel" type="button">📩 إشعار لطالب معين</button>
           <button class="sidebar-link" data-target="visibilityPanel" type="button">👁️ إظهار وإخفاء الأقسام</button>
           <button class="sidebar-link" data-target="brandingPanel" type="button">🖼️ اللوجو والتواصل</button>
@@ -458,18 +459,14 @@
               <input type="text" id="bookCategory" class="form-control" required />
             </div>
             <div class="form-group">
-              <label>السعر</label>
-              <input type="text" id="bookPrice" class="form-control" required />
+              <label>السعر بالجنيه</label>
+              <input type="number" id="bookPrice" class="form-control" min="0" required />
             </div>
           </div>
           <div class="grid-3">
-            <div class="form-group">
+            <div class="form-group" style="grid-column: span 3;">
               <label>رابط صورة غلاف الكتاب (اختياري)</label>
               <input type="url" id="bookImage" class="form-control" />
-            </div>
-            <div class="form-group" style="grid-column: span 2;">
-              <label>رابط شراء أو طلب مباشر (اختياري)</label>
-              <input type="url" id="bookOrderUrl" class="form-control" />
             </div>
           </div>
           <div class="form-group">
@@ -482,6 +479,26 @@
 
         <h3 style="margin-top:26px;">الكتب الحالية</h3>
         <div id="booksManageList" class="manage-list"></div>
+      </section>
+
+      <section id="bookOrdersPanel" class="admin-panel card" style="display:none;">
+        <h2 class="section-title">طلبات الكتب والشحن والاستلام من المقر</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الطالب</th>
+                <th>الكتاب</th>
+                <th>طريقة الاستلام</th>
+                <th>العنوان والهاتف</th>
+                <th>الإجمالي</th>
+                <th>الحالة</th>
+                <th>حذف</th>
+              </tr>
+            </thead>
+            <tbody id="bookOrdersTableBody"></tbody>
+          </table>
+        </div>
       </section>
 
       <section id="personalNoticePanel" class="admin-panel card" style="display:none;">
@@ -610,7 +627,9 @@
     import { initTheme } from "./assets/js/theme.js";
     import { auth, db } from "./assets/js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      collection, getDocs, addDoc, setDoc, doc, getDoc, updateDoc, deleteDoc, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     initTheme();
 
@@ -660,6 +679,7 @@
       }
       document.getElementById("adminBody").style.display = "block";
       await Promise.all([loadAdminData(), loadVisibilitySettings(), loadBrandingSettings()]);
+      listenToBookOrdersAdmin();
     });
 
     document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
@@ -889,7 +909,7 @@
         const item = document.createElement("div");
         item.className = "manage-item";
         item.innerHTML = `
-          <div><strong>${b.title || "كتاب"}</strong><small style="display:block;">${b.category || ""} ${b.price ? "• " + b.price : ""}</small></div>
+          <div><strong>${b.title || "كتاب"}</strong><small style="display:block;">${b.category || ""} • السعر: ${b.price || 0} ج.م</small></div>
           <div class="item-actions"><button class="btn-danger" type="button">حذف الكتاب</button></div>
         `;
         item.querySelector("button").addEventListener("click", async () => {
@@ -906,9 +926,8 @@
       await addDoc(collection(db, "books"), {
         title: document.getElementById("bookTitle").value.trim(),
         category: document.getElementById("bookCategory").value.trim(),
-        price: document.getElementById("bookPrice").value.trim(),
+        price: Number(document.getElementById("bookPrice").value) || 0,
         imageUrl: document.getElementById("bookImage").value.trim(),
-        orderUrl: document.getElementById("bookOrderUrl").value.trim(),
         description: document.getElementById("bookDesc").value.trim(),
         createdAt: new Date().toISOString()
       });
@@ -916,6 +935,62 @@
       e.target.reset();
       loadBooksAdmin();
     });
+
+    function listenToBookOrdersAdmin() {
+      onSnapshot(collection(db, "book_orders"), (snap) => {
+        const tbody = document.getElementById("bookOrdersTableBody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        const orders = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+
+        if (!orders.length) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">لا توجد طلبات كتب حتى الآن.</td></tr>`;
+          return;
+        }
+
+        orders.forEach((ord) => {
+          const isShipping = ord.deliveryMethod === "shipping";
+          const methodBadge = isShipping ? "🚚 شحن للمنزل" : "🏢 استلام من المقر";
+          const contactInfo = isShipping
+            ? `<strong>${ord.address || "-"}</strong><br><small>📞 ${ord.phone || "-"}</small>`
+            : `<small>استلام من مقر الأكاديمية</small>`;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${ord.studentName || "طالب"}</strong><br><small>${ord.studentEmail || ""}</small></td>
+            <td><strong>${ord.bookTitle || "كتاب"}</strong><br><small>${formatArabicDateTime(ord.createdAt)}</small></td>
+            <td>${methodBadge}</td>
+            <td>${contactInfo}</td>
+            <td><strong>${Number(ord.totalPrice) || 0} ج.م</strong></td>
+            <td>
+              <select class="form-control order-status-select" style="min-width:165px; padding:6px 10px;">
+                <option value="pending" ${ord.status === "pending" ? "selected" : ""}>⏳ قيد المراجعة</option>
+                <option value="preparing" ${ord.status === "preparing" ? "selected" : ""}>📦 جاري التجهيز</option>
+                <option value="shipped" ${ord.status === "shipped" ? "selected" : ""}>${isShipping ? "🚚 خرج مع الشحن" : "🏢 جاهز للاستلام من المقر"}</option>
+                <option value="delivered" ${ord.status === "delivered" ? "selected" : ""}>✅ تم التسليم</option>
+              </select>
+            </td>
+            <td><button class="btn-danger delete-order-btn" type="button">حذف</button></td>
+          `;
+
+          tr.querySelector(".order-status-select").addEventListener("change", async (e) => {
+            await updateDoc(doc(db, "book_orders", ord.id), {
+              status: e.target.value,
+              updatedAt: new Date().toISOString()
+            });
+          });
+
+          tr.querySelector(".delete-order-btn").addEventListener("click", async () => {
+            if (!confirm(`حذف طلب كتاب "${ord.bookTitle || ""}"؟`)) return;
+            await deleteDoc(doc(db, "book_orders", ord.id));
+          });
+
+          tbody.appendChild(tr);
+        });
+      });
+    }
 
     async function loadAdminData() {
       const usersSnap = await getDocs(collection(db, "users"));
