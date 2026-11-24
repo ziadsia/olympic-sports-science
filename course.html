@@ -1,361 +1,82 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مشاهدة الكورس - الأكاديمية الأولمبية لعلوم الرياضة</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/dashboard.css" />
-  <style>
-    .course-page-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(270px, 1fr);
-      gap: 24px;
-      align-items: start;
+function sanitizeYouTubeId(rawId) {
+      if (!rawId || typeof rawId !== "string") return null;
+      const cleaned = rawId.trim().split(/[?&#/]/)[0];
+      return /^[a-zA-Z0-9_-]{6,20}$/.test(cleaned) ? cleaned : null;
     }
 
-    @media (max-width: 900px) {
-      .course-page-layout {
-        grid-template-columns: 1fr;
-      }
-    }
+    function extractYouTubeId(urlObj) {
+      const host = urlObj.hostname.toLowerCase();
 
-    .course-header-card,
-    .player-panel,
-    .lessons-sidebar-card,
-    .locked-notice-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .course-header-card {
-      margin-bottom: 22px;
-    }
-
-    .course-meta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .lesson-current-title {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
-    .player-placeholder-box {
-      aspect-ratio: 16 / 9;
-      border-radius: 16px;
-      background: var(--input-bg);
-      border: 1px dashed var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      color: var(--text-secondary);
-      font-weight: 700;
-    }
-
-    .lesson-pdf-box {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: var(--input-bg);
-      border: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .lessons-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .lesson-item-btn {
-      width: 100%;
-      text-align: right;
-      background: var(--input-bg);
-      color: var(--text-primary);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 700;
-      font-size: 0.94rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      transition: border-color 0.2s ease, background-color 0.2s ease;
-    }
-
-    .lesson-item-btn:hover {
-      border-color: var(--brand-primary);
-    }
-
-    .lesson-item-btn.active {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: #ffffff;
-      border-color: transparent;
-    }
-
-    .locked-notice-card {
-      text-align: center;
-      padding: 36px 24px;
-    }
-  </style>
-</head>
-<body id="coursePageBody" style="display:none;">
-  <header class="navbar">
-    <div class="container nav-content">
-      <a href="dashboard.html" class="brand">
-        <img id="siteLogo" src="assets/img/logo.png" alt="شعار الأكاديمية" class="brand-logo" onerror="this.style.display='none'" />
-        <span>الأكاديمية الأولمبية لعلوم الرياضة</span>
-      </a>
-      <div class="nav-actions">
-        <a href="dashboard.html" class="btn btn-outline">العودة للوحة الطالب</a>
-        <button id="themeToggle" class="btn btn-icon" type="button" title="تبديل الوضع">🌙</button>
-        <button id="logoutBtn" class="btn btn-outline" type="button">تسجيل الخروج</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container section">
-    <div id="courseHeaderCard" class="course-header-card">
-      <div class="course-meta-row">
-        <span id="courseCategoryBadge" class="cat-pill">علوم الرياضة</span>
-        <span id="studentAccountBadge" class="order-meta-line"></span>
-      </div>
-      <h1 id="courseTitleHeading" class="welcome-title" style="color: var(--text-primary); margin: 0 0 8px;">جاري تحميل الكورس...</h1>
-      <p id="courseDescText" class="course-desc" style="-webkit-line-clamp: unset;"></p>
-    </div>
-
-    <div id="lockedNoticeCard" class="locked-notice-card" style="display:none;">
-      <h2 class="modal-heading">هذا الكورس غير مفعّل على حسابك</h2>
-      <p class="modal-subtext">برجاء شراء الكورس من رصيد محفظتك داخل لوحة الطالب أولاً للوصول إلى المحاضرات وملفات PDF.</p>
-      <a href="dashboard.html" class="btn btn-primary">الذهاب إلى لوحة الطالب</a>
-    </div>
-
-    <div id="courseContentLayout" class="course-page-layout" style="display:none;">
-      <section class="player-panel">
-        <h2 id="currentLessonTitle" class="lesson-current-title">اختر محاضرة للبدء</h2>
-        <div id="protectedVideoContainer">
-          <div class="player-placeholder-box">جاري تجهيز مشغل الفيديو...</div>
-        </div>
-        <div id="lessonPdfContainer" style="display:none;" class="lesson-pdf-box">
-          <strong>ملف المحاضرة (PDF)</strong>
-          <a id="lessonPdfLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">فتح / تحميل ملف PDF</a>
-        </div>
-      </section>
-
-      <aside class="lessons-sidebar-card">
-        <h2 class="section-title" style="margin-bottom: 6px;">محتوى الكورس</h2>
-        <small id="lessonsCountText" class="order-meta-line"></small>
-        <div id="lessonsListContainer" class="lessons-list"></div>
-      </aside>
-    </div>
-  </main>
-
-  <script type="module">
-    import { initTheme } from "./assets/js/theme.js";
-    import { auth, db } from "./assets/js/firebase-config.js";
-    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      collection, getDocs, doc, getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    initTheme();
-
-    const themeBtn = document.getElementById("themeToggle");
-    function syncThemeAttribute() {
-      const saved = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme");
-      const isDark = saved === "dark" || document.body.classList.contains("dark-mode") || document.body.classList.contains("dark");
-      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-    }
-    syncThemeAttribute();
-    themeBtn?.addEventListener("click", () => setTimeout(syncThemeAttribute, 20));
-
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await signOut(auth);
-      location.href = "auth.html";
-    });
-
-    function mountProtectedVideo({ containerEl, embedUrl, studentLabel }) {
-      if (!containerEl) return;
-
-      if (!embedUrl || !embedUrl.trim()) {
-        containerEl.innerHTML = `<div class="player-placeholder-box">لا يوجد رابط فيديو مضاف لهذه المحاضرة حالياً.</div>`;
-        return;
+      if (host === "youtu.be" || host.endsWith(".youtu.be")) {
+        const firstSeg = urlObj.pathname.replace(/^\/+/, "").split("/")[0];
+        return sanitizeYouTubeId(firstSeg);
       }
 
-      containerEl.innerHTML = "";
+      if (
+        host === "youtube.com" ||
+        host.endsWith(".youtube.com") ||
+        host === "youtube-nocookie.com" ||
+        host.endsWith(".youtube-nocookie.com")
+      ) {
+        const vParam = urlObj.searchParams.get("v");
+        if (vParam) {
+          const idFromV = sanitizeYouTubeId(vParam);
+          if (idFromV) return idFromV;
+        }
 
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
-      wrapper.style.width = "100%";
-      wrapper.style.aspectRatio = "16 / 9";
-      wrapper.style.borderRadius = "16px";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.background = "#000";
+        const parts = urlObj.pathname.split("/").filter(Boolean);
+        const specialIdx = parts.findIndex((p) =>
+          ["embed", "shorts", "live", "v", "e"].includes(p.toLowerCase())
+        );
+        if (specialIdx !== -1 && parts[specialIdx + 1]) {
+          return sanitizeYouTubeId(parts[specialIdx + 1]);
+        }
+      }
 
-      wrapper.addEventListener("contextmenu", (e) => e.preventDefault());
-
-      const iframe = document.createElement("iframe");
-      iframe.src = embedUrl.trim();
-      iframe.style.width = "100%";
-      iframe.style.height = "100%";
-      iframe.style.border = "0";
-      iframe.allow = "accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture";
-      iframe.allowFullscreen = true;
-
-      const watermark = document.createElement("div");
-      watermark.textContent = studentLabel || "";
-      watermark.style.position = "absolute";
-      watermark.style.top = "14px";
-      watermark.style.right = "14px";
-      watermark.style.padding = "4px 10px";
-      watermark.style.borderRadius = "8px";
-      watermark.style.background = "rgba(15, 23, 42, 0.45)";
-      watermark.style.color = "rgba(255, 255, 255, 0.72)";
-      watermark.style.fontSize = "12px";
-      watermark.style.fontWeight = "700";
-      watermark.style.pointerEvents = "none";
-      watermark.style.userSelect = "none";
-
-      wrapper.appendChild(iframe);
-      wrapper.appendChild(watermark);
-      containerEl.appendChild(wrapper);
+      return null;
     }
 
-    function selectLesson(lesson, btnEl, studentLabel) {
-      document.querySelectorAll(".lesson-item-btn").forEach((b) => b.classList.remove("active"));
-      if (btnEl) btnEl.classList.add("active");
-
-      document.getElementById("currentLessonTitle").textContent = `${lesson.order || 1}. ${lesson.title || "محاضرة"}`;
-
-      mountProtectedVideo({
-        containerEl: document.getElementById("protectedVideoContainer"),
-        embedUrl: lesson.videoUrl,
-        studentLabel
-      });
-
-      const pdfBox = document.getElementById("lessonPdfContainer");
-      const pdfLink = document.getElementById("lessonPdfLink");
-      if (lesson.pdfUrl && lesson.pdfUrl.trim()) {
-        pdfLink.href = lesson.pdfUrl.trim();
-        pdfBox.style.display = "flex";
-      } else {
-        pdfLink.href = "#";
-        pdfBox.style.display = "none";
-      }
+    function isYouTubeHost(hostname) {
+      const h = (hostname || "").toLowerCase();
+      return (
+        h === "youtube.com" ||
+        h.endsWith(".youtube.com") ||
+        h === "youtu.be" ||
+        h.endsWith(".youtu.be") ||
+        h === "youtube-nocookie.com" ||
+        h.endsWith(".youtube-nocookie.com")
+      );
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const courseId = params.get("id");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        location.href = "auth.html";
-        return;
+    function normalizeVideoUrl(rawUrl) {
+      if (!rawUrl || !rawUrl.trim()) {
+        return { ok: false, reason: "لا يوجد رابط فيديو مضاف لهذه المحاضرة حالياً." };
       }
 
-      if (!courseId) {
-        location.href = "dashboard.html";
-        return;
-      }
-
+      let parsed;
       try {
-        const brandSnap = await getDoc(doc(db, "settings", "branding"));
-        if (brandSnap.exists() && brandSnap.data().logoUrl) {
-          document.getElementById("siteLogo").src = brandSnap.data().logoUrl;
+        parsed = new URL(rawUrl.trim());
+      } catch (e) {
+        return { ok: false, reason: "رابط الفيديو غير صالح." };
+      }
+
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+        return { ok: false, reason: "صيغة رابط الفيديو غير مدعومة." };
+      }
+
+      if (isYouTubeHost(parsed.hostname)) {
+        const ytId = extractYouTubeId(parsed);
+        if (!ytId) {
+          return {
+            ok: false,
+            reason: "تعذر استخراج معرّف فيديو YouTube من الرابط المدخل. تأكد من نسخ رابط الفيديو الصحيح."
+          };
         }
-      } catch (e) {}
-
-      const [userSnap, courseSnap] = await Promise.all([
-        getDoc(doc(db, "users", user.uid)),
-        getDoc(doc(db, "courses", courseId))
-      ]);
-
-      const userData = userSnap.exists() ? userSnap.data() : {};
-      const studentName = userData.fullName || user.email?.split("@")[0] || "طالب";
-      const studentEmail = userData.email || user.email || "";
-      const studentLabel = `${studentName} (${studentEmail})`;
-
-      document.getElementById("studentAccountBadge").textContent = studentLabel;
-
-      if (!courseSnap.exists()) {
-        document.getElementById("courseTitleHeading").textContent = "الكورس غير موجود";
-        document.getElementById("coursePageBody").style.display = "block";
-        return;
+        return {
+          ok: true,
+          safeUrl: `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`
+        };
       }
 
-      const courseData = courseSnap.data();
-      document.title = `${courseData.title || "الكورس"} - الأكاديمية الأولمبية لعلوم الرياضة`;
-      document.getElementById("courseCategoryBadge").textContent = courseData.category || "علوم الرياضة";
-      document.getElementById("courseTitleHeading").textContent = courseData.title || "كورس";
-      document.getElementById("courseDescText").textContent = courseData.description || "";
-
-      const enrolledList = Array.isArray(userData.enrolledCourses) ? userData.enrolledCourses : [];
-      const isEnrolled = enrolledList.includes(courseId) || userData.role === "admin";
-
-      document.getElementById("coursePageBody").style.display = "block";
-
-      if (!isEnrolled) {
-        document.getElementById("lockedNoticeCard").style.display = "block";
-        document.getElementById("courseContentLayout").style.display = "none";
-        return;
-      }
-
-      document.getElementById("lockedNoticeCard").style.display = "none";
-      document.getElementById("courseContentLayout").style.display = "grid";
-
-      const lessonsSnap = await getDocs(collection(db, "courses", courseId, "lessons"));
-      const lessons = lessonsSnap.docs
-        .map((d) => ({ id: d.id, ...d.data() }))
-        .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
-
-      const listContainer = document.getElementById("lessonsListContainer");
-      document.getElementById("lessonsCountText").textContent = `${lessons.length} محاضرة`;
-      listContainer.innerHTML = "";
-
-      if (!lessons.length) {
-        listContainer.innerHTML = `<p class="empty-lessons-text">لا توجد محاضرات مضافة لهذا الكورس بعد.</p>`;
-        return;
-      }
-
-      lessons.forEach((lesson, index) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "lesson-item-btn";
-        btn.innerHTML = `
-          <span>${lesson.order || index + 1}. ${lesson.title || "محاضرة"}</span>
-          <span>▶</span>
-        `;
-        btn.addEventListener("click", () => selectLesson(lesson, btn, studentLabel));
-        listContainer.appendChild(btn);
-
-        if (index === 0) {
-          selectLesson(lesson, btn, studentLabel);
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+      return { ok: true, safeUrl: parsed.toString() };
+    }
